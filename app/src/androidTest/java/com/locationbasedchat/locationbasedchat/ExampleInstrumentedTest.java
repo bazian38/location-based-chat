@@ -28,6 +28,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import com.braunster.chatsdk.network.AbstractNetworkAdapter;
+import com.braunster.chatsdk.network.BDefines;
+
+import org.jdeferred.DoneCallback;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.Map;
 import static org.junit.Assert.*;
 
 /**
@@ -35,6 +44,7 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
 

@@ -11,19 +11,14 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.braunster.androidchatsdk.firebaseplugin.R;
-import com.braunster.androidchatsdk.firebaseplugin.firebase.backendless.ChatSDKReceiver;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.wrappers.BMessageWrapper;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.wrappers.BThreadWrapper;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.wrappers.BUserWrapper;
 import com.braunster.chatsdk.Utils.Debug;
 import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
-import com.braunster.chatsdk.activities.ChatSDKBaseActivity;
 import com.braunster.chatsdk.dao.BMessage;
 import com.braunster.chatsdk.dao.BThread;
 import com.braunster.chatsdk.dao.BUser;
-import com.braunster.chatsdk.dao.entities.BMessageReceiptEntity;
-import com.braunster.chatsdk.dao.FollowerLink;
 import com.braunster.chatsdk.dao.core.DaoCore;
 import com.braunster.chatsdk.network.AbstractNetworkAdapter;
 import com.braunster.chatsdk.network.BDefines;
@@ -50,11 +45,8 @@ import org.jdeferred.Promise;
 import org.jdeferred.impl.DeferredObject;
 import org.jdeferred.multiple.MasterDeferredObject;
 import org.jdeferred.multiple.MasterProgress;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,8 +64,8 @@ public class BChatcatNetworkAdapter extends BFirebaseNetworkAdapter {
 
     BThreadWrapper.TypingListenerContainer typingListener;
 
-    public BChatcatNetworkAdapter(Context context){
-        super(context);
+    public BChatcatNetworkAdapter(Context context, boolean testing){
+        super(context, testing);
     }
 
     public Promise<BUser, BError, Void> handleFAUser(final FirebaseUser authData){
@@ -800,27 +792,6 @@ public class BChatcatNetworkAdapter extends BFirebaseNetworkAdapter {
         return deferred.promise();
     }
 
-    public void test () {
-
-        AbstractNetworkAdapter a = BNetworkManager.sharedManager().getNetworkAdapter();
-        String name = "Name";
-        BUser user1 = null;
-        BUser user2 = null;
-        a.createThreadWithUsers(name, user1, user2).done(new DoneCallback<BThread>() {
-            @Override
-            public void onDone(final BThread thread) {
-                ChatSDKUiHelper helper = ChatSDKUiHelper.getInstance();
-                helper.startChatActivityForID(thread.getId());
-            }
-        })
-        .fail(new FailCallback<BError>() {
-            @Override
-            public void onFail(BError error) {
-            }
-        });
-    }
-
-
     @Override
     public Promise<BThread, BError, Void>  pushThread(BThread thread) {
         return new BThreadWrapper(thread).push();
@@ -836,280 +807,6 @@ public class BChatcatNetworkAdapter extends BFirebaseNetworkAdapter {
         updateLastOnline();
         
         return new BThreadWrapper(thread).deleteThread();
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @Override
-    public Promise<Void, BError, Void> followUser(final BUser userToFollow) {
-
-        if (!BDefines.EnableFollowers)
-            throw new IllegalStateException("You need to enable followers in defines before you can use this method.");
-
-        final Deferred<Void, BError, Void> deferred = new DeferredObject<>();
-        
-        final BUser user = currentUserModel();
-
-        // Add the current user to the userToFollow "followers" path
-        DatabaseReference userToFollowRef = FirebasePaths.userRef(userToFollow.getEntityID())
-            .child(BFirebaseDefines.Path.FollowerLinks)
-            .child(user.getEntityID());
-        if (DEBUG) Timber.d("followUser, userToFollowRef: ", userToFollowRef.toString());
-
-        userToFollowRef.setValue("null", new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError firebaseError, DatabaseReference firebase) {
-                if (firebaseError!=null)
-                {
-                    deferred.reject(getFirebaseError(firebaseError));
-                }
-                else
-                {
-                    FollowerLink follows = user.fetchOrCreateFollower(userToFollow, FollowerLink.Type.FOLLOWS);
-
-                    user.addContact(userToFollow);
-
-                    // Add the user to follow to the current user follow
-                    DatabaseReference curUserFollowsRef = FirebasePaths.firebaseRef().child(follows.getBPath().getPath());
-                    if (DEBUG) Timber.d("followUser, curUserFollowsRef: %s", curUserFollowsRef.toString());
-                    curUserFollowsRef.setValue("null", new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError firebaseError, DatabaseReference firebase) {
-
-                            // Send a push to the user that is now followed.
-                            if (DEBUG) Timber.v("pushutils sendfollowpush");
-                            JSONObject data = new JSONObject();
-                            try {
-                                data.put(BDefines.Keys.ACTION, ChatSDKReceiver.ACTION_FOLLOWER_ADDED);
-                                data.put(BDefines.Keys.CONTENT, user.getMetaName() + " " + context.getString(R.string.not_follower_content));
-                                // For iOS
-                                data.put(BDefines.Keys.BADGE, BDefines.Keys.INCREMENT);
-                                data.put(BDefines.Keys.ALERT, user.getMetaName() + " " + context.getString(R.string.not_follower_content));
-                                // For making sound in iOS
-                                data.put(BDefines.Keys.SOUND, BDefines.Keys.Default);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            List<String> channels = new ArrayList<String>();
-                            channels.add(userToFollow.getPushChannel());
-                            pushHandler.pushToChannels(channels, data);
-
-                            deferred.resolve(null);
-                        }
-                    });
-                }
-            }
-        });
-
-        return deferred.promise();
-    }
-
-    @Override
-    public void unFollowUser(BUser userToUnfollow) {
-        if (!BDefines.EnableFollowers)
-            throw new IllegalStateException("You need to enable followers in defines before you can use this method.");
-
-
-        final BUser user = currentUserModel();
-
-        // Remove the current user to the userToFollow "followers" path
-        DatabaseReference userToFollowRef = FirebasePaths.userRef(userToUnfollow.getEntityID())
-            .child(BFirebaseDefines.Path.FollowerLinks)
-            .child(user.getEntityID());
-
-        userToFollowRef.removeValue();
-
-        FollowerLink follows = user.fetchOrCreateFollower(userToUnfollow, FollowerLink.Type.FOLLOWS);
-
-        // Add the user to follow to the current user follow
-        DatabaseReference curUserFollowsRef = FirebasePaths.firebaseRef().child(follows.getBPath().getPath());
-
-        curUserFollowsRef.removeValue();
-
-        DaoCore.deleteEntity(follows);
-    }
-
-    @Override
-    public Promise<List<BUser>, BError, Void> getFollowers(String entityId){
-        if (DEBUG) Timber.v("getFollowers, Id: %s", entityId);
-
-        final Deferred<List<BUser>, BError, Void> deferred = new DeferredObject<>();
-        
-        if (StringUtils.isEmpty(entityId))
-        {
-            return deferred.reject(BError.getError(BError.Code.NULL, "Entity id is empty"));
-        }
-
-        final BUser user = DaoCore.fetchOrCreateEntityWithEntityID(BUser.class, entityId);
-
-        DatabaseReference followersRef = FirebasePaths.userFollowersRef(entityId);
-
-        followersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                final List<BUser> followers = new ArrayList<BUser>();
-
-                for (DataSnapshot snap : snapshot.getChildren())
-                {
-                    String followingUserID = snap.getKey();
-
-                    if (StringUtils.isNotEmpty(followingUserID))
-                    {
-                        BUser follwer = DaoCore.fetchOrCreateEntityWithEntityID(BUser.class, followingUserID);
-
-                        FollowerLink f = user.fetchOrCreateFollower(follwer, FollowerLink.Type.FOLLOWER);
-
-                        followers.add(follwer);
-                    } else if (DEBUG) Timber.e("Follower id is empty");
-                }
-
-                Promise[] promises= new Promise[followers.size()];
-                
-                int count = 0;
-                for (BUser u : followers)
-                {
-                    promises[count] = BUserWrapper.initWithModel(u).once();
-
-                    count++;
-                }
-                
-                MasterDeferredObject masterDeferredObject = new MasterDeferredObject(promises);
-
-                masterDeferredObject.progress(new ProgressCallback<MasterProgress>() {
-                    @Override
-                    public void onProgress(MasterProgress masterProgress) {
-
-                        if (DEBUG) Timber.d("MasterDeferredProgress, done: %s, failed: %s, total: %s", masterProgress.getDone(), masterProgress.getFail(), masterProgress.getTotal());
-
-                        // Reject the promise if all promisses failed.
-                        if (masterProgress.getFail() == masterProgress.getTotal())
-                        {
-                            deferred.reject(BError.getError(BError.Code.OPERATION_FAILED, "All promises failed"));
-                        }
-                        else
-                            deferred.resolve(followers);
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError firebaseError) {
-                deferred.reject(getFirebaseError(firebaseError));
-            }
-        });
-
-        
-        return deferred.promise();
-    }
-
-    @Override
-    public Promise<List<BUser>, BError, Void>  getFollows(String entityId){
-        if (DEBUG) Timber.v("getFollowers, Id: %s", entityId);
-
-        final Deferred<List<BUser>, BError, Void> deferred = new DeferredObject<>();
-
-        if (StringUtils.isEmpty(entityId))
-        {
-            return deferred.reject(BError.getError(BError.Code.NULL, "Entity id is empty"));
-        }
-
-        final BUser user = DaoCore.fetchOrCreateEntityWithEntityID(BUser.class, entityId);
-
-        DatabaseReference followersRef = FirebasePaths.userFollowsRef(entityId);
-
-        followersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                final List<BUser> followers = new ArrayList<BUser>();
-
-                for (DataSnapshot snap : snapshot.getChildren())
-                {
-                    String followingUserID = snap.getKey();
-
-                    if (StringUtils.isNotEmpty(followingUserID))
-                    {
-                        BUser follwer = DaoCore.fetchOrCreateEntityWithEntityID(BUser.class, followingUserID);
-
-                        FollowerLink f = user.fetchOrCreateFollower(follwer, FollowerLink.Type.FOLLOWS);
-
-                        followers.add(follwer);
-                    }
-                }
-
-                Promise[] promises= new Promise[followers.size()];
-
-                int count = 0;
-                for (BUser u : followers)
-                {
-                    promises[count] = BUserWrapper.initWithModel(u).once();
-
-                    count++;
-                }
-
-                MasterDeferredObject masterDeferredObject = new MasterDeferredObject(promises);
-
-                masterDeferredObject.progress(new ProgressCallback<MasterProgress>() {
-                    @Override
-                    public void onProgress(MasterProgress masterProgress) {
-
-                        if (DEBUG) Timber.d("MasterDeferredProgress, done: %s, failed: %s, total: %s", masterProgress.getDone(), masterProgress.getFail(), masterProgress.getTotal());
-
-                        // Reject the promise if all promisses failed.
-                        if (masterProgress.getFail() == masterProgress.getTotal())
-                        {
-                            deferred.reject(BError.getError(BError.Code.OPERATION_FAILED, "All promises failed"));
-                        }
-                        else
-                            deferred.resolve(followers);
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError firebaseError) {
-                deferred.reject(getFirebaseError(firebaseError));
-            }
-        });
-
-        return deferred.promise();
     }
 
     private void updateLastOnline(){
