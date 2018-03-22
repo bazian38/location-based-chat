@@ -138,8 +138,10 @@ public abstract class ChatSDKBaseFragment extends android.app.DialogFragment imp
     protected void showAlertToast(String text){
         if (chatSDKUiHelper==null || StringUtils.isEmpty(text))
             return;
-        chatSDKUiHelper.getAlertToast().setText(text);
-        chatSDKUiHelper.getAlertToast().show();
+//        chatSDKUiHelper.getAlertToast().setText(text);
+//        chatSDKUiHelper.getAlertToast().show();
+        Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
+
     }
 
     /** Start the chat activity for the given thread id.
