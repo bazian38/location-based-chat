@@ -15,6 +15,57 @@
       },
       "oauth_client": [
         {
+          "client_id": "523592939779-14hids48c0dps373gsfrfjtp9p33cslj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.locationbasedchat.locationbasedchat",
+            "certificate_hash": "f4363b80160f561f308aeb458a31d444ae159013"
+          }
+        },
+        {
+          "client_id": "523592939779-5l8ditm14nnmlcuqobc69g5j5o4310ur.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8I3t9f9beV7Sp6n69pm4W2_PfmDxkavk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523592939779-5l8ditm14nnmlcuqobc69g5j5o4310ur.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "523592939779-aoi5v08rlnflcr6qmbsqj95jtcr4nr73.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.deluge.ChatSDKSwift3"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523592939779:android:55b96633bb34c794",
+        "android_client_info": {
+          "package_name": "com.braunster.androidchatsdk.firebaseplugin"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "523592939779-5l8ditm14nnmlcuqobc69g5j5o4310ur.apps.googleusercontent.com",
           "client_type": 3
         }
