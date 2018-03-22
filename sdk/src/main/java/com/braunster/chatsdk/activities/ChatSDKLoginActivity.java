@@ -138,8 +138,7 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         if (i == R.id.chat_sdk_btn_login) {
             passwordLogin();
         }
-        else if (i == R.id.chat_sdk_btn_register)
-        {
+        else if (i == R.id.chat_sdk_btn_register) {
             register();
         }
         /*

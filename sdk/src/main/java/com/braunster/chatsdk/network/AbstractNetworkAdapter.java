@@ -53,7 +53,6 @@ import static com.braunster.chatsdk.network.BDefines.Prefs.AuthenticationID;
 
 public abstract class AbstractNetworkAdapter {
 
-    private static final String TAG = AbstractNetworkAdapter.class.getSimpleName();
     private static final boolean DEBUG = Debug.AbstractNetworkAdapter;
 
     private boolean authenticated = false;
@@ -107,20 +106,6 @@ public abstract class AbstractNetworkAdapter {
     /*** Send a request to the server to get the online status of the user. */
     public abstract Promise<Boolean, BError, Void> isOnline();
 
-
-
-    
-    public abstract Promise<List<BUser>, BError, Void> getFollowers(String entityId);
-
-    public abstract Promise<List<BUser>, BError, Void>  getFollows(String entityId);
-
-    public abstract Promise<Void, BError, Void> followUser(BUser userToFollow);
-
-    public abstract void unFollowUser(BUser userToUnfollow);
-
-
-
-    
     public abstract Promise<BMessage, BError, BMessage> sendMessage(BMessage messages);
 
     public abstract void updateUserReadReceipt(final BMessage message, final int status);
@@ -591,12 +576,12 @@ public abstract class AbstractNetworkAdapter {
 
 
     public boolean backendlessEnabled(){
-        return StringUtils.isNotEmpty(context.getString(R.string.backendless_app_id)) && StringUtils.isNotEmpty(context.getString(R.string.backendless_secret_key));
+        return StringUtils.isNotEmpty("1C9AB22A-D442-4D0C-FFB6-403D71FBA800") && StringUtils.isNotEmpty("DDCC204E-A921-127D-FFFC-B3EAF04B9000");
     }
 
-    public boolean facebookEnabled(){
+/*    public boolean facebookEnabled(){
         return StringUtils.isNotEmpty(context.getString(R.string.facebook_id));
-    }
+    }*/
 
     public void setEventManager(AbstractEventManager eventManager) {
         this.eventManager = eventManager;

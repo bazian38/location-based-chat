@@ -2,17 +2,21 @@ package UnitTests;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 import com.braunster.androidchatsdk.firebaseplugin.R;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
 import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.network.AbstractNetworkAdapter;
 import com.braunster.chatsdk.network.BDefines;
 import com.braunster.chatsdk.network.BNetworkManager;
+import com.google.firebase.FirebaseApp;
 
 import org.jdeferred.DoneCallback;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -30,31 +34,30 @@ import static org.mockito.Mockito.when;
 
 public class unitTest {
 
-    private BChatcatNetworkAdapter adapter;
+    static private Context appContext;
+    static private BChatcatNetworkAdapter adapter;
 
-    @Before
+ /*   @Before
     public void initTests() {
         SharedPreferences.Editor editor = Mockito.mock(SharedPreferences.Editor.class);
         SharedPreferences sharedPrefs = Mockito.mock(SharedPreferences.class);
         Context context = Mockito.mock(Context.class);
 
         when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPrefs);
-        when(context.getString(R.string.backendless_app_id)).thenReturn("1C9AB22A-D442-4D0C-FFB6-403D71FBA800");
-        when(context.getString(R.string.backendless_secret_key)).thenReturn("DDCC204E-A921-127D-FFFC-B3EAF04B9000");
-        when(context.getString(R.string.backendless_app_version)).thenReturn("v1");
         when(context.getSharedPreferences(anyString(), anyInt()).getString(anyString(), anyString())).thenReturn("");
         when(sharedPrefs.getString(anyString(), anyString())).thenReturn("");
         when(sharedPrefs.edit()).thenReturn(editor);
         when(editor.putString(anyString(), anyString())).thenReturn(null);
         when(editor.commit()).thenReturn(true);
 
-        ChatSDKUiHelper.initDefault();
-        BNetworkManager.init(context);
-        adapter = new BChatcatNetworkAdapter(context);
+        //ChatSDKUiHelper.initDefault();
+        //BNetworkManager.init(context);
+        FirebaseApp.initializeApp(context);
+        adapter = new BChatcatNetworkAdapter(context, true);
 
         // change database root
         BDefines.changeRootForTesting();
-    }
+    }*/
 
     @Test
     public void test() {

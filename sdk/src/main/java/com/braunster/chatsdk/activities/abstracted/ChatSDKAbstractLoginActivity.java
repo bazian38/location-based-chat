@@ -129,7 +129,7 @@ public class ChatSDKAbstractLoginActivity extends ChatSDKBaseActivity {
                     Toast.makeText(that, "Please verify email", Toast.LENGTH_LONG).show();
                 else
                     //toastErrorMessage(bError, true);
-                    Toast.makeText(that, "User does not exist", Toast.LENGTH_LONG).show();
+                    Toast.makeText(that, "Email or password incorrect", Toast.LENGTH_LONG).show();
                 dismissProgDialog();
             }
         });
