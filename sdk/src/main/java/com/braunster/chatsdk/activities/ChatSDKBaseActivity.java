@@ -289,9 +289,9 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
 
     /** Show a SuperToast with the given text. */
     protected void showToast(String text){
-        /*if (chatSDKUiHelper==null || StringUtils.isEmpty(text))
+        if (chatSDKUiHelper==null || StringUtils.isEmpty(text))
             return;
-        chatSDKUiHelper.getToast().setText(text);
+    /*    chatSDKUiHelper.getToast().setText(text);
         chatSDKUiHelper.getToast().show();
 */
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
@@ -300,8 +300,10 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
     protected void showAlertToast(String text){
         if (chatSDKUiHelper==null || StringUtils.isEmpty(text))
             return;
-        chatSDKUiHelper.getAlertToast().setText(text);
-        chatSDKUiHelper.getAlertToast().show();
+//        chatSDKUiHelper.getAlertToast().setText(text);
+//        chatSDKUiHelper.getAlertToast().show();
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+
     }
 
 /*    protected void showProgressCard(String text){

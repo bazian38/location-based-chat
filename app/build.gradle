@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.locationbasedchat.locationbasedchat"
-        minSdkVersion 15
+        minSdkVersion 18
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -28,6 +28,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
     compile project(':firebase_plugin')
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
