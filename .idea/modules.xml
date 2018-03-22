@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LocationBasedChat.iml" filepath="$PROJECT_DIR$/LocationBasedChat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/LocationBasedChat.iml" filepath="$PROJECT_DIR$/.idea/LocationBasedChat.iml" />
+      <module fileurl="file://C:\Users\ahmad\Desktop\refactorLocationBasedChat\LocationBasedChat\LocationBasedChat.iml" filepath="C:\Users\ahmad\Desktop\refactorLocationBasedChat\LocationBasedChat\LocationBasedChat.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/country_picker/country_picker.iml" filepath="$PROJECT_DIR$/country_picker/country_picker.iml" />
       <module fileurl="file://$PROJECT_DIR$/facebook/facebook.iml" filepath="$PROJECT_DIR$/facebook/facebook.iml" />

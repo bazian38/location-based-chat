@@ -2,31 +2,32 @@ package com.locationbasedchat.locationbasedchat;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
-import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
-import com.braunster.chatsdk.activities.ChatSDKMainActivity;
+import com.braunster.androidchatsdk.firebaseplugin.firebase.BChatcatNetworkAdapter;
+import com.braunster.chatsdk.dao.BMessage;
+import com.braunster.chatsdk.dao.BUserDao;
+import com.braunster.chatsdk.dao.DaoMaster;
+import com.braunster.chatsdk.dao.DaoSession;
+import com.braunster.chatsdk.dao.core.DaoCore;
+import com.braunster.chatsdk.dao.entities.BMessageEntity;
+import com.braunster.chatsdk.network.AbstractNetworkAdapter;
+import com.braunster.chatsdk.network.BDefines;
 import com.braunster.chatsdk.network.BNetworkManager;
 
+import org.jdeferred.DoneCallback;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.ComponentNameMatchers.hasShortClassName;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.Matchers.allOf;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 /**
@@ -39,34 +40,84 @@ public class ExampleInstrumentedTest {
 
     private String testEmail;
     private String testPassword;
+    static private DaoMaster daoMaster;
+    static private DaoSession daoSession;
+    static private BUserDao bUserDao;
+    static private Context appContext;
+    static private BChatcatNetworkAdapter adapter;
 
-    private static ChatSDKUiHelper sdkUiHelper = ChatSDKUiHelper.initDefault();
-    private static BNetworkManager networkManager = BNetworkManager.init();
-
-    @Rule
-    public ActivityTestRule<ChatSDKLoginActivity> mActivityRule = new ActivityTestRule<>(sdkUiHelper.loginActivity);
+//    @Rule
+//    public ActivityTestRule<ChatSDKLoginActivity> mActivityRule = new ActivityTestRule<>(sdkUiHelper.loginActivity);
 
     @Before
     public void initValidString() {
         testEmail = "agbaria@post.bgu.ac.il";
         testPassword = "123456";
+        BNetworkManager.init(InstrumentationRegistry.getTargetContext());
+
+    }
+
+    @BeforeClass
+    public static void setUpBeforeClass()
+    {
+        DaoCore.init(InstrumentationRegistry.getTargetContext(),"testDataBase");
+        daoMaster = DaoCore.daoMaster;
+        daoSession = DaoCore.daoSession;
+        bUserDao = daoSession.getBUserDao();
+
+        daoMaster.createAllTables(daoSession.getDatabase(), true);
+
+        appContext = InstrumentationRegistry.getTargetContext();
+        adapter = new BChatcatNetworkAdapter(appContext);
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() {
+        daoMaster.dropAllTables(daoSession.getDatabase(),true);
     }
 
     @Test
-    public void loginTest() throws Exception {
-        /*// Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        assertEquals("com.locationbasedchat.locationbasedchat", appContext.getPackageName());*/
+    public void useAppContext() throws Exception {
+//        Context appContext = InstrumentationRegistry.getTargetContext();
+        assertEquals("com.locationbasedchat.locationbasedchat", appContext.getPackageName());
 
+        // Creating the new message.
+        BMessage message = new BMessage();
 
+        Date c = Calendar.getInstance().getTime();
 
-        onView(withId(R.id.chat_sdk_et_mail)).perform(typeText(testEmail), closeSoftKeyboard());
-        onView(withId(R.id.chat_sdk_et_password)).perform(typeText(testPassword), closeSoftKeyboard());
-        onView(withId(R.id.chat_sdk_btn_login)).perform(click());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String formattedDate = df.format(c);
 
-        intended(allOf(
-                hasComponent(hasShortClassName(".ChatSDKMainActivity")),
-                toPackage("com.braunster.chatsdk.activities"),
-                hasAction(ChatSDKMainActivity.Action_clear_data)));
+        message.setDate(df.parse(formattedDate));
+        message.setType(BMessageEntity.Type.TEXT);
+        message.setText("aaa");
+        message.setEntityID("1111");
+        message.setIsRead(false);
+
+        // If we dont have the sender and thread we wont open the
+        // chat activity when the notification is pressed.
+        // Else we are setting the thread and sender to the message.
+        // Marking the thread as not deleted.
+
+        message.setBUserSender(null);
+        message.setThread(null);
+        message = DaoCore.createEntity(message);
+
+        assertNotNull(DaoCore.fetchEntityWithEntityID(BMessage.class,"1111"));
+        assertEquals(DaoCore.fetchEntityWithEntityID(BMessage.class,"1111").getText(), "aaa");
+    }
+
+    @Test
+    public void registerTest() throws Exception {
+        Map<String, Object> data = AbstractNetworkAdapter.getMap(
+                new String[]{BDefines.Prefs.LoginTypeKey, BDefines.Prefs.LoginEmailKey, BDefines.Prefs.LoginPasswordKey},
+                BDefines.BAccountType.Register, "agbaria2@post.bgu.ac.il", "123456");
+        adapter.authenticateWithMap(data).done(new DoneCallback<Object>() {
+            @Override
+            public void onDone(Object result) {
+                assertTrue((Boolean) result);
+            }
+        });
     }
 }

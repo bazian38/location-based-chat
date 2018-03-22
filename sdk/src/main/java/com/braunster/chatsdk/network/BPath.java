@@ -34,7 +34,7 @@ public class BPath {
 
     public BPath(String path){
 
-        path = path .replace("%3A", ":").replace("%253A", ":");
+        this.path = path .replace("%3A", ":").replace("%253A", ":");
         
         // Cutting the the server path.
         if (BDefines.ServerUrl.length() < path.length())
