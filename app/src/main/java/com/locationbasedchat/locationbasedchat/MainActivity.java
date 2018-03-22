@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         // Init the network manager
         BNetworkManager.init(getApplicationContext());
         // Create a new adapter
-        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext());
+        BChatcatNetworkAdapter adapter = new BChatcatNetworkAdapter(getApplicationContext(), false);
         // Set the adapter
         BNetworkManager.sharedManager().setNetworkAdapter(adapter);
 

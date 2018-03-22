@@ -11,9 +11,6 @@ import com.braunster.chatsdk.BuildConfig;
 
 import java.util.Random;
 
-/**
- * Created by braunster on 23/06/14.
- */
 public class BDefines {
 
     /** This is the root path of all the app data,

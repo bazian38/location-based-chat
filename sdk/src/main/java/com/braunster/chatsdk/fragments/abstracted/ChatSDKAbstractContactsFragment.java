@@ -54,9 +54,6 @@ import java.util.List;
 
 import timber.log.Timber;
 
-/**
- * Created by itzik on 6/17/2014.
- */
 public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
 
     private static final String TAG = ChatSDKAbstractContactsFragment.class.getSimpleName();
@@ -67,10 +64,6 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
 
     /** Loading all users for given thread id mode*/
     public static final int MODE_LOAD_THREAD_USERS = 1992;
-
-    public static final int MODE_LOAD_FOLLOWERS = 1993;
-
-    public static final int MODE_LOAD_FOLLOWS = 1994;
 
     /** Using the users that was given to the fragment in to initializer;*/
     public static final int MODE_USE_SOURCE = 1995;
@@ -517,64 +510,6 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
                     List<BUser> threadUser = thread.getUsers();
                     users1.removeAll(threadUser);
                     sourceUsers = users1;
-                    break;
-
-                case MODE_LOAD_FOLLOWERS:
-                    if (extraData instanceof String && StringUtils.isNotEmpty((String) extraData))
-                    {
-                        sourceUsers = new ArrayList<BUser>();
-                        showLoading();
-                        getNetworkAdapter().getFollowers((String) extraData)
-                                .done(new DoneCallback<List<BUser>>() {
-                                    @Override
-                                    public void onDone(List<BUser> users) {
-
-                                        users.remove(getNetworkAdapter().currentUserModel());
-                                        
-                                        hideLoading();
-                                        
-                                        sourceUsers = users;
-                                        
-                                        adapter.addBUsersRows(users);
-
-                                        adapter.notifyDataSetChanged();
-                                    }
-                                })
-                                .fail(new FailCallback<BError>() {
-                                    @Override
-                                    public void onFail(BError error) {
-                                        //TODO handle error
-                                    }
-                                });
-                    }
-                    else
-                        sourceUsers = getNetworkAdapter().currentUserModel().getFollowers();
-                    break;
-
-                case MODE_LOAD_FOLLOWS:
-                    if (extraData instanceof String && StringUtils.isNotEmpty((String) extraData))
-                    {
-
-                        sourceUsers = new ArrayList<BUser>();
-                        showLoading();
-                        getNetworkAdapter().getFollows((String) extraData)
-                                .done(new DoneCallback<List<BUser>>() {
-                                    @Override
-                                    public void onDone(List<BUser> users) {
-                                        users.remove(getNetworkAdapter().currentUserModel());
-
-                                        hideLoading();
-
-                                        sourceUsers = users;
-
-                                        adapter.addBUsersRows(users);
-
-                                        adapter.notifyDataSetChanged();
-                                    }
-                                });
-                    }
-                    else
-                        sourceUsers = getNetworkAdapter().currentUserModel().getFollows();
                     break;
             }
     }

@@ -34,9 +34,7 @@ import com.braunster.chatsdk.network.BNetworkManager;
 import com.braunster.chatsdk.object.BError;
 import com.facebook.Session;
 import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
 import com.github.johnpersano.supertoasts.SuperCardToast;
-import com.github.johnpersano.supertoasts.SuperToast;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jdeferred.DoneCallback;
@@ -47,17 +45,13 @@ import java.util.concurrent.Callable;
 
 import timber.log.Timber;
 
-/**
- * Created by braunster on 18/06/14.
- */
 public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivityInterface {
 
-    private static final String TAG = ChatSDKBaseActivity.class.getSimpleName();
     private static final boolean DEBUG = Debug.BaseActivity;
 
     public static final String FROM_LOGIN = "From_Login";
 
-    private UiLifecycleHelper uiHelper;
+//    private UiLifecycleHelper uiHelper;
 
     private ProgressDialog progressDialog;
 
@@ -68,9 +62,9 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
      *  check to see if the user is online and if not start the auth process for registering to all events.*/
     private boolean checkOnlineOnResumed = false;
 
-    /** If true the activity will implement facebook SDK components like sessionChangeState and the facebook UI helper.
-     * This is good for caching a press on the logout button in the main activity or in any activity that will implement the facebook login button.*/
-    protected boolean integratedWithFacebook = false;
+//    /** If true the activity will implement facebook SDK components like sessionChangeState and the facebook UI helper.
+//     * This is good for caching a press on the logout button in the main activity or in any activity that will implement the facebook login button.*/
+//    protected boolean integratedWithFacebook = false;
 
     /** A flag indicates that the activity in opened from the login activity so we wont do auth check when the activity will get to the onResume state.*/
     boolean fromLoginActivity = false;
@@ -90,11 +84,11 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
 
         chatSDKUiHelper = ChatSDKUiHelper.getInstance().get(this);
 
-        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
+/*        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
         {
             uiHelper = new UiLifecycleHelper(this, callback);
             uiHelper.onCreate(savedInstanceState);
-        }
+        }*/
 
         if (getIntent() != null && getIntent().getExtras() != null)
         {
@@ -166,8 +160,8 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
     @Override
     protected void onPause() {
         super.onPause();
-        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
-            uiHelper.onPause();
+/*        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
+            uiHelper.onPause();*/
     }
 
     @Override
@@ -179,8 +173,8 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
 
         if (DEBUG) Timber.v("onResumed, From login: %s, Check online: %s", fromLoginActivity, checkOnlineOnResumed);
 
-        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
-            uiHelper.onResume();
+/*        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
+            uiHelper.onResume();*/
 
         if (checkOnlineOnResumed && !fromLoginActivity)
         {
@@ -244,8 +238,8 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
     protected void onDestroy() {
         super.onDestroy();
 
-        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
-            uiHelper.onDestroy();
+/*        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
+            uiHelper.onDestroy();*/
 
         dismissProgDialog();
     }
@@ -254,7 +248,7 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled()) uiHelper.onSaveInstanceState(outState);
+//        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled()) uiHelper.onSaveInstanceState(outState);
 
         outState.putBoolean(FROM_LOGIN, fromLoginActivity);
 
@@ -274,7 +268,7 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
         });
     }
 
-    public void setupTouchUIToDismissKeyboard(View view, final Integer... exceptIDs) {
+/*    public void setupTouchUIToDismissKeyboard(View view, final Integer... exceptIDs) {
         ChatSDKUiHelper.setupTouchUIToDismissKeyboard(view, new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -282,7 +276,7 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
                 return false;
             }
         }, exceptIDs);
-    }
+    }*/
 
     public void setupTouchUIToDismissKeyboard(View view, View.OnTouchListener onTouchListener, final Integer... exceptIDs) {
         ChatSDKUiHelper.setupTouchUIToDismissKeyboard(view, onTouchListener, exceptIDs);
@@ -310,7 +304,7 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
         chatSDKUiHelper.getAlertToast().show();
     }
 
-    protected void showProgressCard(String text){
+/*    protected void showProgressCard(String text){
         chatSDKUiHelper.showProgressCard(text);
     }
 
@@ -320,11 +314,11 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
 
     protected void dismissProgressCardWithSmallDelay(){
         dismissProgressCard(1500);
-    }
+    }*/
 
-    protected void dismissProgressCard(long delay){
-        chatSDKUiHelper.dismissProgressCard(delay);
-    }
+//    protected void dismissProgressCard(long delay){
+//        chatSDKUiHelper.dismissProgressCard(delay);
+//    }
 
     /** Authenticates the current user.*/
     public Promise<BUser, BError, Void> authenticate(){
@@ -462,10 +456,10 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
         super.onActivityResult(requestCode, resultCode, data);
         if(DEBUG) Timber.v("onActivityResult");
         
-        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
-            uiHelper.onActivityResult(requestCode, resultCode, data);
+/*        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
+            uiHelper.onActivityResult(requestCode, resultCode, data);*/
     }
-
+/*
     // Facebook Login stuff.
     private Session.StatusCallback callback = new Session.StatusCallback() {
         @Override
@@ -473,7 +467,7 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
             if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
                 onSessionStateChange(session, state, exception);
         }
-    };
+    };*/
 
     /** When enabled the app will check the user online ref to see if he is not offline each time that the activity is resumed.
      *  This method is good for times that the app is in the background and killed by the android system and we need to listen to all the user details again.
@@ -482,9 +476,9 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
         this.checkOnlineOnResumed = checkOnlineOnResumed;
     }
 
-    public void enableFacebookIntegration(boolean integratedWithFacebook) {
+/*    public void enableFacebookIntegration(boolean integratedWithFacebook) {
         this.integratedWithFacebook = integratedWithFacebook;
-    }
+    }*/
 
     public void setEnableCardToast(boolean enableCardToast) {
         this.enableCardToast = enableCardToast;
@@ -508,10 +502,10 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
         return true;
     }
 
-    /*Getters and Setters*/
+/*    *//*Getters and Setters*//*
     public void setAlertToast(SuperToast alertToast) {
         chatSDKUiHelper.setAlertToast(alertToast);
-    }
+    }*/
 
     @Override
     public AbstractNetworkAdapter getNetworkAdapter() {
@@ -523,7 +517,7 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
         this.chatSDKUiHelper = chatSDKUiHelper;
     }
 
-    public void setToast(SuperToast toast) {
+/*    public void setToast(SuperToast toast) {
         chatSDKUiHelper.setToast(toast);
     }
 
@@ -533,17 +527,17 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
 
     public SuperToast getAlertToast() {
         return chatSDKUiHelper.getAlertToast();
-    }
+    }*/
 }
 
 interface ChatSDKBaseActivityInterface extends ChatSDKUiHelper.ChatSDKUiHelperInterface {
     /** This method is called after the activity authenticated the user. When the activity is resumed the activity
      * checks if the user is authenticated(optional {@link ChatSDKBaseActivity#checkOnlineOnResumed}),
      * If the user was re - authenticated when it was resumed this method will be called. */
-    public void onAuthenticated();
+    void onAuthenticated();
 
-    public void onAuthenticationFailed();
+    void onAuthenticationFailed();
 
-    public AbstractNetworkAdapter getNetworkAdapter();
+    AbstractNetworkAdapter getNetworkAdapter();
 }
 

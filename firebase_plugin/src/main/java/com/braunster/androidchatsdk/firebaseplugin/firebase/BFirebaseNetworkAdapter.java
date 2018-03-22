@@ -7,7 +7,6 @@ import com.braunster.androidchatsdk.firebaseplugin.R;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.backendless.BBackendlessHandler;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.backendless.ChatSDKReceiver;
 import com.braunster.androidchatsdk.firebaseplugin.firebase.geofire.BGeoFireManager;
-//import com.braunster.androidchatsdk.firebaseplugin.firebase.wrappers.BFirebaseNetworkLogic;
 import com.braunster.chatsdk.Utils.Debug;
 import com.braunster.chatsdk.dao.BMessage;
 import com.braunster.chatsdk.dao.BThread;
@@ -50,12 +49,9 @@ import static com.braunster.chatsdk.network.BDefines.Keys;
 
 public abstract class BFirebaseNetworkAdapter extends AbstractNetworkAdapter {
 
-    private static final String TAG = BFirebaseNetworkAdapter.class.getSimpleName();
     private static boolean DEBUG = Debug.BFirebaseNetworkAdapter;
 
-//    private BFirebaseNetworkLogic firebase;
-
-    public BFirebaseNetworkAdapter(Context context){
+    public BFirebaseNetworkAdapter(Context context, boolean testing){
         super(context);
 
         // Adding the manager that will handle all the incoming events.
@@ -65,30 +61,25 @@ public abstract class BFirebaseNetworkAdapter extends AbstractNetworkAdapter {
         // Setting the upload handler
         setUploadHandler(new BFirebaseUploadHandler());
 
-        // Setting the push handler
-        BBackendlessHandler backendlessPushHandler = new BBackendlessHandler();
-        backendlessPushHandler.setContext(context);
-        setPushHandler(backendlessPushHandler);
-
         // Adding the geofire manager
         BGeoFireManager geoFireManager = BGeoFireManager.sharedManager();
         setGeoFireManager(geoFireManager);
 
-        // Parse init
-        /*Parse.initialize(context, context.getString(R.string.parse_app_id), context.getString(R.string.parse_client_key));
-        ParseInstallation.getCurrentInstallation().saveInBackground();*/
-
-        backendlessPushHandler.initWithAppKey(context.getString(R.string.backendless_app_id),
-                            context.getString(R.string.backendless_secret_key), context.getString(R.string.backendless_app_version));
-
-//        firebase = new BFirebaseNetworkLogic();
+        if (!testing) {
+            // Setting the push handler
+            BBackendlessHandler backendlessPushHandler = new BBackendlessHandler();
+            backendlessPushHandler.setContext(context);
+            setPushHandler(backendlessPushHandler);
+            backendlessPushHandler.initWithAppKey(context.getString(R.string.backendless_app_id),
+                    context.getString(R.string.backendless_secret_key), context.getString(R.string.backendless_app_version));
+        }
     }
 
 
     /**
      * Indicator for the current state of the authentication process.
      **/
-    protected enum AuthStatus{
+    protected enum AuthStatus {
         IDLE {
             @Override
             public String toString() {
