@@ -1,10 +1,3 @@
-/*
- * Created by Itzik Braun on 2/4/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 4/2/15 4:25 PM
- */
-
 package com.braunster.chatsdk.activities;
 
 import android.app.DatePickerDialog;
@@ -15,7 +8,6 @@ import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,17 +16,12 @@ import android.widget.TextView;
 import com.braunster.chatsdk.R;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.network.BDefines;
-import com.braunster.chatsdk.network.BFacebookManager;
 import com.braunster.chatsdk.network.BNetworkManager;
-import com.countrypicker.Country;
-import com.countrypicker.CountryPicker;
-import com.countrypicker.CountryPickerListener;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -103,10 +90,7 @@ public class ChatSDKEditProfileActivity extends ChatSDKBaseActivity implements O
         }
         
         String countryCode = user.metaStringForKey(BDefines.Keys.BCountry);
-        
-        if (StringUtils.isNotEmpty(countryCode)){
-            loadCountryFlag(countryCode);
-        }
+
         
         String name = user.getMetaName();
         String location = user.metaStringForKey(BDefines.Keys.BLocation);
@@ -124,11 +108,6 @@ public class ChatSDKEditProfileActivity extends ChatSDKBaseActivity implements O
 
         if (StringUtils.isNotEmpty(status))
             etStatus.setText(status);
-    }
-    
-    private void loadCountryFlag(String countryCode){
-        imageCountryFlag.setImageResource(Country.getResId(countryCode));
-        imageCountryFlag.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -273,20 +252,6 @@ public class ChatSDKEditProfileActivity extends ChatSDKBaseActivity implements O
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
             datePickerDialog.show();
-        }
-        else if (i == R.id.chat_sdk_select_country_button) {
-            final CountryPicker picker = new CountryPicker();
-
-            picker.setListener(new CountryPickerListener() {
-                @Override
-                public void onSelectCountry(String name, String code) {
-                    getNetworkAdapter().currentUserModel().setMetadataString(BDefines.Keys.BCountry, code);
-                    loadCountryFlag(code);
-                    picker.dismiss();
-                }
-            });
-
-            picker.show(getFragmentManager(), "");
         }
     }
 }

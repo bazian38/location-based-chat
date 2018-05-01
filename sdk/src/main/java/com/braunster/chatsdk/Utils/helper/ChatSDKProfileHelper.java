@@ -27,7 +27,7 @@ import com.braunster.chatsdk.Utils.ImageUtils;
 import com.braunster.chatsdk.Utils.volley.VolleyUtils;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.network.BDefines;
-import com.braunster.chatsdk.network.BFacebookManager;
+//import com.braunster.chatsdk.network.BFacebookManager;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.braunster.chatsdk.network.TwitterManager;
 import com.braunster.chatsdk.object.BError;
@@ -309,7 +309,7 @@ public class ChatSDKProfileHelper {
 
         if (StringUtils.isNotEmpty(imageUrl))
             setProfilePicFromURL(imageUrl, false);
-        else
+      /*  else
         {
             // Load the profile picture from facebook.
             new AsyncTask<Void, Void, String>() {
@@ -359,7 +359,7 @@ public class ChatSDKProfileHelper {
                     setProfilePicFromURL(s, true);
                 }
             }.execute();
-        }
+        }*/
 
     }
 

@@ -1,10 +1,3 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:27 PM
- */
-
 package com.braunster.chatsdk.fragments;
 
 import android.os.Bundle;
@@ -14,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.braunster.chatsdk.R;
@@ -22,17 +14,12 @@ import com.braunster.chatsdk.Utils.Debug;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.fragments.abstracted.ChatSDKAbstractProfileFragment;
 import com.braunster.chatsdk.network.BDefines;
-import com.braunster.chatsdk.network.BFacebookManager;
 import com.braunster.chatsdk.network.BNetworkManager;
-import com.countrypicker.Country;
 
 import org.apache.commons.lang3.StringUtils;
 
 import timber.log.Timber;
 
-/**
- * Created by itzik on 6/17/2014.
- */
 public class ChatcatProfileFragment extends ChatSDKAbstractProfileFragment {
 
 
@@ -108,7 +95,6 @@ public class ChatcatProfileFragment extends ChatSDKAbstractProfileFragment {
     @Override
     public void logout() {
         // Logout and return to the login activity.
-        BFacebookManager.logout(getActivity());
 
         BNetworkManager.sharedManager().getNetworkAdapter().logout();
         chatSDKUiHelper.startLoginActivity(true);
@@ -137,7 +123,6 @@ public class ChatcatProfileFragment extends ChatSDKAbstractProfileFragment {
         // Loading the user country icon, If not exist we will hide the icon.
         if (StringUtils.isNotEmpty(country))
         {
-            ((ImageView) mainView.findViewById(R.id.chat_sdk_country_ic)).setImageResource(Country.getResId(country));
             mainView.findViewById(R.id.chat_sdk_country_ic).setVisibility(View.VISIBLE);
         }
         else mainView.findViewById(R.id.chat_sdk_country_ic).setVisibility(View.INVISIBLE);

@@ -11,6 +11,7 @@ import com.braunster.chatsdk.Utils.Debug;
 import com.braunster.chatsdk.dao.core.DaoCore;
 import com.braunster.chatsdk.dao.entities.BMessageEntity;
 import com.braunster.chatsdk.dao.entities.BMessageReceiptEntity;
+import com.braunster.chatsdk.dao.entities.BThreadEntity;
 import com.braunster.chatsdk.dao.entities.Entity;
 import com.braunster.chatsdk.network.BFirebaseDefines;
 import com.braunster.chatsdk.network.BNetworkManager;
@@ -408,7 +409,7 @@ public class BMessage extends BMessageEntity  {
     public Boolean updateUserReadReceipt(BUser reader, int messageReceiptStatus){
 
         // Do not set read-receipts for public chats!
-        if (this.getThread().getTypeSafely() == BThread.Type.Public) {
+        if (this.getThread().getTypeSafely() == BThread.Type.Public || this.getThread().getTypeSafely() == BThread.Type.PublicPrivate) {
             return false;
         }
 
@@ -481,7 +482,8 @@ public class BMessage extends BMessageEntity  {
         readers = getBThreadUsers();
 
         // Do not init for public threads.
-        if(this.getThread().getType() == com.braunster.chatsdk.dao.BThread.Type.Public) return;
+        if(this.getThread().getType() == com.braunster.chatsdk.dao.BThread.Type.Public
+                || this.getThread().getType() == com.braunster.chatsdk.dao.BThread.Type.PublicPrivate) return;
 
         // If no readers, why should there be receipts?
         if (readers.isEmpty()){ return; }

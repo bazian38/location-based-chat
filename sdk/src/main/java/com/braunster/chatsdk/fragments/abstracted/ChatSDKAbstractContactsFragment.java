@@ -566,18 +566,6 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
         this.adapter = adapter;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     public void setContactListListener(ContactListListener contactListListener) {
         this.contactListListener = contactListListener;
     }

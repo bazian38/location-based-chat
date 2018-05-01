@@ -12,7 +12,7 @@ public class Debug {
     /*Network*/
     public static final boolean BFirebaseInterface = false;
     public static final boolean AbstractNetworkAdapter = false;
-    public static final boolean BFacebookManager = false;
+//    public static final boolean BFacebookManager = false;
     public static final boolean BNetworkManager = false;
     public static final boolean BGeoFireManager = false;
     public static final boolean TwitterManager = true;
