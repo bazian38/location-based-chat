@@ -1,10 +1,3 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:27 PM
- */
-
 package com.braunster.chatsdk.Utils.helper;
 
 import android.app.Activity;
@@ -27,7 +20,6 @@ import com.braunster.chatsdk.activities.ChatSDKLoginActivity;
 import com.braunster.chatsdk.activities.ChatSDKMainActivity;
 import com.braunster.chatsdk.activities.ChatSDKPickFriendsActivity;
 import com.braunster.chatsdk.activities.ChatSDKSearchActivity;
-import com.braunster.chatsdk.activities.ChatSDKShareWithContactsActivity;
 import com.braunster.chatsdk.activities.ChatSDKThreadDetailsActivity;
 import com.braunster.chatsdk.activities.abstracted.ChatSDKAbstractChatActivity;
 import com.braunster.chatsdk.activities.abstracted.ChatSDKAbstractLoginActivity;
@@ -52,7 +44,7 @@ public class ChatSDKUiHelper {
 
     public static void setupTouchUIToDismissKeyboard(View view, View.OnTouchListener onTouchListener, Integer... exceptIDs) {
 
-        List<Integer> ids = new ArrayList<Integer>();
+        List<Integer> ids = new ArrayList<>();
         if (exceptIDs != null)
             ids = Arrays.asList(exceptIDs);
 
@@ -115,7 +107,6 @@ public class ChatSDKUiHelper {
     public Class chatActivity, mainActivity, loginActivity,
             searchActivity = ChatSDKSearchActivity.class,
             pickFriendsActivity = ChatSDKPickFriendsActivity.class,
-            shareWithFriendsActivity = ChatSDKShareWithContactsActivity.class,
             shareLocationActivity = ChatSDKLocationActivity.class,
             editProfileActivity= ChatSDKEditProfileActivity.class,
             profileActivity = null,
@@ -141,19 +132,18 @@ public class ChatSDKUiHelper {
         this.chatActivity = chatActivity;
         this.mainActivity = mainActivity;
         this.loginActivity = loginActivity;
-        this.context = new WeakReference<Context>(context);
+        this.context = new WeakReference<>(context);
 
         init();
     }
 
-    public ChatSDKUiHelper(Context context, Class chatActivity, Class mainActivity, Class loginActivity, Class searchActivity, Class pickFriendsActivity, Class shareWithFriendsActivity, Class shareLocationActivity, Class profileActivity) {
-        this.context = new WeakReference<Context>(context);
+    public ChatSDKUiHelper(Context context, Class chatActivity, Class mainActivity, Class loginActivity, Class searchActivity, Class pickFriendsActivity, Class shareLocationActivity, Class profileActivity) {
+        this.context = new WeakReference<>(context);
         this.chatActivity = chatActivity;
         this.mainActivity = mainActivity;
         this.loginActivity = loginActivity;
         this.searchActivity = searchActivity;
         this.pickFriendsActivity = pickFriendsActivity;
-        this.shareWithFriendsActivity = shareWithFriendsActivity;
         this.shareLocationActivity = shareLocationActivity;
         this.profileActivity = profileActivity;
 
@@ -161,7 +151,7 @@ public class ChatSDKUiHelper {
     }
 
     public ChatSDKUiHelper get(Context context){
-        return new ChatSDKUiHelper(context, chatActivity, mainActivity, loginActivity, searchActivity, pickFriendsActivity, shareWithFriendsActivity, shareLocationActivity, profileActivity);
+        return new ChatSDKUiHelper(context, chatActivity, mainActivity, loginActivity, searchActivity, pickFriendsActivity, shareLocationActivity, profileActivity);
     }
 
     private void init(){
@@ -183,16 +173,6 @@ public class ChatSDKUiHelper {
         Intent intent = new Intent(context.get(), chatActivity);
         intent.putExtra(ChatSDKAbstractChatActivity.THREAD_ID, id);
         
-        /**
-         * Note
-         *
-         * * Not sure if do needed
-         * 
-         * There could be problems when this is activated but i am not sure if the activity should be recreated each time its called.
-         * * * *
-         **/
-//        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        
         startActivity(intent);
     }
 
@@ -212,13 +192,6 @@ public class ChatSDKUiHelper {
 
     public void startPickFriendsActivity(){
         startActivity(pickFriendsActivity);
-    }
-
-    public void startShareWithFriendsActivity(){
-        if (colleted())
-            return;
-
-        startActivity(shareWithFriendsActivity);
     }
 
     public void startShareLocationActivityActivity(){
@@ -288,8 +261,6 @@ public class ChatSDKUiHelper {
         public void startSearchActivity();
 
         public void startPickFriendsActivity();
-
-        public void startShareWithFriendsActivity();
 
         public void startShareLocationActivityActivity();
     }
@@ -451,10 +422,6 @@ public class ChatSDKUiHelper {
 
     public void setPickFriendsActivity(Class pickFriendsActivity) {
         this.pickFriendsActivity = pickFriendsActivity;
-    }
-
-    public void setShareWithFriendsActivity(Class shareWithFriendsActivity) {
-        this.shareWithFriendsActivity = shareWithFriendsActivity;
     }
 
     public void setShareLocationActivity(Class shareLocationActivity) {

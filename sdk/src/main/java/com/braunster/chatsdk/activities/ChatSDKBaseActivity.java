@@ -1,10 +1,3 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:32 PM
- */
-
 package com.braunster.chatsdk.activities;
 
 import android.app.Activity;
@@ -29,11 +22,8 @@ import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.dao.BThread;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.network.AbstractNetworkAdapter;
-import com.braunster.chatsdk.network.BFacebookManager;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.braunster.chatsdk.object.BError;
-import com.facebook.Session;
-import com.facebook.SessionState;
 import com.github.johnpersano.supertoasts.SuperCardToast;
 
 import org.apache.commons.lang3.StringUtils;
@@ -238,17 +228,12 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
     protected void onDestroy() {
         super.onDestroy();
 
-/*        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
-            uiHelper.onDestroy();*/
-
         dismissProgDialog();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-//        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled()) uiHelper.onSaveInstanceState(outState);
 
         outState.putBoolean(FROM_LOGIN, fromLoginActivity);
 
@@ -393,11 +378,6 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
             chatSDKUiHelper.startPickFriendsActivity();
     }
 
-    public void startShareWithFriendsActivity() {
-        if (chatSDKUiHelper != null)
-            chatSDKUiHelper.startShareWithFriendsActivity();
-    }
-
     public void startShareLocationActivityActivity() {
         if (chatSDKUiHelper != null)
             chatSDKUiHelper.startShareLocationActivityActivity();
@@ -440,36 +420,12 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
         DialogUtils.showAlertDialog(this, title, alert, p, n, neg, pos);
     }
 
-    protected void onSessionStateChange(Session session, final SessionState state, Exception exception){
-        BFacebookManager.onSessionStateChange(session, state, exception)
-                .fail(new FailCallback<BError>() {
-                    @Override
-                    public void onFail(BError bError) {
-                        if (DEBUG) Timber.e("onDoneWithError. Error: %s", bError.message);
-                        // Facebook session is closed so we need to disconnect from firebase.
-                        getNetworkAdapter().logout();
-                        startLoginActivity(true);
-                    }
-                });
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(DEBUG) Timber.v("onActivityResult");
-        
-/*        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
-            uiHelper.onActivityResult(requestCode, resultCode, data);*/
+
     }
-/*
-    // Facebook Login stuff.
-    private Session.StatusCallback callback = new Session.StatusCallback() {
-        @Override
-        public void call(Session session, SessionState state, Exception exception) {
-            if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
-                onSessionStateChange(session, state, exception);
-        }
-    };*/
 
     /** When enabled the app will check the user online ref to see if he is not offline each time that the activity is resumed.
      *  This method is good for times that the app is in the background and killed by the android system and we need to listen to all the user details again.
@@ -477,10 +433,6 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
     public void enableCheckOnlineOnResumed(boolean checkOnlineOnResumed) {
         this.checkOnlineOnResumed = checkOnlineOnResumed;
     }
-
-/*    public void enableFacebookIntegration(boolean integratedWithFacebook) {
-        this.integratedWithFacebook = integratedWithFacebook;
-    }*/
 
     public void setEnableCardToast(boolean enableCardToast) {
         this.enableCardToast = enableCardToast;
