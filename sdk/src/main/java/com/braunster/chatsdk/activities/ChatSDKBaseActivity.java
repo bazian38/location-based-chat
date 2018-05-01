@@ -1,10 +1,3 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:32 PM
- */
-
 package com.braunster.chatsdk.activities;
 
 import android.app.Activity;
@@ -235,17 +228,12 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
     protected void onDestroy() {
         super.onDestroy();
 
-/*        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
-            uiHelper.onDestroy();*/
-
         dismissProgDialog();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-//        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled()) uiHelper.onSaveInstanceState(outState);
 
         outState.putBoolean(FROM_LOGIN, fromLoginActivity);
 
@@ -390,11 +378,6 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
             chatSDKUiHelper.startPickFriendsActivity();
     }
 
-    public void startShareWithFriendsActivity() {
-        if (chatSDKUiHelper != null)
-            chatSDKUiHelper.startShareWithFriendsActivity();
-    }
-
     public void startShareLocationActivityActivity() {
         if (chatSDKUiHelper != null)
             chatSDKUiHelper.startShareLocationActivityActivity();
@@ -441,19 +424,8 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(DEBUG) Timber.v("onActivityResult");
-        
-/*        if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
-            uiHelper.onActivityResult(requestCode, resultCode, data);*/
+
     }
-/*
-    // Facebook Login stuff.
-    private Session.StatusCallback callback = new Session.StatusCallback() {
-        @Override
-        public void call(Session session, SessionState state, Exception exception) {
-            if (integratedWithFacebook && getNetworkAdapter().facebookEnabled())
-                onSessionStateChange(session, state, exception);
-        }
-    };*/
 
     /** When enabled the app will check the user online ref to see if he is not offline each time that the activity is resumed.
      *  This method is good for times that the app is in the background and killed by the android system and we need to listen to all the user details again.
@@ -461,10 +433,6 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
     public void enableCheckOnlineOnResumed(boolean checkOnlineOnResumed) {
         this.checkOnlineOnResumed = checkOnlineOnResumed;
     }
-
-/*    public void enableFacebookIntegration(boolean integratedWithFacebook) {
-        this.integratedWithFacebook = integratedWithFacebook;
-    }*/
 
     public void setEnableCardToast(boolean enableCardToast) {
         this.enableCardToast = enableCardToast;
