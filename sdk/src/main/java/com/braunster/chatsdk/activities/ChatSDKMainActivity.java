@@ -178,8 +178,8 @@ public class ChatSDKMainActivity extends ChatSDKBaseActivity {
         @Override
         public boolean onMessageReceived(final BMessage message) {
 
-            // Only notify for private threads.
-            if (message.getThread().getTypeSafely() == BThread.Type.Public) {
+            // Only notify for privaste threads.
+            if (message.getThread().getTypeSafely() == BThread.Type.Public || message.getThread().getTypeSafely() == BThread.Type.PublicPrivate) {
                 return false;
             }
 

@@ -20,6 +20,7 @@ import com.braunster.chatsdk.dao.BThreadDao;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.dao.core.DaoCore;
 import com.braunster.chatsdk.dao.entities.BMessageEntity;
+import com.braunster.chatsdk.dao.entities.BThreadEntity;
 import com.braunster.chatsdk.interfaces.BPushHandler;
 import com.braunster.chatsdk.interfaces.BUploadHandler;
 import com.braunster.chatsdk.network.events.AbstractEventManager;
@@ -398,7 +399,8 @@ public abstract class AbstractNetworkAdapter {
 
     public abstract Promise<BThread, BError, Void> createPublicThreadWithName(String name);
 
-    
+    public abstract Promise<BThread, BError, Void> createPublicPrivateThreadWithName(String name);
+
     public abstract Promise<Void, BError, Void> deleteThreadWithEntityID(String entityID);
 
     public Promise<Void, BError, Void> deleteThread(BThread thread){
@@ -431,7 +433,13 @@ public abstract class AbstractNetworkAdapter {
                 if (thread.getTypeSafely() == BThread.Type.Public)
                     threads.add(thread);
         }
-        else {
+        else if (threadType == BThread.Type.PublicPrivate)
+        {
+            for (BThread thread : threadsFromDB)
+                if (thread.getTypeSafely() == BThread.Type.PublicPrivate)
+                    threads.add(thread);
+        }
+         else   {
             for (BThread thread : threadsFromDB) {
                 if (DEBUG) Timber.i("threadItemsWithType, ThreadID: %s, Deleted: %s", thread.getId(), thread.getDeleted());
 
@@ -496,6 +504,12 @@ public abstract class AbstractNetworkAdapter {
         {
             for (BThread thread : threadsFromDB)
                 if (thread.getTypeSafely() == BThread.Type.Public)
+                    threads.add(itemMaker.fromBThread(thread));
+        }
+        else if (threadType == BThread.Type.PublicPrivate)
+        {
+            for (BThread thread : threadsFromDB)
+                if (thread.getTypeSafely() == BThread.Type.PublicPrivate)
                     threads.add(itemMaker.fromBThread(thread));
         }
         else {

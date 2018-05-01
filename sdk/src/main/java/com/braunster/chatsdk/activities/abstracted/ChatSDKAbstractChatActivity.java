@@ -304,7 +304,7 @@ public abstract class ChatSDKAbstractChatActivity extends ChatSDKBaseActivity im
         circleImageView.setVisibility(View.INVISIBLE);
         roundedCornerImageView.setVisibility(View.INVISIBLE);
 
-        if (thread.getTypeSafely() == BThread.Type.Public)
+        if (thread.getTypeSafely() == BThread.Type.Public || thread.getTypeSafely() == BThread.Type.PublicPrivate)
             roundedCornerImageView.setImageResource(R.drawable.ic_users);
         else if (thread.getUsers().size() < 3)
             roundedCornerImageView.setImageResource(R.drawable.ic_profile);
@@ -393,7 +393,7 @@ public abstract class ChatSDKAbstractChatActivity extends ChatSDKBaseActivity im
         super.onStart();
 
         getNetworkAdapter().typingListenerOn(thread);
-        if (thread != null && thread.getType() == BThread.Type.Public)
+        if (thread != null && (thread.getType() == BThread.Type.Public || thread.getType() == BThread.Type.PublicPrivate))
         {
             getNetworkAdapter().addUsersToThread(thread, getNetworkAdapter().currentUserModel());
         }
@@ -590,7 +590,7 @@ public abstract class ChatSDKAbstractChatActivity extends ChatSDKBaseActivity im
         if (chatSDKChatHelper.getReadCount() > 0)
             sendBroadcast(new Intent(ACTION_CHAT_CLOSED));
 
-        if (thread != null && thread.getType() == BThread.Type.Public)
+        if (thread != null && (thread.getType() == BThread.Type.Public || thread.getType() == BThread.Type.PublicPrivate))
         {
             getNetworkAdapter().removeUsersFromThread(thread, getNetworkAdapter().currentUserModel());
         }
@@ -751,7 +751,8 @@ public abstract class ChatSDKAbstractChatActivity extends ChatSDKBaseActivity im
     /**
      * Open the thread details activity, Admin user can change thread name an image there.
      * */
-    protected void openThreadDetailsActivity(){
+    protected void openThreadDetailsActivity()
+    {
         // Showing the pick friends activity.
         Intent intent = new Intent(this, chatSDKUiHelper.threadDetailsActivity);
         intent.putExtra(THREAD_ID, thread.getId());

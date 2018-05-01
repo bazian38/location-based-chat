@@ -20,6 +20,7 @@ import com.braunster.chatsdk.dao.UserThreadLinkDao;
 import com.braunster.chatsdk.dao.BThread;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.dao.core.DaoCore;
+import com.braunster.chatsdk.dao.entities.BThreadEntity;
 import com.braunster.chatsdk.interfaces.AppEvents;
 import com.braunster.chatsdk.network.BDefines;
 import com.braunster.chatsdk.network.BNetworkManager;
@@ -116,7 +117,7 @@ public class UserAddedListener extends FirebaseGeneralEvent {
                         return;
                     }
 
-                    if (thread.getTypeSafely() != BThread.Type.Public) {
+                    if (thread.getTypeSafely() != BThread.Type.Public && thread.getTypeSafely() != BThread.Type.PublicPrivate) {
 
                         // Check to see if the user has left this thread. If so we unlink it from the thread.
                         if (values != null &&  values.containsKey(BDefines.Keys.BLeaved))

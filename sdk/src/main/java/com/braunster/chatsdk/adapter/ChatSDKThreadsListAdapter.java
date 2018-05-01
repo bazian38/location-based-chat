@@ -31,16 +31,19 @@ public class ChatSDKThreadsListAdapter extends ChatSDKAbstractThreadsListAdapter
     private static final String TAG = ChatSDKThreadsListAdapter.class.getSimpleName();
     public static final boolean DEBUG = Debug.ThreadsListAdapter;
 
-    public ChatSDKThreadsListAdapter(Activity activity) {
+    public ChatSDKThreadsListAdapter(Activity activity)
+    {
         super(activity);
     }
 
-    public ChatSDKThreadsListAdapter(Activity activity, List<ThreadListItem> listData) {
+    public ChatSDKThreadsListAdapter(Activity activity, List<ThreadListItem> listData)
+    {
         super(activity, listData);
     }
 
     @Override
-    public View getView(final int position, View view, ViewGroup viewGroup) {
+    public View getView(final int position, View view, ViewGroup viewGroup)
+    {
 
         row = view;
 
@@ -48,7 +51,7 @@ public class ChatSDKThreadsListAdapter extends ChatSDKAbstractThreadsListAdapter
 
         thread = threadItems.get(position);
 
-        if ( row == null)
+        if (row == null)
         {
             holder = new ViewHolder();
             row =  ( (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(R.layout.chat_sdk_row_threads, null);
@@ -77,7 +80,8 @@ public class ChatSDKThreadsListAdapter extends ChatSDKAbstractThreadsListAdapter
 
             holder.showUnreadIndicator();
         }
-        else {
+        else
+        {
             holder.hideUnreadIndicator();
             holder.txtUnreadMessagesAmount.setVisibility(View.INVISIBLE);
         }
@@ -88,7 +92,8 @@ public class ChatSDKThreadsListAdapter extends ChatSDKAbstractThreadsListAdapter
     }
 
     @Override
-    public void initMaker() {
+    public void initMaker()
+    {
         itemMaker = getDefaultMaker();
     }
 }

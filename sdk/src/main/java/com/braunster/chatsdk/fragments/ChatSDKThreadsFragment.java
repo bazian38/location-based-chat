@@ -8,8 +8,10 @@
 package com.braunster.chatsdk.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,15 +23,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.braunster.chatsdk.R;
 import com.braunster.chatsdk.Utils.Debug;
 import com.braunster.chatsdk.Utils.DialogUtils;
+import com.braunster.chatsdk.activities.ChatSDKMainActivity;
 import com.braunster.chatsdk.adapter.ChatSDKThreadsListAdapter;
 import com.braunster.chatsdk.dao.BThread;
+import com.braunster.chatsdk.dao.entities.BThreadEntity;
 import com.braunster.chatsdk.dao.entities.Entity;
 import com.braunster.chatsdk.interfaces.GeoThreadInterface;
 import com.braunster.chatsdk.network.BNetworkManager;
@@ -120,6 +126,7 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
         listThreads.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 startChatActivityForID(adapter.getItem(position).getId());
             }
         });
@@ -131,8 +138,9 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
 
         if (mainView == null)
             return;
-
-        adapter.setThreadItems(BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker()));
+        List a = BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker());
+        a.addAll(BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.PublicPrivate, adapter.getItemMaker()));
+        adapter.setThreadItems(a);
     }
 
     @Override
@@ -169,7 +177,9 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
 
                 Message message = new Message();
                 message.what = 1;
-                message.obj = BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker());
+                List a = BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker());
+                a.addAll(BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.PublicPrivate, adapter.getItemMaker()));
+                message.obj = a;
 
                 handler.sendMessageAtFrontOfQueue(message);
 
@@ -220,11 +230,13 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
         {
             FragmentManager fm = getActivity().getFragmentManager();
             final DialogUtils.ChatSDKEditTextDialog dialog = DialogUtils.ChatSDKEditTextDialog.getInstace();
-
-            dialog.setTitleAndListen( getString(R.string.add_public_chat_dialog_title), new DialogUtils.ChatSDKEditTextDialog.EditTextDialogInterface() {
-                @Override
-                public void onFinished(final String s) {
-
+            final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+            final EditText input = new EditText(getActivity());
+            alert.setView(input);
+            alert.setTitle("Create New Chat Room With Name:");
+            alert.setPositiveButton("Public", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    final String s = input.getText().toString().trim();
                     showProgDialog(getString(R.string.add_public_chat_dialog_progress_message));
                     BNetworkManager.sharedManager().getNetworkAdapter().createPublicThreadWithName(s)
                             .done(new DoneCallback<BThread>() {
@@ -260,7 +272,84 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
                 }
             });
 
-            dialog.show(fm, "Add Public Chat Dialog");
+            alert.setNegativeButton("Private", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    final String s = input.getText().toString().trim();
+                    showProgDialog(getString(R.string.add_public_chat_dialog_progress_message));
+                    BNetworkManager.sharedManager().getNetworkAdapter().createPublicPrivateThreadWithName(s)
+                            .done(new DoneCallback<BThread>() {
+                                @Override
+                                public void onDone(final BThread thread) {
+                                    // Add the current user to the thread.
+                                    getNetworkAdapter().addUsersToThread(thread, BNetworkManager.sharedManager().getNetworkAdapter().currentUserModel())
+                                            .done(new DoneCallback<BThread>() {
+                                                @Override
+                                                public void onDone(BThread thread) {
+
+                                                    BNetworkManager.sharedManager().getNetworkAdapter().getGeoFireManager().setThreadLocation(
+                                                            getActivity().getApplicationContext(), getActivity(), thread);
+                                                    dismissProgDialog();
+                                                    adapter.addRow(thread);
+                                                    showToast(getString(R.string.add_public_chat_dialog_toast_success_before_thread_name)
+                                                            + s
+                                                            + getString(R.string.add_public_chat_dialog_toast_success_after_thread_name));
+                                                }
+                                            });
+                                }
+                            })
+                            .fail(new FailCallback<BError>() {
+                                @Override
+                                public void onFail(BError bError) {
+                                    showAlertToast(getString(R.string.add_public_chat_dialog_toast_error_before_thread_name) + s);
+
+                                    if (DEBUG) Timber.e("Error: %s", bError.message);
+
+                                    dismissProgDialog();
+                                }
+                            });
+                }
+            });
+            alert.show();
+//            dialog.setTitleAndListen( getString(R.string.add_public_chat_dialog_title), new DialogUtils.ChatSDKEditTextDialog.EditTextDialogInterface() {
+//                @Override
+//                public void onFinished(final String s) {
+//
+//                    showProgDialog(getString(R.string.add_public_chat_dialog_progress_message));
+//                    BNetworkManager.sharedManager().getNetworkAdapter().createPublicThreadWithName(s)
+//                            .done(new DoneCallback<BThread>() {
+//                                @Override
+//                                public void onDone(final BThread thread) {
+//                                    // Add the current user to the thread.
+//                                    getNetworkAdapter().addUsersToThread(thread, BNetworkManager.sharedManager().getNetworkAdapter().currentUserModel())
+//                                            .done(new DoneCallback<BThread>() {
+//                                                @Override
+//                                                public void onDone(BThread thread) {
+//
+//                                                    BNetworkManager.sharedManager().getNetworkAdapter().getGeoFireManager().setThreadLocation(
+//                                                            getActivity().getApplicationContext(), getActivity(), thread);
+//                                                    dismissProgDialog();
+//                                                    adapter.addRow(thread);
+//                                                    showToast( getString(R.string.add_public_chat_dialog_toast_success_before_thread_name)
+//                                                            + s
+//                                                            + getString(R.string.add_public_chat_dialog_toast_success_after_thread_name) ) ;
+//                                                }
+//                                            });
+//                                }
+//                            })
+//                            .fail(new FailCallback<BError>() {
+//                                @Override
+//                                public void onFail(BError bError) {
+//                                    showAlertToast(getString(R.string.add_public_chat_dialog_toast_error_before_thread_name) + s);
+//
+//                                    if (DEBUG) Timber.e("Error: %s", bError.message);
+//
+//                                    dismissProgDialog();
+//                                }
+//                            });
+//                }
+//            });
+
+           // dialog.show(fm, "Add Public Chat Dialog");
 
 
             return true;

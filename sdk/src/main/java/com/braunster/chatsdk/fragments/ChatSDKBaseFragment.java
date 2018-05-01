@@ -146,7 +146,8 @@ public abstract class ChatSDKBaseFragment extends android.app.DialogFragment imp
 
     /** Start the chat activity for the given thread id.
      * @param id is the long value of local db id.*/
-    public void startChatActivityForID(long id){
+    public void startChatActivityForID(long id)
+    {
         if (chatSDKUiHelper != null)
             chatSDKUiHelper.startChatActivityForID(id);
     }

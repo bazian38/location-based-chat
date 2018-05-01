@@ -20,6 +20,7 @@ import com.braunster.chatsdk.dao.BMessage;
 import com.braunster.chatsdk.dao.BThread;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.dao.core.DaoCore;
+import com.braunster.chatsdk.dao.entities.BThreadEntity;
 import com.braunster.chatsdk.network.AbstractNetworkAdapter;
 import com.braunster.chatsdk.network.BDefines;
 import com.braunster.chatsdk.network.BFirebaseDefines;
@@ -550,8 +551,17 @@ public class BChatcatNetworkAdapter extends BFirebaseNetworkAdapter {
 
     @Override
     public Promise<BThread, BError, Void> createPublicThreadWithName(String name) {
+        return createThreadWithNameAndType(name, BThread.Type.Public);
+    }
+
+    @Override
+    public Promise<BThread, BError, Void> createPublicPrivateThreadWithName(String name) {
+        return createThreadWithNameAndType(name, BThread.Type.PublicPrivate);
+    }
+
+    private Promise<BThread, BError, Void> createThreadWithNameAndType(String name,int Type) {
         Log.d(TAG, "creating new thread ...");
-        
+
         final Deferred<BThread, BError, Void> deferred = new DeferredObject<>();
 
         // Crating the new thread.
@@ -561,7 +571,7 @@ public class BChatcatNetworkAdapter extends BFirebaseNetworkAdapter {
         BUser curUser = currentUserModel();
         thread.setCreator(curUser);
         thread.setCreatorEntityId(curUser.getEntityID());
-        thread.setType(BThread.Type.Public);
+        thread.setType(Type);
         thread.setName(name);
 
         // Add the path and API key
@@ -569,12 +579,12 @@ public class BChatcatNetworkAdapter extends BFirebaseNetworkAdapter {
         // API key or root key
         thread.setRootKey(BDefines.BRootPath);
         thread.setApiKey("");
-        
+
         // Save the entity to the local db.
         DaoCore.createEntity(thread);
 
         BThreadWrapper wrapper = new BThreadWrapper(thread);
-        
+
         wrapper.push()
                 .done(new DoneCallback<BThread>() {
                     @Override
@@ -585,8 +595,8 @@ public class BChatcatNetworkAdapter extends BFirebaseNetworkAdapter {
 
                         // Add the thread to the list of public threads
                         DatabaseReference publicThreadRef = FirebasePaths.publicThreadsRef()
-                            .child(thread.getEntityID())
-                            .child("null");
+                                .child(thread.getEntityID())
+                                .child("null");
 
                         publicThreadRef.setValue("", new DatabaseReference.CompletionListener() {
                             @Override

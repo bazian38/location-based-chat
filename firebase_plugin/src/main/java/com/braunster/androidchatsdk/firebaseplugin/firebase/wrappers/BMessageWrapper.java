@@ -175,7 +175,7 @@ public class BMessageWrapper extends EntityWrapper<BMessage> {
 
     public void readReceiptsOn(){
         //do not turn on read receipts for public chats
-        if (getModel().getThread().getType() == BThread.Type.Public ||
+        if (getModel().getThread().getType() == BThread.Type.Public || getModel().getThread().getType() == BThread.Type.PublicPrivate ||
                 getModel().getListeningToReadReceipts() == Boolean.TRUE){
             return;
         }

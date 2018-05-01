@@ -38,8 +38,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // Facebook SDK
-    compile project(':facebook')
-    compile project(':country_picker')
+   // compile project(':facebook')
+    //compile project(':country_picker')
     // Used for StringUtils
     compile 'org.apache.commons:commons-lang3:3.3.2@jar'
     // Bug tracking

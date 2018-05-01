@@ -29,11 +29,8 @@ import com.braunster.chatsdk.Utils.helper.ChatSDKUiHelper;
 import com.braunster.chatsdk.dao.BThread;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.network.AbstractNetworkAdapter;
-import com.braunster.chatsdk.network.BFacebookManager;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.braunster.chatsdk.object.BError;
-import com.facebook.Session;
-import com.facebook.SessionState;
 import com.github.johnpersano.supertoasts.SuperCardToast;
 
 import org.apache.commons.lang3.StringUtils;
@@ -438,19 +435,6 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
 
     protected void showAlertDialog(String title, String alert, String p, String n, final Callable neg, final Callable pos){
         DialogUtils.showAlertDialog(this, title, alert, p, n, neg, pos);
-    }
-
-    protected void onSessionStateChange(Session session, final SessionState state, Exception exception){
-        BFacebookManager.onSessionStateChange(session, state, exception)
-                .fail(new FailCallback<BError>() {
-                    @Override
-                    public void onFail(BError bError) {
-                        if (DEBUG) Timber.e("onDoneWithError. Error: %s", bError.message);
-                        // Facebook session is closed so we need to disconnect from firebase.
-                        getNetworkAdapter().logout();
-                        startLoginActivity(true);
-                    }
-                });
     }
 
     @Override

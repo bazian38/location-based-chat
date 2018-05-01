@@ -7,9 +7,6 @@ import com.braunster.chatsdk.dao.BThread;
 import com.braunster.chatsdk.interfaces.GeoInterface;
 import com.braunster.chatsdk.interfaces.GeoThreadInterface;
 
-/**
- * Created by Erk on 05.04.2016.
- */
 public abstract class AbstractGeoFireManager {
 
     public abstract void setGeoDelegate(GeoInterface delegate);
