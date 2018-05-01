@@ -22,7 +22,7 @@ import java.util.List;
  */
 public abstract class BThreadEntity extends Entity{
 
-    @IntDef({Type.Private, Type.Public})
+    @IntDef({Type.Private, Type.Public, Type.PublicPrivate})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ThreadType {}
     
@@ -30,6 +30,7 @@ public abstract class BThreadEntity extends Entity{
     public static class Type{
         public static final int Private = 0;
         public static final int Public = 1;
+        public static final int PublicPrivate = 2;
     }
 
     public abstract Date lastMessageAdded();

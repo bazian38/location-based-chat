@@ -14,36 +14,6 @@
                     }
                 }
             ]
-        },
-        {
-            "outputFile": "C:\\Users\\khale\\Desktop\\LocationBasedChat\\facebook\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-fr\\values-fr.xml",
-            "map": [
-                {
-                    "source": "C:\\Users\\khale\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.0.2.aar\\cb6415587c17c18149e2b45c2774170b\\res\\values-fr\\values-fr.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    }
-                }
-            ]
-        },
-        {
-            "outputFile": "C:\\Users\\khale\\Desktop\\Final Project\\bazian\\location-based-chat\\facebook\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-fr\\values-fr.xml",
-            "map": [
-                {
-                    "source": "C:\\Users\\khale\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.0.2.aar\\cb6415587c17c18149e2b45c2774170b\\res\\values-fr\\values-fr.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    }
-                }
-            ]
         }
     ]
 }

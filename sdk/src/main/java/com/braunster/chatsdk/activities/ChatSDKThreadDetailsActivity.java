@@ -29,6 +29,7 @@ import com.braunster.chatsdk.Utils.volley.VolleyUtils;
 import com.braunster.chatsdk.dao.BThread;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.dao.core.DaoCore;
+import com.braunster.chatsdk.dao.entities.BThreadEntity;
 import com.braunster.chatsdk.fragments.ChatSDKContactsFragment;
 import com.braunster.chatsdk.fragments.abstracted.ChatSDKAbstractContactsFragment;
 import com.braunster.chatsdk.network.events.AppEventListener;
@@ -43,6 +44,7 @@ import org.jdeferred.FailCallback;
 
 import java.io.File;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
@@ -100,7 +102,8 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
                     VolleyUtils.getImageLoader().get(admin.getThumbnailPictureURL(), new ImageLoader.ImageListener() {
                         @Override
                         public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                            if (response.getBitmap() != null) {
+                            if (response.getBitmap() != null)
+                            {
                                 imageAdmin.setImageBitmap(response.getBitmap());
                             }
                         }
@@ -174,53 +177,81 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
     private AdapterView.OnItemClickListener getItemClickListener(){
         return new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                final Intent intent = new Intent();
-
-                showProgDialog("Opening thread.");
-
-                getNetworkAdapter().createThreadWithUsers("", contactsFragment.getAdapter().getItem(position).asBUser(), getNetworkAdapter().currentUserModel())
-                        .done(new DoneCallback<BThread>() {
-                            @Override
-                            public void onDone(final BThread thread) {
-                                if (thread == null) {
-                                    if (DEBUG) Timber.e("thread added is null");
-                                    return;
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
+            {
+                if (StringUtils.isNotBlank(thread.getCreatorEntityId()) && thread.getCreatorEntityId().equals(getNetworkAdapter().currentUserModel().getEntityID())
+                        && (thread.getTypeSafely() != BThreadEntity.Type.Private
+                        || thread.getUsers().size() > 2))
+                {
+                    showAlertDialog(contactsFragment.getAdapter().getItem(position).asBUser().getMetaName(), "Choose Action:", "Open a private Chat", "kick",
+                            new Callable<String> (){
+                                public String call() {
+                                    getNetworkAdapter().removeUsersFromThread(thread, contactsFragment.getAdapter().getItem(position).asBUser());
+                                    contactsFragment.refresh();
+                                    return "";
                                 }
+                            },
+                            new Callable<String> (){
+                                public String call() {
+                                    openChat(position);
+                                    return "";}
+                            });
 
-                                if (isOnMainThread()) {
+                }
+                else
+                {
+                    openChat(position);
+                }
+            }
+        };
+    }
+
+    private void openChat(int position) {
+        final Intent intent = new Intent();
+
+
+        showProgDialog("Opening thread.");
+
+        getNetworkAdapter().createThreadWithUsers("", contactsFragment.getAdapter().getItem(position).asBUser(), getNetworkAdapter().currentUserModel())
+                .done(new DoneCallback<BThread>() {
+                    @Override
+                    public void onDone(final BThread thread) {
+                        if (thread == null) {
+                            if (DEBUG) Timber.e("thread added is null");
+                            return;
+                        }
+
+                        if (isOnMainThread()) {
+                            intent.putExtra(THREAD_ID, thread.getId());
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        } else
+                            ChatSDKThreadDetailsActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
                                     intent.putExtra(THREAD_ID, thread.getId());
                                     setResult(RESULT_OK, intent);
                                     finish();
-                                } else
-                                    ChatSDKThreadDetailsActivity.this.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            intent.putExtra(THREAD_ID, thread.getId());
-                                            setResult(RESULT_OK, intent);
-                                            finish();
-                                        }
-                                    });
-                            }
-                        })
-                        .fail(new FailCallback<BError>() {
-                            @Override
-                            public void onFail(BError error) {
-                                if (isOnMainThread()) {
+                                }
+                            });
+                    }
+                })
+                .fail(new FailCallback<BError>() {
+                    @Override
+                    public void onFail(BError error) {
+                        if (isOnMainThread()) {
+                            showAlertToast(getString(R.string.create_thread_with_users_fail_toast));
+                            dismissProgDialog();
+                        } else
+                            ChatSDKThreadDetailsActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
                                     showAlertToast(getString(R.string.create_thread_with_users_fail_toast));
                                     dismissProgDialog();
-                                } else
-                                    ChatSDKThreadDetailsActivity.this.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            showAlertToast(getString(R.string.create_thread_with_users_fail_toast));
-                                            dismissProgDialog();
-                                        }
-                                    });
-                            }
-                        });
-            }
-        };
+                                }
+                            });
+                    }
+                });
     }
 
     protected void initActionBar(){
@@ -248,7 +279,8 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
                     DialogUtils.ChatSDKEditTextDialog textDialog = DialogUtils.ChatSDKEditTextDialog.getInstace();
                     textDialog.setTitleAndListen(getString(R.string.thread_details_activity_change_name_dialog_title), new DialogUtils.ChatSDKEditTextDialog.EditTextDialogInterface() {
                         @Override
-                        public void onFinished(String s) {
+                        public void onFinished(String s)
+                        {
                             txtThreadName.setText(s);
                             thread.setName(s);
                             DaoCore.updateEntity(thread);
