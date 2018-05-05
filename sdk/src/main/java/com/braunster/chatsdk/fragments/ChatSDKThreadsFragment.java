@@ -47,8 +47,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import timber.log.Timber;
 
-public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoThreadInterface {
-
+public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoThreadInterface
+{
     private static boolean DEBUG = Debug.ThreadsFragment;
 
     private ListView listThreads;
@@ -58,20 +58,24 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
     private TextView noUsersTextView;
 
     private Map<BThread, GeoLocation> threadsLocationsMap;
+    private Map<String, BThread> threadsEntityID;
+
     private GeoLocation currentUserGeoLocation = new GeoLocation(0.0, 0.0);;
     private boolean isVisibleToUser;
 
-
-    public static ChatSDKThreadsFragment newInstance() {
+    public static ChatSDKThreadsFragment newInstance()
+    {
         return new ChatSDKThreadsFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
         threadsLocationsMap = new HashMap<>();
+        threadsEntityID = new HashMap<>();
     }
 
     @Override
@@ -124,7 +128,8 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
     }
 
     @Override
-    public void loadDataOnBackground() {
+    public void loadDataOnBackground()
+    {
         super.loadDataOnBackground();
 
         if (mainView == null)
@@ -143,23 +148,26 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
         }
 
         final boolean noItems = adapter != null && adapter.getThreadItems().size() == 0;
-        if (isFirst && noItems) {
+        if (isFirst && noItems)
+        {
             listThreads.setVisibility(View.INVISIBLE);
             progressBar.setVisibility(View.VISIBLE);
         }
 
-        uiUpdater = new UIUpdater() {
+        uiUpdater = new UIUpdater()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
 
                 if (isKilled() && !isFirst && noItems)
                     return;
 
                 Message message = new Message();
                 message.what = 1;
-                List a = BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker());
-                a.addAll(BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.PublicPrivate, adapter.getItemMaker()));
-                message.obj = a;
+//                List a = BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker());
+//                a.addAll(BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.PublicPrivate, adapter.getItemMaker()));
+//                message.obj = a;
 
                 handler.sendMessageAtFrontOfQueue(message);
 
@@ -171,14 +179,17 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
     }
 
     @Override
-    public void refreshForEntity(Entity entity) {
+    public void refreshForEntity(Entity entity)
+    {
         super.refreshForEntity(entity);
         adapter.replaceOrAddItem((BThread) entity);
     }
 
-    private Handler handler = new Handler(Looper.getMainLooper()){
+    private Handler handler = new Handler(Looper.getMainLooper())
+    {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message msg)
+        {
             super.handleMessage(msg);
 
             switch (msg.what)
@@ -194,7 +205,8 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
     };
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem item =
                 menu.add(Menu.NONE, R.id.action_chat_sdk_add, 10, getString(R.string.public_thread_fragment_add_item_text));
@@ -203,7 +215,8 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         /* Cant use switch in the library*/
         int id = item.getItemId();
 
@@ -213,20 +226,24 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
             final EditText input = new EditText(getActivity());
             alert.setView(input);
             alert.setTitle("Create New Chat Room With Name:");
-            alert.setPositiveButton("Public", new DialogInterface.OnClickListener() {
+            alert.setPositiveButton("Public", new DialogInterface.OnClickListener()
+            {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     final String s = input.getText().toString().trim();
                     showProgDialog(getString(R.string.add_public_chat_dialog_progress_message));
                     BNetworkManager.sharedManager().getNetworkAdapter().createPublicThreadWithName(s)
-                            .done(new DoneCallback<BThread>() {
+                            .done(new DoneCallback<BThread>()
+                            {
                                 @Override
-                                public void onDone(final BThread thread) {
+                                public void onDone(final BThread thread)
+                                {
                                     // Add the current user to the thread.
                                     getNetworkAdapter().addUsersToThread(thread, BNetworkManager.sharedManager().getNetworkAdapter().currentUserModel())
-                                            .done(new DoneCallback<BThread>() {
+                                            .done(new DoneCallback<BThread>()
+                                            {
                                                 @Override
-                                                public void onDone(BThread thread) {
-
+                                                public void onDone(BThread thread)
+                                                {
                                                     BNetworkManager.sharedManager().getNetworkAdapter().getGeoFireManager().setThreadLocation(
                                                             getActivity().getApplicationContext(), getActivity(), thread);
                                                     dismissProgDialog();
@@ -238,9 +255,11 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
                                             });
                                 }
                             })
-                            .fail(new FailCallback<BError>() {
+                            .fail(new FailCallback<BError>()
+                            {
                                 @Override
-                                public void onFail(BError bError) {
+                                public void onFail(BError bError)
+                                {
                                     showAlertToast(getString(R.string.add_public_chat_dialog_toast_error_before_thread_name) + s);
 
                                     if (DEBUG) Timber.e("Error: %s", bError.message);
@@ -251,19 +270,25 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
                 }
             });
 
-            alert.setNegativeButton("Private", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
+            alert.setNegativeButton("Private", new DialogInterface.OnClickListener()
+            {
+                public void onClick(DialogInterface dialog, int whichButton)
+                {
                     final String s = input.getText().toString().trim();
                     showProgDialog(getString(R.string.add_public_chat_dialog_progress_message));
                     BNetworkManager.sharedManager().getNetworkAdapter().createPublicPrivateThreadWithName(s)
-                            .done(new DoneCallback<BThread>() {
+                            .done(new DoneCallback<BThread>()
+                            {
                                 @Override
-                                public void onDone(final BThread thread) {
+                                public void onDone(final BThread thread)
+                                {
                                     // Add the current user to the thread.
                                     getNetworkAdapter().addUsersToThread(thread, BNetworkManager.sharedManager().getNetworkAdapter().currentUserModel())
-                                            .done(new DoneCallback<BThread>() {
+                                            .done(new DoneCallback<BThread>()
+                                            {
                                                 @Override
-                                                public void onDone(BThread thread) {
+                                                public void onDone(BThread thread)
+                                                {
 
                                                     BNetworkManager.sharedManager().getNetworkAdapter().getGeoFireManager().setThreadLocation(
                                                             getActivity().getApplicationContext(), getActivity(), thread);
@@ -276,9 +301,11 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
                                             });
                                 }
                             })
-                            .fail(new FailCallback<BError>() {
+                            .fail(new FailCallback<BError>()
+                            {
                                 @Override
-                                public void onFail(BError bError) {
+                                public void onFail(BError bError)
+                                {
                                     showAlertToast(getString(R.string.add_public_chat_dialog_toast_error_before_thread_name) + s);
 
                                     if (DEBUG) Timber.e("Error: %s", bError.message);
@@ -295,28 +322,41 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
 
         BNetworkManager.sharedManager().getNetworkAdapter().getGeoFireManager().setThreadDelegate(this);
         BNetworkManager.sharedManager().getNetworkAdapter().getGeoFireManager().startForThreads(getActivity().getApplicationContext(), getActivity());
 
         if (isVisibleToUser)
+        {
             updateList(getSortedThreadsDistanceMap());
+        }
 
     }
 
     @Override
-    public boolean threadAdded(BThread thread, GeoLocation location) {
+    public boolean threadAdded(BThread thread, GeoLocation location)
+    {
+        if (threadsEntityID.containsKey(thread.getEntityID()))
+        {
+            threadsLocationsMap.remove(threadsEntityID.get(thread.getEntityID()));
+            threadsEntityID.remove(thread.getEntityID());
+        }
+
+        threadsEntityID.put(thread.getEntityID(), thread);
         threadsLocationsMap.put(thread, location);
         updateList(getSortedThreadsDistanceMap());
         return true;
     }
 
-    private void updateList(Map<BThread, Double> threadsDistanceMap) {
+    private void updateList(Map<BThread, Double> threadsDistanceMap)
+    {
         if(isVisibleToUser)
         {
-            if (adapter != null) {
+            if (adapter != null)
+            {
                 adapter.clear();
             }
 
@@ -338,7 +378,8 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
 
                     if (adapter != null)
                     {
-                        for (BThread thread : threadsDistanceMap.keySet()) {
+                        for (BThread thread : threadsDistanceMap.keySet())
+                        {
                             adapter.addRow(thread);
                         }
                     }
@@ -348,29 +389,37 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
     }
 
     @Override
-    public boolean threadRemoved(BThread thread) {
-        threadsLocationsMap.remove(thread);
+    public boolean threadRemoved(BThread thread)
+    {
+        threadsEntityID.remove(thread.getEntityID());
+        threadsLocationsMap.remove(threadsEntityID.get(thread.getEntityID()));
         updateList(getSortedThreadsDistanceMap());
         return true;
     }
 
     @Override
-    public boolean setCurrentUserGeoLocation(GeoLocation location) {
+    public boolean setCurrentUserGeoLocation(GeoLocation location)
+    {
         currentUserGeoLocation = location;
         updateList(getSortedThreadsDistanceMap());
 
         return true;
     }
 
-    public boolean setState(int stringResId) {
-        if (noUsersTextView != null) {
+    public boolean setState(int stringResId)
+    {
+        if (noUsersTextView != null)
+        {
             noUsersTextView.setText(getResources().getString(stringResId));
         }
 
-        if(stringResId == R.string.show_list) {
+        if(stringResId == R.string.show_list)
+        {
             noUsersTextView.setVisibility(View.INVISIBLE);
             listThreads.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else
+        {
             listThreads.setVisibility(View.INVISIBLE);
             noUsersTextView.setVisibility(View.VISIBLE);
         }
@@ -378,7 +427,8 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
         return true;
     }
 
-    public Map<BThread, Double> getSortedThreadsDistanceMap() {
+    public Map<BThread, Double> getSortedThreadsDistanceMap()
+    {
         Map<BThread, Double> threadsDistanceMap = getThreadsDistanceMap();
 
         threadsDistanceMap = sortByComparator(threadsDistanceMap, true);
@@ -386,12 +436,14 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
         return threadsDistanceMap;
     }
 
-    public Map<BThread, Double> getThreadsDistanceMap() {
+    public Map<BThread, Double> getThreadsDistanceMap()
+    {
 
         Map<BThread, Double> threadsDistanceMap = new HashMap<>();
         ConcurrentHashMap<BThread, GeoLocation> threadsLocationMapLocal = new ConcurrentHashMap<>(threadsLocationsMap);
 
-        for(BThread thread : threadsLocationMapLocal.keySet()) {
+        for(BThread thread : threadsLocationMapLocal.keySet())
+        {
             GeoLocation location = threadsLocationMapLocal.get(thread);
 
             Double distance = GeoUtils.distance(currentUserGeoLocation, location);
@@ -407,12 +459,17 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
         List<Map.Entry<BThread, Double>> list = new LinkedList<>(unsortMap.entrySet());
 
         // Sorting the list based on values
-        Collections.sort(list, new Comparator<Map.Entry<BThread, Double>>() {
+        Collections.sort(list, new Comparator<Map.Entry<BThread, Double>>()
+        {
             public int compare(Map.Entry<BThread, Double> o1,
-                               Map.Entry<BThread, Double> o2) {
-                if (order) {
+                               Map.Entry<BThread, Double> o2)
+            {
+                if (order)
+                {
                     return o1.getValue().compareTo(o2.getValue());
-                } else {
+                }
+                else
+                {
                     return o2.getValue().compareTo(o1.getValue());
                 }
             }
@@ -429,11 +486,13 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
         super.setUserVisibleHint(isVisibleToUser);
         this.isVisibleToUser = isVisibleToUser;
 
-        if (isVisibleToUser) {
+        if (isVisibleToUser)
+        {
             setState(R.string.searching_nearby_users);
             updateList(getSortedThreadsDistanceMap());
         }

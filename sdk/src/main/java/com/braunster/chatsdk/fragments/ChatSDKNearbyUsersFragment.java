@@ -61,6 +61,7 @@ public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements G
 
     private GeoLocation currentUserGeoLocation = new GeoLocation(0.0, 0.0);
     private Map<BUser, GeoLocation> usersLocationsMap;
+    private Map<String, BUser> usersEntityID;
 
     public static ChatSDKNearbyUsersFragment newInstance() {
         return new ChatSDKNearbyUsersFragment();
@@ -82,6 +83,7 @@ public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements G
 */
 
         usersLocationsMap = new HashMap<BUser, GeoLocation>();
+        usersEntityID = new HashMap<String,BUser>();
     }
 
     @Override
@@ -250,6 +252,12 @@ public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements G
     }
 
     public boolean userAdded(BUser user, GeoLocation location) {
+        if (usersEntityID.containsKey(user.getEntityID()))
+        {
+            usersLocationsMap.remove(usersEntityID.get(user.getEntityID()));
+            usersEntityID.remove(user.getEntityID());
+        }
+        usersEntityID.put(user.getEntityID(), user);
         usersLocationsMap.put(user, location);
         updateList(getSortedUsersDistanceMap());
 
@@ -259,6 +267,13 @@ public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements G
     }
 
     public boolean userMoved(BUser user, GeoLocation location) {
+        if (usersEntityID.containsKey(user.getEntityID()))
+        {
+            usersLocationsMap.remove(usersEntityID.get(user.getEntityID()));
+            usersEntityID.remove(user.getEntityID());
+        }
+
+        usersEntityID.put(user.getEntityID(), user);
         usersLocationsMap.put(user, location);
         updateList(getSortedUsersDistanceMap());
 
@@ -268,7 +283,14 @@ public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements G
     }
 
     public boolean userRemoved(BUser user) {
-        usersLocationsMap.remove(user);
+        if (!usersEntityID.containsKey(user.getEntityID()))
+        {
+            return true;
+        }
+
+        usersLocationsMap.remove(usersEntityID.get(user.getEntityID()));
+        usersEntityID.remove(user.getEntityID());
+
         updateList(getSortedUsersDistanceMap());
 
         if(DEBUG) Timber.v("user removed: " + user.getEntityID());

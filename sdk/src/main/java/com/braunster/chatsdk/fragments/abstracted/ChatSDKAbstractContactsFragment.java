@@ -54,7 +54,8 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
+public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment
+{
 
     private static final String TAG = ChatSDKAbstractContactsFragment.class.getSimpleName();
     private static boolean DEBUG = Debug.ContactsFragment;
@@ -199,7 +200,8 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         if (isDialog)
         {
             if(title.equals(""))
@@ -211,7 +213,8 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
         outState.putInt(LOADING_MODE, loadingMode);
         outState.putBoolean(IS_DIALOG, isDialog);
@@ -219,7 +222,8 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
     }
 
     @Override
-    public void initViews(){
+    public void initViews()
+    {
         listView = (ListView) mainView.findViewById(R.id.chat_sdk_list_contacts);
 
         progressBar = (ProgressBar) mainView.findViewById(R.id.chat_sdk_progressbar);
@@ -237,7 +241,8 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
         super.onCreateOptionsMenu(menu, inflater);
 
         if (!inflateMenu)
@@ -250,7 +255,8 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
 
         /* Cant use switch in the library*/
         int id = item.getItemId();
@@ -268,7 +274,8 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
     }
 
     @Override
-    public void loadData(){
+    public void loadData()
+    {
 
         if (mainView == null || getActivity() == null)
             return;
@@ -285,7 +292,8 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
     }
 
     @Override
-    public void loadDataOnBackground(){
+    public void loadDataOnBackground()
+    {
 
         if (mainView == null || getActivity() == null)
         {
@@ -309,9 +317,11 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
             }
         }
 
-        uiUpdater = new UIUpdater() {
+        uiUpdater = new UIUpdater()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
 
                 if (isKilled())
                 {
@@ -334,7 +344,8 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
     }
 
     @Override
-    public void clearData() {
+    public void clearData()
+    {
         if (adapter != null)
         {
             if (uiUpdater != null)
@@ -345,9 +356,11 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
         }
     }
 
-    private Handler handler = new Handler(Looper.getMainLooper()){
+    private Handler handler = new Handler(Looper.getMainLooper())
+    {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message msg)
+        {
             super.handleMessage(msg);
 
             switch (msg.what)
@@ -365,7 +378,8 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
         }
     };
 
-    private void setListClickMode(){
+    private void setListClickMode()
+    {
 
         if (onItemClickListener!=null)
         {
@@ -392,9 +406,11 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
                                 thread = DaoCore.fetchEntityWithEntityID(BThread.class, extraData);
 
                             getNetworkAdapter().addUsersToThread(thread, clickedUser)
-                                    .done(new DoneCallback<BThread>() {
+                                    .done(new DoneCallback<BThread>()
+                                    {
                                         @Override
-                                        public void onDone(BThread thread) {
+                                        public void onDone(BThread thread)
+                                        {
                                             showToast( getString(R.string.abstract_contact_fragment_user_added_to_thread_toast_success)   + clickedUser.getMetaName());
                                             
                                             if (contactListListener!= null)
@@ -406,9 +422,11 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
                                             }
                                         }
                                     })
-                                    .fail(new FailCallback<BError>() {
+                                    .fail(new FailCallback<BError>()
+                                    {
                                         @Override
-                                        public void onFail(BError error) {
+                                        public void onFail(BError error)
+                                        {
                                             chatSDKUiHelper.showAlertToast( getString(R.string.abstract_contact_fragment_user_added_to_thread_toast_fail) );
                                         }
                                     });
@@ -416,9 +434,11 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
 
                         case CLICK_MODE_SHARE_CONTENT:
                             createAndOpenThreadWithUsers(clickedUser.getMetaName(), clickedUser, getNetworkAdapter().currentUserModel())
-                                    .done(new DoneCallback<BThread>() {
+                                    .done(new DoneCallback<BThread>()
+                                    {
                                         @Override
-                                        public void onDone(BThread thread) {
+                                        public void onDone(BThread thread)
+                                        {
                                             Intent intent = new Intent(getActivity(), chatSDKUiHelper.chatActivity);
                                             intent.putExtra(ChatSDKChatActivity.THREAD_ID, thread.getId());
 
@@ -442,9 +462,11 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
                                             startActivity(intent);
                                         }
                                     })
-                                    .fail(new FailCallback<BError>() {
+                                    .fail(new FailCallback<BError>()
+                                    {
                                         @Override
-                                        public void onFail(BError error) {
+                                        public void onFail(BError error)
+                                        {
                                             
                                         }
                                     });
@@ -456,9 +478,11 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
 
                         default:
                             createAndOpenThreadWithUsers(clickedUser.getMetaName(), clickedUser, getNetworkAdapter().currentUserModel())
-                                .done(new DoneCallback<BThread>() {
+                                .done(new DoneCallback<BThread>()
+                                {
                                     @Override
-                                    public void onDone(BThread thread) {
+                                    public void onDone(BThread thread)
+                                    {
                                         if (contactListListener!= null)
                                             contactListListener.onContactClicked(clickedUser);
 
@@ -468,9 +492,11 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
                                             getDialog().dismiss();
                                     }
                                 })
-                                .fail(new FailCallback<BError>() {
+                                .fail(new FailCallback<BError>()
+                                {
                                     @Override
-                                    public void onFail(BError error) {
+                                    public void onFail(BError error)
+                                    {
                                         
                                     }
                                 });
@@ -480,11 +506,13 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
 
     }
 
-    public void filterListStartWith(String filter){
+    public void filterListStartWith(String filter)
+    {
         adapter.filterStartWith(filter);
     }
 
-    private void loadSourceUsers(){
+    private void loadSourceUsers()
+    {
         if (loadingMode!=MODE_USE_SOURCE)
             // If this is not a dialog we will load the contacts of the user.
             switch (loadingMode) {
@@ -514,18 +542,21 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
             }
     }
 
-    public void showLoading(){
+    public void showLoading()
+    {
         progressBar.setVisibility(View.VISIBLE);
         listView.setVisibility(View.INVISIBLE);
     }
 
-    public void hideLoading(){
+    public void hideLoading()
+    {
         progressBar.setVisibility(View.INVISIBLE);
         listView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
         if (withUpdates)
         {
@@ -546,7 +577,8 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ChatSDKSearchActivity.GET_CONTACTS_ADDED_REQUEST)
@@ -557,12 +589,14 @@ public class ChatSDKAbstractContactsFragment extends ChatSDKBaseFragment {
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
         getNetworkAdapter().getEventManager().removeEventByTag(eventTAG);
     }
 
-    public void setAdapter(ChatSDKAbstractUsersListAdapter adapter) {
+    public void setAdapter(ChatSDKAbstractUsersListAdapter adapter)
+    {
         this.adapter = adapter;
     }
 
