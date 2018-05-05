@@ -1,16 +1,7 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:27 PM
- */
-
 package com.braunster.chatsdk.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,22 +18,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.braunster.chatsdk.R;
 import com.braunster.chatsdk.Utils.Debug;
 import com.braunster.chatsdk.Utils.DialogUtils;
-import com.braunster.chatsdk.activities.ChatSDKMainActivity;
 import com.braunster.chatsdk.adapter.ChatSDKThreadsListAdapter;
 import com.braunster.chatsdk.dao.BThread;
-import com.braunster.chatsdk.dao.entities.BThreadEntity;
 import com.braunster.chatsdk.dao.entities.Entity;
 import com.braunster.chatsdk.interfaces.GeoThreadInterface;
 import com.braunster.chatsdk.network.BNetworkManager;
-import com.braunster.chatsdk.network.events.BatchedEvent;
-import com.braunster.chatsdk.network.events.Event;
 import com.braunster.chatsdk.object.BError;
-import com.braunster.chatsdk.object.Batcher;
 import com.braunster.chatsdk.object.ChatSDKThreadPool;
 import com.braunster.chatsdk.object.UIUpdater;
 import com.firebase.geofire.GeoLocation;
@@ -62,9 +47,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import timber.log.Timber;
 
-/**
- * Created by itzik on 6/17/2014.
- */
 public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoThreadInterface {
 
     private static final String TAG = ChatSDKThreadsFragment.class.getSimpleName();
@@ -113,9 +95,9 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
 
     @Override
     public void initViews() {
-        listThreads = (ListView) mainView.findViewById(R.id.list_threads);
-        progressBar = (ProgressBar) mainView.findViewById(R.id.chat_sdk_progress_bar);
-        noUsersTextView = (TextView) mainView.findViewById(R.id.textView);
+        listThreads = mainView.findViewById(R.id.list_threads);
+        progressBar = mainView.findViewById(R.id.chat_sdk_progress_bar);
+        noUsersTextView = mainView.findViewById(R.id.textView);
         initList();
     }
 
@@ -138,9 +120,9 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
 
         if (mainView == null)
             return;
-        List a = BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker());
-        a.addAll(BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.PublicPrivate, adapter.getItemMaker()));
-        adapter.setThreadItems(a);
+//        List a = BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker());
+//        a.addAll(BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.PublicPrivate, adapter.getItemMaker()));
+//        adapter.setThreadItems(a);
     }
 
     @Override
@@ -204,9 +186,10 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
             switch (msg.what)
             {
                 case 1:
-                    adapter.setThreadItems((List<ChatSDKThreadsListAdapter.ThreadListItem>) msg.obj);
+//                    adapter.setThreadItems((List<ChatSDKThreadsListAdapter.ThreadListItem>) msg.obj);
                     progressBar.setVisibility(View.GONE);
                     listThreads.setVisibility(View.VISIBLE);
+
                     break;
             }
         }
@@ -310,47 +293,6 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
                 }
             });
             alert.show();
-//            dialog.setTitleAndListen( getString(R.string.add_public_chat_dialog_title), new DialogUtils.ChatSDKEditTextDialog.EditTextDialogInterface() {
-//                @Override
-//                public void onFinished(final String s) {
-//
-//                    showProgDialog(getString(R.string.add_public_chat_dialog_progress_message));
-//                    BNetworkManager.sharedManager().getNetworkAdapter().createPublicThreadWithName(s)
-//                            .done(new DoneCallback<BThread>() {
-//                                @Override
-//                                public void onDone(final BThread thread) {
-//                                    // Add the current user to the thread.
-//                                    getNetworkAdapter().addUsersToThread(thread, BNetworkManager.sharedManager().getNetworkAdapter().currentUserModel())
-//                                            .done(new DoneCallback<BThread>() {
-//                                                @Override
-//                                                public void onDone(BThread thread) {
-//
-//                                                    BNetworkManager.sharedManager().getNetworkAdapter().getGeoFireManager().setThreadLocation(
-//                                                            getActivity().getApplicationContext(), getActivity(), thread);
-//                                                    dismissProgDialog();
-//                                                    adapter.addRow(thread);
-//                                                    showToast( getString(R.string.add_public_chat_dialog_toast_success_before_thread_name)
-//                                                            + s
-//                                                            + getString(R.string.add_public_chat_dialog_toast_success_after_thread_name) ) ;
-//                                                }
-//                                            });
-//                                }
-//                            })
-//                            .fail(new FailCallback<BError>() {
-//                                @Override
-//                                public void onFail(BError bError) {
-//                                    showAlertToast(getString(R.string.add_public_chat_dialog_toast_error_before_thread_name) + s);
-//
-//                                    if (DEBUG) Timber.e("Error: %s", bError.message);
-//
-//                                    dismissProgDialog();
-//                                }
-//                            });
-//                }
-//            });
-
-           // dialog.show(fm, "Add Public Chat Dialog");
-
 
             return true;
         }
@@ -367,17 +309,6 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
         if (isVisibleToUser)
             updateList(getSortedThreadsDistanceMap());
 
-/*        BatchedEvent batchedEvents = new BatchedEvent(APP_EVENT_TAG, "", Event.Type.AppEvent, handler);
-
-        batchedEvents.setBatchedAction(Event.Type.AppEvent, 3000, new Batcher.BatchedAction<String>() {
-            @Override
-            public void triggered(List<String> list) {
-                loadDataOnBackground();
-            }
-        });
-
-        getNetworkAdapter().getEventManager().removeEventByTag(APP_EVENT_TAG);
-        getNetworkAdapter().getEventManager().addEvent(batchedEvents);*/
     }
 
     @Override

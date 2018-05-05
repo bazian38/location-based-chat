@@ -118,7 +118,7 @@ public class ThreadRecovery {
                                 }
                                 return;
                             }
-
+                            if (!deferred.isResolved())
                             // Return thread's entityId
                             deferred.resolve(thread.getKey());
                         }
