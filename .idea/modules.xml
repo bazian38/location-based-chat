@@ -11,13 +11,13 @@
       <module fileurl="file://C:\Users\ahmad\Desktop\backup\LocationBasedChat\facebook\facebook.iml" filepath="C:\Users\ahmad\Desktop\backup\LocationBasedChat\facebook\facebook.iml" />
       <module fileurl="file://C:\Users\khale\Desktop\Final Project\bazian\location-based-chat\facebook\facebook.iml" filepath="C:\Users\khale\Desktop\Final Project\bazian\location-based-chat\facebook\facebook.iml" />
       <module fileurl="file://$PROJECT_DIR$/firebase_plugin/firebase_plugin.iml" filepath="$PROJECT_DIR$/firebase_plugin/firebase_plugin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/firebase_plugin/firebase_plugin.iml" filepath="$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/firebase_plugin/firebase_plugin.iml" />
+      <module fileurl="file://C:\khale\Desktop\Final Project\bazian\location-based-chat\firebase_plugin\firebase_plugin.iml" filepath="C:\khale\Desktop\Final Project\bazian\location-based-chat\firebase_plugin\firebase_plugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/generator/generator.iml" filepath="$PROJECT_DIR$/generator/generator.iml" />
       <module fileurl="file://C:\Users\khale\Desktop\Final Project\bazian\location-based-chat\generator\generator.iml" filepath="C:\Users\khale\Desktop\Final Project\bazian\location-based-chat\generator\generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/location-based-chat.iml" filepath="$PROJECT_DIR$/location-based-chat.iml" />
       <module fileurl="file://C:\Users\ahmad\Desktop\refactorLocationBasedChat\LocationBasedChat\location-based-chat.iml" filepath="C:\Users\ahmad\Desktop\refactorLocationBasedChat\LocationBasedChat\location-based-chat.iml" />
       <module fileurl="file://$PROJECT_DIR$/sdk/sdk.iml" filepath="$PROJECT_DIR$/sdk/sdk.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/sdk/sdk.iml" filepath="$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/sdk/sdk.iml" />
+      <module fileurl="file://C:\khale\Desktop\Final Project\bazian\location-based-chat\sdk\sdk.iml" filepath="C:\khale\Desktop\Final Project\bazian\location-based-chat\sdk\sdk.iml" />
     </modules>
   </component>
 </project>

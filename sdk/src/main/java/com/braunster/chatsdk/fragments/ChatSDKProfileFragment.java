@@ -7,11 +7,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import com.braunster.chatsdk.R;
-import com.braunster.chatsdk.Utils.Debug;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.fragments.abstracted.ChatSDKAbstractProfileFragment;
 import com.braunster.chatsdk.network.BDefines;
@@ -20,16 +21,13 @@ import com.braunster.chatsdk.object.SaveIndexDetailsTextWatcher;
 
 public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
 
-
-    private static final String TAG = ChatSDKProfileFragment.class.getSimpleName();
-    private static boolean DEBUG = Debug.ProfileFragment;
-
     private static final String S_I_D_NAME = "saved_name_data";
     private static final String S_I_D_PHONE = "saved_phones_data";
     private static final String S_I_D_EMAIL = "saved_email_data";
     private static final String S_I_D_STATUS = "saved_status_data";
 
     private EditText etName, etMail, etPhone, etStatus;
+    private Spinner spinner;
 
     public static ChatSDKProfileFragment newInstance() {
         ChatSDKProfileFragment f = new ChatSDKProfileFragment();
@@ -81,10 +79,14 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
             mainView.findViewById(R.id.linear).setLayoutParams(layoutParams);
         }
 
-        etName = (EditText) mainView.findViewById(R.id.chat_sdk_et_name);
-        etMail = (EditText) mainView.findViewById(R.id.chat_sdk_et_mail);
-        etPhone = (EditText) mainView.findViewById(R.id.chat_sdk_et_phone_number);
+        etName = mainView.findViewById(R.id.chat_sdk_et_name);
+        etMail = mainView.findViewById(R.id.chat_sdk_et_mail);
+        etPhone = mainView.findViewById(R.id.chat_sdk_et_phone_number);
         etStatus = mainView.findViewById(R.id.chat_sdk_et_status);
+        spinner = mainView.findViewById(R.id.departments_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.departments_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     @Override
