@@ -169,6 +169,29 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/ic_school_black_24dp"
+                    android:id="@+id/chat_sdk_ic_depart"
+                    android:layout_centerVertical="true"/>
+
+                <Spinner
+                    android:id="@+id/departments_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="20"
+                    android:layout_marginTop="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/chat_sdk_ic_depart"/>
+
+            </RelativeLayout>
+
         </LinearLayout>
 
     </LinearLayout>

@@ -571,6 +571,7 @@ public class BChatcatNetworkAdapter extends BFirebaseNetworkAdapter {
         BUser curUser = currentUserModel();
         thread.setCreator(curUser);
         thread.setCreatorEntityId(curUser.getEntityID());
+
         thread.setType(Type);
         thread.setName(name);
         thread.setDescription("long press to modify description");
