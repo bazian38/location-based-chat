@@ -20,9 +20,7 @@ import com.braunster.chatsdk.fragments.abstracted.ChatSDKAbstractContactsFragmen
 
 import java.util.List;
 
-/**
- * Created by itzik on 6/17/2014.
- */
+
 public class ChatSDKContactsFragment extends ChatSDKAbstractContactsFragment {
 
     private static final String TAG = ChatSDKContactsFragment.class.getSimpleName();

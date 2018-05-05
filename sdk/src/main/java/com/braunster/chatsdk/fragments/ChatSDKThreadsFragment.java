@@ -118,9 +118,9 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
 
         if (mainView == null)
             return;
-        List a = BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker());
-        a.addAll(BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.PublicPrivate, adapter.getItemMaker()));
-        adapter.setThreadItems(a);
+//        List a = BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker());
+//        a.addAll(BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.PublicPrivate, adapter.getItemMaker()));
+//        adapter.setThreadItems(a);
     }
 
     @Override
@@ -184,9 +184,10 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
             switch (msg.what)
             {
                 case 1:
-                    adapter.setThreadItems((List<ChatSDKThreadsListAdapter.ThreadListItem>) msg.obj);
+//                    adapter.setThreadItems((List<ChatSDKThreadsListAdapter.ThreadListItem>) msg.obj);
                     progressBar.setVisibility(View.GONE);
                     listThreads.setVisibility(View.VISIBLE);
+
                     break;
             }
         }
@@ -303,17 +304,6 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
         if (isVisibleToUser)
             updateList(getSortedThreadsDistanceMap());
 
-/*        BatchedEvent batchedEvents = new BatchedEvent(APP_EVENT_TAG, "", Event.Type.AppEvent, handler);
-
-        batchedEvents.setBatchedAction(Event.Type.AppEvent, 3000, new Batcher.BatchedAction<String>() {
-            @Override
-            public void triggered(List<String> list) {
-                loadDataOnBackground();
-            }
-        });
-
-        getNetworkAdapter().getEventManager().removeEventByTag(APP_EVENT_TAG);
-        getNetworkAdapter().getEventManager().addEvent(batchedEvents);*/
     }
 
     @Override
