@@ -1,10 +1,3 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:27 PM
- */
-
 package com.braunster.chatsdk.activities.abstracted;
 
 import android.app.ActionBar;
@@ -70,10 +63,6 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
-
-/**
- * Created by itzik on 6/8/2014.
- */
 public abstract class ChatSDKAbstractChatActivity extends ChatSDKBaseActivity implements  AbsListView.OnScrollListener{
 
     private static final String TAG = ChatSDKAbstractChatActivity.class.getSimpleName();

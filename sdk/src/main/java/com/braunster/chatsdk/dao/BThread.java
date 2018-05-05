@@ -41,6 +41,7 @@ public class BThread extends BThreadEntity  {
     private Boolean hasUnreadMessages;
     private Boolean deleted;
     private String name;
+    private String description;
     private java.util.Date LastMessageAdded;
     private Integer type;
     private String creatorEntityId;
@@ -72,13 +73,14 @@ public class BThread extends BThreadEntity  {
         this.id = id;
     }
 
-    public BThread(Long id, String entityID, java.util.Date creationDate, Boolean hasUnreadMessages, Boolean deleted, String name, java.util.Date LastMessageAdded, Integer type, String creatorEntityId, String imageUrl, String rootKey, String apiKey, Long creator_ID) {
+    public BThread(Long id, String entityID, java.util.Date creationDate, Boolean hasUnreadMessages, Boolean deleted, String name, String description, java.util.Date LastMessageAdded, Integer type, String creatorEntityId, String imageUrl, String rootKey, String apiKey, Long creator_ID) {
         this.id = id;
         this.entityID = entityID;
         this.creationDate = creationDate;
         this.hasUnreadMessages = hasUnreadMessages;
         this.deleted = deleted;
         this.name = name;
+        this.description = description;
         this.LastMessageAdded = LastMessageAdded;
         this.type = type;
         this.creatorEntityId = creatorEntityId;
@@ -500,6 +502,14 @@ public class BThread extends BThreadEntity  {
      * */
     public int getTypeSafely(){
         return type == null ? Type.Public : type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     // KEEP METHODS END
 

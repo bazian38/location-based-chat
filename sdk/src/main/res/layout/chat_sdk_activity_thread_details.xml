@@ -11,7 +11,11 @@
         android:gravity="center"
         android:padding="5dp"
         android:id="@+id/chat_sdk_txt_thread_name"
-        android:text="Thread Name"/>
+        android:text="Thread Name"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onClick"/>
+
     <RelativeLayout
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -39,6 +43,18 @@
             android:visibility="invisible"
             android:layout_gravity="center"/>
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:id="@+id/chat_sdk_thread_desc"
+        android:text="Group Description"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onClick"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

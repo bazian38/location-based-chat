@@ -49,9 +49,7 @@ import timber.log.Timber;
 
 public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoThreadInterface {
 
-    private static final String TAG = ChatSDKThreadsFragment.class.getSimpleName();
     private static boolean DEBUG = Debug.ThreadsFragment;
-    public static final String APP_EVENT_TAG= "ChatRoomsFrag";
 
     private ListView listThreads;
     private ChatSDKThreadsListAdapter adapter;
@@ -211,8 +209,6 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
 
         if (id == R.id.action_chat_sdk_add)
         {
-            FragmentManager fm = getActivity().getFragmentManager();
-            final DialogUtils.ChatSDKEditTextDialog dialog = DialogUtils.ChatSDKEditTextDialog.getInstace();
             final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             final EditText input = new EditText(getActivity());
             alert.setView(input);
@@ -293,7 +289,6 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
                 }
             });
             alert.show();
-
             return true;
         }
         return super.onOptionsItemSelected(item);

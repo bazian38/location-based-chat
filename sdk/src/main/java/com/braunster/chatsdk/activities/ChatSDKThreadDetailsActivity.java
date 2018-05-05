@@ -1,20 +1,16 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:27 PM
- */
-
 package com.braunster.chatsdk.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -32,8 +28,6 @@ import com.braunster.chatsdk.dao.core.DaoCore;
 import com.braunster.chatsdk.dao.entities.BThreadEntity;
 import com.braunster.chatsdk.fragments.ChatSDKContactsFragment;
 import com.braunster.chatsdk.fragments.abstracted.ChatSDKAbstractContactsFragment;
-import com.braunster.chatsdk.network.events.AppEventListener;
-import com.braunster.chatsdk.network.BDefines;
 import com.braunster.chatsdk.object.BError;
 import com.braunster.chatsdk.object.Cropper;
 import com.soundcloud.android.crop.Crop;
@@ -43,24 +37,19 @@ import org.jdeferred.DoneCallback;
 import org.jdeferred.FailCallback;
 
 import java.io.File;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
-/**
- * Created by braunster on 24/11/14.
- */
 public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
 
-    private static final String TAG = ChatSDKThreadDetailsActivity.class.getSimpleName();
     private static final boolean DEBUG = Debug.ThreadDetailsActivity;
 
     private static final int THREAD_PIC = 1991;
 
     private CircleImageView imageThread, imageAdmin;
-    private TextView txtAdminName, txtThreadName;
+    private TextView txtAdminName, txtThreadName, txtThreadDesc;
 
     private ChatSDKContactsFragment contactsFragment;
 
@@ -81,12 +70,12 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
     }
 
     private void initViews() {
-        txtAdminName = (TextView) findViewById(R.id.chat_sdk_txt_admin_name);
+        txtAdminName = findViewById(R.id.chat_sdk_txt_admin_name);
 
-        txtThreadName = (TextView) findViewById(R.id.chat_sdk_txt_thread_name);
-
-        imageAdmin = (CircleImageView) findViewById(R.id.chat_sdk_admin_image_view);
-        imageThread = (CircleImageView) findViewById(R.id.chat_sdk_thread_image_view);
+        txtThreadName = findViewById(R.id.chat_sdk_txt_thread_name);
+        txtThreadDesc = findViewById(R.id.chat_sdk_thread_desc);
+        imageAdmin = findViewById(R.id.chat_sdk_admin_image_view);
+        imageThread = findViewById(R.id.chat_sdk_thread_image_view);
     }
 
     private void loadData(){
@@ -96,7 +85,7 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
         {
             admin = DaoCore.fetchEntityWithEntityID(BUser.class, thread.getCreatorEntityId());
 
-            if (admin!=null)
+            if (admin != null)
             {
                 if (StringUtils.isNotBlank(admin.getThumbnailPictureURL()))
                     VolleyUtils.getImageLoader().get(admin.getThumbnailPictureURL(), new ImageLoader.ImageListener() {
@@ -122,7 +111,7 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
         final String imageUrl = thread.threadImageUrl();
         if (StringUtils.isNotEmpty(imageUrl))
         {
-            // Check if there is a image saved in the cahce for this thread.
+            // Check if there is a image saved in the cache for this thread.
 //            if (thread.getType()== BThread.Type.Private)
                 if (imageUrl.split(",").length > 1)
                 {
@@ -158,7 +147,7 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
 
         // Thread name
         txtThreadName.setText(thread.displayName());
-
+        txtThreadDesc.setText(thread.getDescription());
         // Thread users data
         contactsFragment = new ChatSDKContactsFragment();
         contactsFragment.setInflateMenu(false);
@@ -264,40 +253,6 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Only if the current user is the admin of this thread.
-        if (StringUtils.isNotBlank(thread.getCreatorEntityId()) && thread.getCreatorEntityId().equals(getNetworkAdapter().currentUserModel().getEntityID()))
-        {
-            imageThread.setOnClickListener(ChatSDKIntentClickListener.getPickImageClickListener(this, THREAD_PIC));
-
-            txtThreadName.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-
-                    DialogUtils.ChatSDKEditTextDialog textDialog = DialogUtils.ChatSDKEditTextDialog.getInstace();
-                    textDialog.setTitleAndListen(getString(R.string.thread_details_activity_change_name_dialog_title), new DialogUtils.ChatSDKEditTextDialog.EditTextDialogInterface() {
-                        @Override
-                        public void onFinished(String s)
-                        {
-                            txtThreadName.setText(s);
-                            thread.setName(s);
-                            DaoCore.updateEntity(thread);
-
-                            getNetworkAdapter().pushThread(thread);
-                        }
-                    });
-
-                    textDialog.show(getFragmentManager(), DialogUtils.ChatSDKEditTextDialog.class.getSimpleName());
-                    return true;
-                }
-            });
-        }
-
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
 
@@ -386,9 +341,41 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
                 showAlertToast(getString(R.string.unable_to_fetch_image));
             }
         }
-
-
     }
 
+    public void onClick(View view) {
+        if (StringUtils.isNotBlank(thread.getCreatorEntityId()) && thread.getCreatorEntityId().equals(getNetworkAdapter().currentUserModel().getEntityID())) {
+            if (view.getId() == R.id.chat_sdk_thread_desc) {
+                DialogUtils.ChatSDKEditTextDialog textDialog = DialogUtils.ChatSDKEditTextDialog.getInstace();
+                textDialog.setTitleAndListen("Set description", new DialogUtils.ChatSDKEditTextDialog.EditTextDialogInterface() {
+                    @Override
+                    public void onFinished(String s) {
+                        txtThreadDesc.setText(s);
+                        thread.setDescription(s);
+                        DaoCore.updateEntity(thread);
 
+                        getNetworkAdapter().pushThread(thread);
+                    }
+                });
+
+                textDialog.show(getFragmentManager(), DialogUtils.ChatSDKEditTextDialog.class.getSimpleName());
+
+            } else if (view.getId() == R.id.chat_sdk_txt_thread_name) {
+
+                DialogUtils.ChatSDKEditTextDialog textDialog = DialogUtils.ChatSDKEditTextDialog.getInstace();
+                textDialog.setTitleAndListen(getString(R.string.thread_details_activity_change_name_dialog_title), new DialogUtils.ChatSDKEditTextDialog.EditTextDialogInterface() {
+                    @Override
+                    public void onFinished(String s) {
+                        txtThreadName.setText(s);
+                        thread.setName(s);
+                        DaoCore.updateEntity(thread);
+
+                        getNetworkAdapter().pushThread(thread);
+                    }
+                });
+
+                textDialog.show(getFragmentManager(), DialogUtils.ChatSDKEditTextDialog.class.getSimpleName());
+            }
+        }
+    }
 }

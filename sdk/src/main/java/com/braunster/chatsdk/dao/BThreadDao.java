@@ -39,6 +39,7 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
         public final static Property RootKey = new Property(10, String.class, "rootKey", false, "root_key");
         public final static Property ApiKey = new Property(11, String.class, "apiKey", false, "api_key");
         public final static Property Creator_ID = new Property(12, Long.class, "creator_ID", false, "CREATOR__ID");
+        public final static Property Description = new Property(13, String.class, "description", false, "DESC");
     };
 
     private DaoSession daoSession;
@@ -69,7 +70,8 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
                 "'IMAGE_URL' TEXT," + // 9: imageUrl
                 "'root_key' TEXT," + // 10: rootKey
                 "'api_key' TEXT," + // 11: apiKey
-                "'CREATOR__ID' INTEGER);"); // 12: creator_ID
+                "'CREATOR__ID' INTEGER," + // 12: creator_ID
+                "'DESC' TEXT);"); // 13: description
     }
 
     /** Drops the underlying database table. */
@@ -112,7 +114,12 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
         if (name != null) {
             stmt.bindString(6, name);
         }
- 
+
+        String description = entity.getDescription();
+        if (description != null) {
+            stmt.bindString(14, description);
+        }
+
         java.util.Date LastMessageAdded = entity.getLastMessageAdded();
         if (LastMessageAdded != null) {
             stmt.bindLong(7, LastMessageAdded.getTime());
@@ -171,6 +178,7 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
             cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0, // hasUnreadMessages
             cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0, // deleted
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // name
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // description
             cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)), // LastMessageAdded
             cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // type
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // creatorEntityId
@@ -191,6 +199,7 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
         entity.setHasUnreadMessages(cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0);
         entity.setDeleted(cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0);
         entity.setName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setDescription(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setLastMessageAdded(cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)));
         entity.setType(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
         entity.setCreatorEntityId(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
