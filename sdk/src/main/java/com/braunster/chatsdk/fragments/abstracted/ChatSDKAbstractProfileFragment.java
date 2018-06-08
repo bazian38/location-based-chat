@@ -1,10 +1,3 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:27 PM
- */
-
 package com.braunster.chatsdk.fragments.abstracted;
 
 import android.content.Intent;
@@ -29,17 +22,7 @@ import com.braunster.chatsdk.object.Cropper;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by itzik on 6/17/2014.
- */
 public abstract class ChatSDKAbstractProfileFragment extends ChatSDKBaseFragment {
-
-    protected static final int PHOTO_PICKER_ID = 100;
-
-    private static final String TAG = ChatSDKAbstractProfileFragment.class.getSimpleName();
-    private static boolean DEBUG = Debug.ProfileFragment;
-
-    private static final String LOGIN_TYPE = "login_type";
 
     protected ChatSDKProfileHelper chatSDKProfileHelper;
 
@@ -67,8 +50,8 @@ public abstract class ChatSDKAbstractProfileFragment extends ChatSDKBaseFragment
     @Override
     public void initViews(){
         super.initViews();
-        progressBar = (ProgressBar) mainView.findViewById(R.id.chat_sdk_progressbar);
-        profileCircleImageView = (CircleImageView) mainView.findViewById(R.id.chat_sdk_circle_ing_profile_pic);
+        progressBar = mainView.findViewById(R.id.chat_sdk_progressbar);
+        profileCircleImageView = mainView.findViewById(R.id.chat_sdk_circle_ing_profile_pic);
 
         chatSDKProfileHelper = new ChatSDKProfileHelper(getActivity(), profileCircleImageView, progressBar, chatSDKUiHelper, mainView);
         chatSDKProfileHelper.setFragment(this);

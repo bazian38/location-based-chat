@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -79,10 +80,12 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
     }
 
     private void loadData(){
-
+        if (thread.getCreator() == null)
+            Log.d("admin", "creator is null");
         // Admin data
         if (StringUtils.isNotBlank(thread.getCreatorEntityId()))
         {
+            Log.d("admin", thread.getCreatorEntityId());
             admin = DaoCore.fetchEntityWithEntityID(BUser.class, thread.getCreatorEntityId());
 
             if (admin != null)
@@ -105,6 +108,9 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
 
                 txtAdminName.setText(admin.getMetaName());
             }
+        }
+        else {
+            Log.d("admin", "creator id is null");
         }
 
         //Thread image
@@ -344,6 +350,7 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
     }
 
     public void onClick(View view) {
+
         if (StringUtils.isNotBlank(thread.getCreatorEntityId()) && thread.getCreatorEntityId().equals(getNetworkAdapter().currentUserModel().getEntityID())) {
             if (view.getId() == R.id.chat_sdk_thread_desc) {
                 DialogUtils.ChatSDKEditTextDialog textDialog = DialogUtils.ChatSDKEditTextDialog.getInstace();
