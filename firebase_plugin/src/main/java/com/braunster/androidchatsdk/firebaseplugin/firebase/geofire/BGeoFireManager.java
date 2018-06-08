@@ -35,9 +35,6 @@ import java.util.List;
 
 import timber.log.Timber;
 
-/**
- * Created by Erk on 30.03.2016.
- */
 public class BGeoFireManager extends AbstractGeoFireManager implements LocationListener {
 
     public static final int LOCATION_PERMISSION = 1;
