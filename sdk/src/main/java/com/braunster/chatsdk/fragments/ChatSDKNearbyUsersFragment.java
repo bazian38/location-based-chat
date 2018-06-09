@@ -18,13 +18,11 @@ import com.braunster.chatsdk.adapter.ChatSDKUsersListAdapter;
 import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.dao.core.DaoCore;
 import com.braunster.chatsdk.interfaces.GeoInterface;
-import com.braunster.chatsdk.network.AbstractGeoFireManager;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.braunster.chatsdk.object.UIUpdater;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.util.GeoUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -41,7 +39,6 @@ import timber.log.Timber;
  */
 public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements GeoInterface {
 
-    private static final String TAG = ChatSDKNearbyUsersFragment.class.getSimpleName();
     private static boolean DEBUG = Debug.NearbyUsersFragment;
 
     public static long delayInMillis = 500;
@@ -82,8 +79,8 @@ public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements G
         distanceBands.add(50000.0);
 */
 
-        usersLocationsMap = new HashMap<BUser, GeoLocation>();
-        usersEntityID = new HashMap<String,BUser>();
+        usersLocationsMap = new HashMap<>();
+        usersEntityID = new HashMap<>();
     }
 
     @Override
@@ -135,9 +132,9 @@ public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements G
 
     @Override
     public void initViews() {
-        listNearbyUsers = (ListView) mainView.findViewById(R.id.list_nearby_users);
-        progressBar = (ProgressBar) mainView.findViewById(R.id.chat_sdk_progress_bar);
-        noUsersTextView = (TextView) mainView.findViewById(R.id.textView);
+        listNearbyUsers = mainView.findViewById(R.id.list_nearby_users);
+        progressBar = mainView.findViewById(R.id.chat_sdk_progress_bar);
+        noUsersTextView = mainView.findViewById(R.id.textView);
 
         initList();
     }

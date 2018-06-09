@@ -122,9 +122,7 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
 
         if (mainView == null)
             return;
-//        List a = BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker());
-//        a.addAll(BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.PublicPrivate, adapter.getItemMaker()));
-//        adapter.setThreadItems(a);
+
     }
 
     @Override
@@ -165,9 +163,6 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
 
                 Message message = new Message();
                 message.what = 1;
-//                List a = BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.Public, adapter.getItemMaker());
-//                a.addAll(BNetworkManager.sharedManager().getNetworkAdapter().threadItemsWithType(BThread.Type.PublicPrivate, adapter.getItemMaker()));
-//                message.obj = a;
 
                 handler.sendMessageAtFrontOfQueue(message);
 
@@ -225,7 +220,7 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
             final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             final EditText input = new EditText(getActivity());
             alert.setView(input);
-            alert.setTitle("Create New Chat Room With Name:");
+            alert.setTitle("Chat Room Name:");
             alert.setPositiveButton("Public", new DialogInterface.OnClickListener()
             {
                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -493,7 +488,7 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
 
         if (isVisibleToUser)
         {
-            setState(R.string.searching_nearby_users);
+            setState(R.string.searching_nearby_threads);
             updateList(getSortedThreadsDistanceMap());
         }
     }

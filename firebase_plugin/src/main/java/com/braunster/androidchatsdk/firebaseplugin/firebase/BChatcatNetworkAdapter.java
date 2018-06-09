@@ -574,7 +574,7 @@ public class BChatcatNetworkAdapter extends BFirebaseNetworkAdapter {
 
         thread.setType(Type);
         thread.setName(name);
-        thread.setDescription("long press to modify description");
+        thread.setDescription("Press to modify description");
 
         // Add the path and API key
         // This allows you to restrict public threads to a particular

@@ -149,6 +149,7 @@ public class BDefines {
         public static final String BCreationDate = "creation-date";
         public static final String BPayload = "payload";
         public static final String BType = "type";
+        public static final String BDescription = "description";
         public static final String BOnline = "online";
         public static final String BDate = "date";
         public static final String BLastOnline = "last-online";

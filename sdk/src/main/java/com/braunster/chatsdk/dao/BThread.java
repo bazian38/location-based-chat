@@ -49,6 +49,7 @@ public class BThread extends BThreadEntity  {
     private String rootKey;
     private String apiKey;
     private Long creator_ID;
+    private String department;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
@@ -73,7 +74,7 @@ public class BThread extends BThreadEntity  {
         this.id = id;
     }
 
-    public BThread(Long id, String entityID, java.util.Date creationDate, Boolean hasUnreadMessages, Boolean deleted, String name, String description, java.util.Date LastMessageAdded, Integer type, String creatorEntityId, String imageUrl, String rootKey, String apiKey, Long creator_ID) {
+    public BThread(Long id, String entityID, java.util.Date creationDate, Boolean hasUnreadMessages, Boolean deleted, String name, String description, java.util.Date LastMessageAdded, Integer type, String creatorEntityId, String imageUrl, String rootKey, String apiKey, Long creator_ID, String department) {
         this.id = id;
         this.entityID = entityID;
         this.creationDate = creationDate;
@@ -88,6 +89,7 @@ public class BThread extends BThreadEntity  {
         this.rootKey = rootKey;
         this.apiKey = apiKey;
         this.creator_ID = creator_ID;
+        this.department = department;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -510,6 +512,14 @@ public class BThread extends BThreadEntity  {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
     // KEEP METHODS END
 
