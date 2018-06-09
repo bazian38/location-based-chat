@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
+import android.widget.Toast;
 
 import com.braunster.chatsdk.R;
 import com.braunster.chatsdk.network.BDefines;
@@ -28,11 +29,11 @@ public class ExitHelper {
 
     private Activity activity;
     private boolean doubleBackToExitPressedOnce = false;
-    private SuperToast superToast;
+    private Toast superToast;
 
     public ExitHelper(Activity activity){
         this.activity = activity;
-        superToast = new SuperToast(activity);
+        superToast = Toast.makeText(activity, "", Toast.LENGTH_LONG);
     }
 
     public void triggerExit() {
@@ -89,10 +90,6 @@ public class ExitHelper {
     }
 
     protected void showAlertToast(String text){
-        superToast.setDuration(SuperToast.Duration.MEDIUM);
-        superToast.setTextColor(Color.WHITE);
-        superToast.setAnimations(SuperToast.Animations.FLYIN);
-        superToast.setBackground(SuperToast.Background.RED);
         superToast.setText(text);
         superToast.show();
     }

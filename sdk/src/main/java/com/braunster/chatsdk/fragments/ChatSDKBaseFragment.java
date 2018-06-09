@@ -326,15 +326,15 @@ public abstract class ChatSDKBaseFragment extends android.app.DialogFragment imp
         this.chatSDKUiHelper = chatSDKUiHelper;
     }
 
-    public void setToast(SuperToast toast) {
+    public void setToast(Toast toast) {
         chatSDKUiHelper.setToast(toast);
     }
 
-    public SuperToast getToast() {
+    public Toast getToast() {
         return chatSDKUiHelper.getToast();
     }
 
-    public SuperToast getAlertToast() {
+    public Toast getAlertToast() {
         return chatSDKUiHelper.getAlertToast();
     }
 }
