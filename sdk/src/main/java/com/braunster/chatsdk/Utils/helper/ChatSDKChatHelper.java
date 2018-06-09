@@ -7,14 +7,11 @@
 
 package com.braunster.chatsdk.Utils.helper;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -552,26 +549,17 @@ public class ChatSDKChatHelper implements ChatMessageBoxView.MessageBoxOptionsLi
     public void onLocationPressed() {
         if (!hasActivity())
             return;
-
-      Intent intent = new Intent(activity.get(), uiHelper.shareLocationActivity);
-
-      activity.get().startActivityForResult(intent, PICK_LOCATION);
+        
+        Intent intent = new Intent(activity.get(), uiHelper.shareLocationActivity);
+        activity.get().startActivityForResult(intent, PICK_LOCATION);
     }
-
-    private static final int CAMERA_PERMISSION = 2;
 
     @Override
     public void onTakePhotoPressed() {
         
         if (!hasActivity())
             return;
-
-        if (ActivityCompat.checkSelfPermission(activity.get(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity.get(),
-                    new String[]{Manifest.permission.CAMERA},
-                    CAMERA_PERMISSION);
-            return;
-        }
+        
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         File file, dir = Utils.ImageSaver.getAlbumStorageDir(activity.get(), Utils.ImageSaver.IMAGE_DIR_NAME);
@@ -582,7 +570,7 @@ public class ChatSDKChatHelper implements ChatMessageBoxView.MessageBoxOptionsLi
             uiHelper.showAlertToast(R.string.unable_to_catch_image);
             return;
         }
-
+        
         if(dir.exists())
         {
             file = new File(dir, DaoCore.generateEntity() + ".jpg");
