@@ -3,11 +3,13 @@ package com.braunster.chatsdk.activities.abstracted;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.KeyEvent;
@@ -21,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -660,6 +663,22 @@ public abstract class ChatSDKAbstractChatActivity extends ChatSDKBaseActivity im
             }
         }
     }
+
+    private static final int CAMERA_PERMISSION = 2;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == CAMERA_PERMISSION) {
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                chatSDKChatHelper.onTakePhotoPressed();
+            }
+
+        }}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
