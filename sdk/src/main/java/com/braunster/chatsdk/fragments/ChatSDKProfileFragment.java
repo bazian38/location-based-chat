@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,8 +26,9 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
     private static final String S_I_D_PHONE = "saved_phones_data";
     private static final String S_I_D_EMAIL = "saved_email_data";
     private static final String S_I_D_STATUS = "saved_status_data";
+    private static final String S_I_D_DEPARTMENT = "saved_department_data";
 
-    private EditText etName, etMail, etPhone, etStatus;
+    private EditText etName, etMail, etPhone, etStatus, etDepartment;
     private Spinner spinner;
 
     public static ChatSDKProfileFragment newInstance() {
@@ -83,6 +85,7 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
         etMail = mainView.findViewById(R.id.chat_sdk_et_mail);
         etPhone = mainView.findViewById(R.id.chat_sdk_et_phone_number);
         etStatus = mainView.findViewById(R.id.chat_sdk_et_status);
+        etDepartment = mainView.findViewById(R.id.chat_sdk_hidden_department);
         spinner = mainView.findViewById(R.id.departments_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.departments_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -107,6 +110,24 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
         TextWatcher statusTextWatcher = new SaveIndexDetailsTextWatcher(BDefines.Keys.BStatus);
         etStatus.addTextChangedListener(statusTextWatcher);
 
+        TextWatcher departmentTextWatcher = new SaveIndexDetailsTextWatcher(BDefines.Keys.BDepartment);
+        etDepartment.addTextChangedListener(departmentTextWatcher);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                Object item = adapterView.getItemAtPosition(position);
+                if (item != null) {
+                    etDepartment.setText(item.toString());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         loadData();
     }
 
@@ -126,6 +147,7 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
             etMail.getText().clear();
             etPhone.getText().clear();
             etStatus.getText().clear();
+            etDepartment.getText().clear();
         }
     }
 
@@ -137,6 +159,7 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
         outState.putString(S_I_D_EMAIL, etMail.getText().toString());
         outState.putString(S_I_D_PHONE, etPhone.getText().toString());
         outState.putString(S_I_D_STATUS, etStatus.getText().toString());
+        outState.putString(S_I_D_DEPARTMENT, etDepartment.getText().toString());
     }
 
     @Override
@@ -162,7 +185,23 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
         etMail.setText(user.getMetaEmail());
         etStatus.setText(user.getMetaStatus());
 
+        String department = user.getMetaDepartment();
+        spinner.setSelection(getIndex(spinner, department));
+        etDepartment.setText(department);
+
         chatSDKProfileHelper.loadProfilePic(loginType);
+    }
+
+    private int getIndex(Spinner spinner, String myString) {
+
+        int index = 0;
+
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).equals(myString)) {
+                index = i;
+            }
+        }
+        return index;
     }
 
     private void setDetails(int loginType, Bundle bundle){
@@ -170,6 +209,10 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
         etPhone.setText(bundle.getString(S_I_D_PHONE));
         etMail.setText(bundle.getString(S_I_D_EMAIL));
         etStatus.setText(bundle.getString(S_I_D_STATUS));
+
+        String department = bundle.getString(S_I_D_DEPARTMENT);
+        spinner.setSelection(getIndex(spinner, department));
+        etDepartment.setText(department);
 
         chatSDKProfileHelper.loadProfilePic(loginType);
     }
