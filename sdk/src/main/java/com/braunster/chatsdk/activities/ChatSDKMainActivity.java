@@ -69,7 +69,7 @@ public class ChatSDKMainActivity extends ChatSDKBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
         exitHelper = new ExitHelper(this);
 
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
@@ -251,13 +251,14 @@ public class ChatSDKMainActivity extends ChatSDKBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        /*
         if (item.getItemId() == R.id.android_settings) {
 
             // FIXME Clearing the cache, Just for debug.
-            /*final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
 
             VolleyUtils.getBitmapCache().resize(1);
-            VolleyUtils.getBitmapCache().resize(maxMemory / 8);*/
+            VolleyUtils.getBitmapCache().resize(maxMemory / 8);
             return true;
         }
         else   if (item.getItemId() == R.id.contact_developer) {
@@ -270,7 +271,7 @@ public class ChatSDKMainActivity extends ChatSDKBaseActivity {
             }
             return true;
         }
-
+        */
         return super.onOptionsItemSelected(item);
     }
 
