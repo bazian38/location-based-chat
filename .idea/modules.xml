@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/LocationBasedChat.iml" filepath="$PROJECT_DIR$/LocationBasedChat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../khale/Desktop/location-based-chat/LocationBasedChat.iml" filepath="$PROJECT_DIR$/../../../../khale/Desktop/location-based-chat/LocationBasedChat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/.idea/LocationBasedChat.iml" filepath="$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/.idea/LocationBasedChat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/app/app.iml" filepath="$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/country_picker/country_picker.iml" filepath="$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/country_picker/country_picker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/country_picker/country_picker.iml" filepath="$PROJECT_DIR$/country_picker/country_picker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/facebook/facebook.iml" filepath="$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/facebook/facebook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/facebook/facebook.iml" filepath="$PROJECT_DIR$/facebook/facebook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/firebase_plugin/firebase_plugin.iml" filepath="$PROJECT_DIR$/firebase_plugin/firebase_plugin.iml" />
+      <module fileurl="file://C:/khale/Desktop/Final Project/bazian/location-based-chat/firebase_plugin/firebase_plugin.iml" filepath="C:/khale/Desktop/Final Project/bazian/location-based-chat/firebase_plugin/firebase_plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/generator/generator.iml" filepath="$PROJECT_DIR$/generator/generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/generator/generator.iml" filepath="$PROJECT_DIR$/../../../../khale/Desktop/Final Project/bazian/location-based-chat/generator/generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../refactorLocationBasedChat/LocationBasedChat/location-based-chat.iml" filepath="$PROJECT_DIR$/../../refactorLocationBasedChat/LocationBasedChat/location-based-chat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/location-based-chat.iml" filepath="$PROJECT_DIR$/location-based-chat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sdk/sdk.iml" filepath="$PROJECT_DIR$/sdk/sdk.iml" />
+      <module fileurl="file://C:/khale/Desktop/Final Project/bazian/location-based-chat/sdk/sdk.iml" filepath="C:/khale/Desktop/Final Project/bazian/location-based-chat/sdk/sdk.iml" />
+    </modules>
+  </component>
+</project>

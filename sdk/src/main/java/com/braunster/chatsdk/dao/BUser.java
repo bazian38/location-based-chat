@@ -203,6 +203,28 @@ public class BUser extends BUserEntity  {
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<FollowerLink> getFollowerLinks() {
+        if (followerLinks == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            FollowerLinkDao targetDao = daoSession.getFollowerLinkDao();
+            List<FollowerLink> followerLinksNew = targetDao._queryBUser_FollowerLinks(id);
+            synchronized (this) {
+                if(followerLinks == null) {
+                    followerLinks = followerLinksNew;
+                }
+            }
+        }
+        return followerLinks;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetFollowerLinks() {
+        followerLinks = null;
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
     public List<BLinkedAccount> getBLinkedAccounts() {
         if (BLinkedAccounts == null) {
             if (daoSession == null) {
@@ -217,6 +239,11 @@ public class BUser extends BUserEntity  {
             }
         }
         return BLinkedAccounts;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetBLinkedAccounts() {
+        BLinkedAccounts = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */
@@ -421,6 +448,15 @@ public class BUser extends BUserEntity  {
 
         return follows;
     }
+
+    public boolean isFollowing(BUser user){
+        return fetchFollower(user, FollowerLink.Type.FOLLOWER) != null;
+    }
+
+    public boolean follows(BUser user){
+        return fetchFollower(user, FollowerLink.Type.FOLLOWS) != null;
+    }
+    
    
     @Override
     public void setMetaPictureUrl(String imageUrl) {
@@ -470,16 +506,6 @@ public class BUser extends BUserEntity  {
     @Override
     public String getMetaStatus() {
         return metaStringForKey(BDefines.Keys.BStatus);
-    }
-
-    @Override
-    public void setMetaDepartment(String department) {
-        setMetadataString(BDefines.Keys.BDepartment, department);
-    }
-
-    @Override
-    public String getMetaDepartment() {
-        return metaStringForKey(BDefines.Keys.BDepartment);
     }
 
     public String metaStringForKey(String key){
@@ -562,6 +588,18 @@ public class BUser extends BUserEntity  {
             return "";
 
         return USER_PREFIX + (entityID.replace(":","_"));
+    }
+
+    public Map<String, String> getUserIndexMap(){
+        Map<String, String> values = new HashMap<String, String>();
+        values.put(BDefines.Keys.BName, AbstractNetworkAdapter.processForQuery(getMetaName()));
+        values.put(BDefines.Keys.BEmail, AbstractNetworkAdapter.processForQuery(getMetaEmail()));
+
+        String phoneNumber = metaStringForKey(BDefines.Keys.BPhone);
+        if (BDefines.IndexUserPhoneNumber && StringUtils.isNotBlank(phoneNumber))
+            values.put(BDefines.Keys.BPhone, AbstractNetworkAdapter.processForQuery(phoneNumber));
+        
+        return values;
     }
 
     public boolean isMe(){

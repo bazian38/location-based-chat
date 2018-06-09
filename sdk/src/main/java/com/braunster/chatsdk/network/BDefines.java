@@ -139,7 +139,6 @@ public class BDefines {
         public static final String BPhone = "phone";
         public static final String BPictureURL = "pictureURL";
         public static final String BPictureURLThumbnail = "pictureURLThumbnail";
-        public static final String BDepartment = "department";
 
         public static final String BLastMessageAdded = "last-message-added";
         public static final String BUserFirebaseId = "user-firebase-id";
