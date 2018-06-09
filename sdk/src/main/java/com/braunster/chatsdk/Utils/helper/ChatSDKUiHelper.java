@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.braunster.chatsdk.R;
 import com.braunster.chatsdk.Utils.Debug;
@@ -98,9 +99,9 @@ public class ChatSDKUiHelper {
     /** If one of this toast are initialized it will be used across the app as the default toast.
      *  Each context can set it's own toast using the ui helper the sdk offers.
      *  If you use the ChatSDKBaseActivity you can set your toast in any stage in the context lifecycle.*/
-    private static SuperToast customAlertToast = null, customToast = null;
+    private static Toast customAlertToast = null, customToast = null;
 
-    private SuperToast toast, alertToast;
+    private Toast toast, alertToast;
     private SuperCardToast superCardToastProgress;
 
     private WeakReference<Context> context;
@@ -269,11 +270,8 @@ public class ChatSDKUiHelper {
         if (colleted())
             return;
         
-        alertToast = new SuperToast(context.get());
-        alertToast.setDuration(SuperToast.Duration.MEDIUM);
-        alertToast.setBackground(SuperToast.Background.RED);
-        alertToast.setTextColor(Color.WHITE);
-        alertToast.setAnimations(SuperToast.Animations.FLYIN);
+        alertToast =  Toast.makeText(context.get(), "", Toast.LENGTH_LONG);
+
 
     }
 
@@ -281,11 +279,8 @@ public class ChatSDKUiHelper {
         if (colleted())
             return;
         
-        toast = new SuperToast(context.get());
-        toast.setDuration(SuperToast.Duration.MEDIUM);
-        toast.setBackground(SuperToast.Background.BLUE);
-        toast.setTextColor(Color.WHITE);
-        toast.setAnimations(SuperToast.Animations.FLYIN);
+        toast = Toast.makeText(context.get(), "", Toast.LENGTH_LONG);
+
 
     }
 
@@ -392,27 +387,27 @@ public class ChatSDKUiHelper {
         showToast(context.get().getString(resourceId));
     }
 
-    public void setAlertToast(SuperToast alertToast) {
+    public void setAlertToast(Toast alertToast) {
         this.alertToast = alertToast;
     }
 
-    public void setToast(SuperToast toast) {
+    public void setToast(Toast toast) {
         this.toast = toast;
     }
 
-    public SuperToast getAlertToast() {
+    public Toast getAlertToast() {
         return alertToast;
     }
 
-    public SuperToast getToast() {
+    public Toast getToast() {
         return toast;
     }
 
-    public static void setCustomToast(SuperToast customToast) {
+    public static void setCustomToast(Toast customToast) {
         ChatSDKUiHelper.customToast = customToast;
     }
 
-    public static void setCustomAlertToast(SuperToast customAlertToast) {
+    public static void setCustomAlertToast(Toast customAlertToast) {
         ChatSDKUiHelper.customAlertToast = customAlertToast;
     }
 

@@ -628,10 +628,9 @@ public class ChatSDKChatHelper implements ChatMessageBoxView.MessageBoxOptionsLi
 
         if (StringUtils.isEmpty(text) || StringUtils.isBlank(text))
         {
-            if (!uiHelper.getAlertToast().isShowing()) {
+            uiHelper.getAlertToast().cancel();
                 uiHelper.getAlertToast().setText("Cant send empty message!");
                 uiHelper.getAlertToast().show();
-            }
             return;
         }
 

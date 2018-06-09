@@ -38,6 +38,7 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -127,7 +128,7 @@ public class DialogUtils {
             if (EditorInfo.IME_ACTION_DONE == actionId) {
                 if (mEditText.getText().toString().isEmpty())
                 {
-                    SuperToast toast = chatSDKUiHelper.getAlertToast();
+                    Toast toast = chatSDKUiHelper.getAlertToast();
                     toast.setGravity(Gravity.TOP, 0, 0);
                     toast.setText("Please enter chat name");
                     toast.show();

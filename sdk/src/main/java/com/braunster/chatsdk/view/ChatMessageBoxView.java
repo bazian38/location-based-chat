@@ -53,7 +53,7 @@ public class ChatMessageBoxView extends LinearLayout implements View.OnClickList
     }
 
     /** The alert toast that the app will use to alert the user.*/
-    protected SuperToast alertToast;
+    protected Toast alertToast;
 
     public ChatMessageBoxView(Context context) {
         super(context);
@@ -226,11 +226,11 @@ public class ChatMessageBoxView extends LinearLayout implements View.OnClickList
     }
 
     /*Getters and Setters*/
-    public void setAlertToast(SuperToast alertToast) {
+    public void setAlertToast(Toast alertToast) {
         this.alertToast = alertToast;
     }
 
-    public SuperToast getAlertToast() {
+    public Toast getAlertToast() {
         return alertToast;
     }
 
