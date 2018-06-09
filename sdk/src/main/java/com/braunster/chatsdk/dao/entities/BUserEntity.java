@@ -90,6 +90,10 @@ public abstract class BUserEntity extends Entity {
 
     public abstract String getMetaStatus();
 
+    public abstract void setMetaDepartment(String department);
+
+    public abstract String getMetaDepartment();
+
     public abstract String getThumbnailPictureURL();
 
     public abstract List<BUser> getFollowers();

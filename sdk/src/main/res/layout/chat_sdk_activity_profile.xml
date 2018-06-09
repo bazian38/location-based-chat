@@ -192,6 +192,16 @@
 
             </RelativeLayout>
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="20"
+                android:layout_marginTop="5dp"
+                android:id="@+id/chat_sdk_hidden_department"
+                android:imeOptions="actionDone"
+                android:visibility="invisible"/>
+
         </LinearLayout>
 
     </LinearLayout>
