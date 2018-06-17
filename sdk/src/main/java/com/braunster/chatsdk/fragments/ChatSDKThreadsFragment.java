@@ -24,6 +24,7 @@ import com.braunster.chatsdk.Utils.Debug;
 import com.braunster.chatsdk.Utils.DialogUtils;
 import com.braunster.chatsdk.adapter.ChatSDKThreadsListAdapter;
 import com.braunster.chatsdk.dao.BThread;
+import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.dao.entities.Entity;
 import com.braunster.chatsdk.interfaces.GeoThreadInterface;
 import com.braunster.chatsdk.network.BNetworkManager;
@@ -487,7 +488,15 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
 
     private static Integer suggestedMark(Map.Entry<BThread, Double> entry)
     {
-        return 0;
+        int result = 0;
+        BUser currentUser = BNetworkManager.sharedManager().getNetworkAdapter().currentUserModel();
+
+        if (entry.getKey().getDepartment() != null && currentUser.getMetaDepartment() != null && entry.getKey().getDepartment().equals(currentUser.getMetaDepartment()))
+        {
+            result -= 1;
+        }
+
+        return result;
     }
 
     @Override
