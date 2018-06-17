@@ -40,6 +40,7 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
         public final static Property ApiKey = new Property(11, String.class, "apiKey", false, "api_key");
         public final static Property Creator_ID = new Property(12, Long.class, "creator_ID", false, "CREATOR__ID");
         public final static Property Description = new Property(13, String.class, "description", false, "DESC");
+        public final static Property Department = new Property(14, String.class, "department", false, "DEPARTMENT");
     };
 
     private DaoSession daoSession;
@@ -57,7 +58,7 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
     /** Creates the underlying database table. */
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
-        db.execSQL("CREATE TABLE " + constraint + "'BTHREAD' (" + //
+        db.execSQL("CREATE TABLE " + constraint + "'BTHREAD' (" +
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'ENTITY_ID' TEXT," + // 1: entityID
                 "'CREATION_DATE' INTEGER," + // 2: creationDate
@@ -71,7 +72,8 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
                 "'root_key' TEXT," + // 10: rootKey
                 "'api_key' TEXT," + // 11: apiKey
                 "'CREATOR__ID' INTEGER," + // 12: creator_ID
-                "'DESC' TEXT);"); // 13: description
+                "'DESC' TEXT," + // 13: description
+                "'DEPARTMENT' TEXT);"); // 14: Department
     }
 
     /** Drops the underlying database table. */
@@ -154,6 +156,11 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
         if (creator_ID != null) {
             stmt.bindLong(13, creator_ID);
         }
+
+        String department = entity.getDepartment();
+        if (department != null) {
+            stmt.bindString(15, department);
+        }
     }
 
     @Override
@@ -185,7 +192,8 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // imageUrl
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // rootKey
             cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // apiKey
-            cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12) // creator_ID
+            cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12), // creator_ID
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // department
         );
         return entity;
     }
@@ -207,6 +215,7 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
         entity.setRootKey(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
         entity.setApiKey(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
         entity.setCreator_ID(cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12));
+        entity.setDepartment(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
      }
     
     /** @inheritdoc */
