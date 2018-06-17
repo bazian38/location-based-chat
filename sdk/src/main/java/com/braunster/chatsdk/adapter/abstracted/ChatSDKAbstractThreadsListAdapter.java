@@ -61,6 +61,9 @@ public abstract class ChatSDKAbstractThreadsListAdapter<E extends ChatSDKAbstrac
     public static final String H_GROUPS = "Group Conversations";
     public static final String H_MORE_PEOPLE = "More People";
 
+    ThreadListItem suggestedItem = new ChatSDKAbstractThreadsListAdapter.ThreadListItem("Suggested");
+    ThreadListItem OtherItem = new ChatSDKAbstractThreadsListAdapter.ThreadListItem("Other");
+
     public static final int TYPE_THREAD = 0;
     public static final int TYPE_HEADER = 1;
 
@@ -102,7 +105,7 @@ public abstract class ChatSDKAbstractThreadsListAdapter<E extends ChatSDKAbstrac
 
     @Override
     public int getCount() {
-        return threadItems != null ? threadItems.size() : 0;
+        return threadItems != null ? threadItems.size() : 0 ;
     }
 
     @Override
@@ -234,8 +237,15 @@ public abstract class ChatSDKAbstractThreadsListAdapter<E extends ChatSDKAbstrac
         int size = holder.imgIcon.getHeight();
 
         // Splitting the url to see if there is more then one url.
-        final String urls[] = thread.getImageUrl().split(",");
-
+        String urlsTmp[] = null;
+        if (thread.getImageUrl() != null) {
+            urlsTmp = thread.getImageUrl().split(",");
+        }
+        else
+        {
+            return;
+        }
+        final String urls[] = urlsTmp;
         // Kill the old loader and make a new.
         holder.initPicLoader(thread);
 
@@ -294,6 +304,9 @@ public abstract class ChatSDKAbstractThreadsListAdapter<E extends ChatSDKAbstrac
     }
 
     public void addRow(BThread thread) {
+        addRow(itemMaker.fromBThread(thread));
+    }
+    public void addRow(BThread thread, boolean isSuggested) {
         addRow(itemMaker.fromBThread(thread));
     }
 
@@ -417,6 +430,7 @@ public abstract class ChatSDKAbstractThreadsListAdapter<E extends ChatSDKAbstrac
      * */
     public interface ThreadListItemMaker<E>{
         public E fromBThread(BThread thread);
+        public E fromBThread(BThread thread, boolean isSuggested);
         public E getGroupsHeader();
         public E getMorePeopleHeader();
     }
@@ -448,7 +462,7 @@ public abstract class ChatSDKAbstractThreadsListAdapter<E extends ChatSDKAbstrac
         public long id;
         public Date date;
         public boolean isPrivate;
-
+        public boolean isSuggested = false;
         public int type;
 
         public ThreadListItem(String title){
@@ -457,6 +471,10 @@ public abstract class ChatSDKAbstractThreadsListAdapter<E extends ChatSDKAbstrac
         }
 
         public ThreadListItem(String entityId, String name, String imageUrl, String lastMessageDate, String lastMessageText, int usersAmount, int unreadMessagesAmount, long id, Date date, boolean isPrivate) {
+            initFields(entityId, name, imageUrl, lastMessageDate, lastMessageText, usersAmount, unreadMessagesAmount, id, date, isPrivate);
+        }
+
+        private void initFields(String entityId, String name, String imageUrl, String lastMessageDate, String lastMessageText, int usersAmount, int unreadMessagesAmount, long id, Date date, boolean isPrivate) {
             this.entityId = entityId;
             this.name = name;
             this.isPrivate = isPrivate;
@@ -470,6 +488,10 @@ public abstract class ChatSDKAbstractThreadsListAdapter<E extends ChatSDKAbstrac
             this.date = date;
         }
 
+        public ThreadListItem(String entityId, String name, String imageUrl, String lastMessageDate, String lastMessageText, int usersAmount, int unreadMessagesAmount, long id, Date date, boolean isPrivate, boolean isSuggested) {
+            initFields(entityId, name, imageUrl, lastMessageDate, lastMessageText, usersAmount, unreadMessagesAmount, id, date, isPrivate);
+            this.isSuggested = isSuggested;
+        }
         public int getType() {
             return type;
         }
@@ -636,6 +658,29 @@ public abstract class ChatSDKAbstractThreadsListAdapter<E extends ChatSDKAbstrac
                         thread.getId(),
                         thread.getLastMessageAdded(),
                         thread.getTypeSafely() == BThread.Type.Private);
+            }
+
+            public ThreadListItem fromBThread(BThread thread, boolean isSuggested) {
+                String[] data = new String[2];
+
+                ThreadListItem.getLastMessageTextAndDate(thread, data);
+
+                List<BUser> users = thread.getUsers();
+                String url  = thread.threadImageUrl();
+
+                String displayName = thread.displayName(users);
+
+                return new ThreadListItem(thread.getEntityID(),
+                        StringUtils.isEmpty(displayName) ? "No name." : displayName,
+                        url,
+                        data[1],
+                        data[0],
+                        users.size(),
+                        thread.getUnreadMessagesAmount(),
+                        thread.getId(),
+                        thread.getLastMessageAdded(),
+                        thread.getTypeSafely() == BThread.Type.Private,
+                        isSuggested);
             }
 
             @Override

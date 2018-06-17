@@ -36,6 +36,7 @@ import com.firebase.geofire.util.GeoUtils;
 import org.jdeferred.DoneCallback;
 import org.jdeferred.FailCallback;
 
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -464,14 +465,18 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
             public int compare(Map.Entry<BThread, Double> o1,
                                Map.Entry<BThread, Double> o2)
             {
-                if (order)
-                {
-                    return o1.getValue().compareTo(o2.getValue());
-                }
-                else
-                {
-                    return o2.getValue().compareTo(o1.getValue());
-                }
+                Map.Entry<BThread, Double> firstOb = order ? o1 : o2;
+                Map.Entry<BThread, Double> secondOb = order ? o2 : o1;
+
+                    if (suggestedMark(firstOb).compareTo(suggestedMark(secondOb)) == 0)
+                    {
+                        return firstOb.getValue().compareTo(secondOb.getValue());
+                    }
+                    else
+                    {
+                        return suggestedMark(firstOb).compareTo(suggestedMark(secondOb));
+                    }
+
             }
         });
 
@@ -483,6 +488,11 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
         }
 
         return sortedMap;
+    }
+
+    private static Integer suggestedMark(Map.Entry<BThread, Double> entry)
+    {
+        return 0;
     }
 
     @Override
