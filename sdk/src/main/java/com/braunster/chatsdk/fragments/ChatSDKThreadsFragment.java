@@ -1,7 +1,6 @@
 package com.braunster.chatsdk.fragments;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 
 import com.braunster.chatsdk.R;
 import com.braunster.chatsdk.Utils.Debug;
-import com.braunster.chatsdk.Utils.DialogUtils;
 import com.braunster.chatsdk.adapter.ChatSDKThreadsListAdapter;
 import com.braunster.chatsdk.dao.BThread;
 import com.braunster.chatsdk.dao.entities.Entity;
@@ -60,7 +58,7 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
     private Map<BThread, GeoLocation> threadsLocationsMap;
     private Map<String, BThread> threadsEntityID;
 
-    private GeoLocation currentUserGeoLocation = new GeoLocation(0.0, 0.0);;
+    private GeoLocation currentUserGeoLocation = new GeoLocation(0.0, 0.0);
     private boolean isVisibleToUser;
 
     public static ChatSDKThreadsFragment newInstance()

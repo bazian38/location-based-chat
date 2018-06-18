@@ -140,6 +140,7 @@ public class BDefines {
         public static final String BPictureURL = "pictureURL";
         public static final String BPictureURLThumbnail = "pictureURLThumbnail";
         public static final String BDepartment = "department";
+        public static final String BCourses = "courses";
 
         public static final String BLastMessageAdded = "last-message-added";
         public static final String BUserFirebaseId = "user-firebase-id";

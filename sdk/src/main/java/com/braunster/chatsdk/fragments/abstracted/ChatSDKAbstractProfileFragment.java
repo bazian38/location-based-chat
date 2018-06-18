@@ -95,8 +95,10 @@ public abstract class ChatSDKAbstractProfileFragment extends ChatSDKBaseFragment
         if (!enableActionBarItems)
             return;
 
-        MenuItem item =
-                menu.add(Menu.NONE, R.id.action_chat_sdk_logout, 12, "Logout");
+        MenuItem item2 = menu.add(Menu.NONE, R.id.add_course, 15, "Add Course");
+        item2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        MenuItem item = menu.add(Menu.NONE, R.id.action_chat_sdk_logout, 16, "Logout");
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         item.setIcon(R.drawable.ic_cancel);
     }
@@ -107,9 +109,14 @@ public abstract class ChatSDKAbstractProfileFragment extends ChatSDKBaseFragment
         /* Cant use switch in the library*/
         int id = item.getItemId();
 
+
         if (id == R.id.action_chat_sdk_logout)
         {
             logout();
+            return true;
+        }
+        if (id == R.id.add_course) {
+            addCourse();
             return true;
         }
 
@@ -121,6 +128,7 @@ public abstract class ChatSDKAbstractProfileFragment extends ChatSDKBaseFragment
     }
 
     public abstract void logout();
+    public abstract void addCourse();
 
     public void enableActionBarItems(boolean enableActionBarItems) {
         this.enableActionBarItems = enableActionBarItems;

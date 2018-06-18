@@ -57,21 +57,6 @@ public class ChatcatProfileFragment extends ChatSDKAbstractProfileFragment {
 
         setupTouchUIToDismissKeyboard(mainView, R.id.chat_sdk_circle_ing_profile_pic);
 
-        // Changing the weight of the view according to orientation.
-        // This will make sure (hopefully) there is enough space to show the views in landscape mode.
-//        int currentOrientation = getResources().getConfiguration().orientation;
-//        if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE){
-//            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mainView.findViewById(R.id.frame_profile_image_container).getLayoutParams();
-//            layoutParams.weight = 3;
-//            mainView.findViewById(R.id.frame_profile_image_container).setLayoutParams(layoutParams);
-//        }
-//        else
-//        {
-//            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mainView.findViewById(R.id.frame_profile_image_container).getLayoutParams();
-//            layoutParams.weight = 2;
-//            mainView.findViewById(R.id.linear).setLayoutParams(layoutParams);
-//        }
-
     }
 
     @Override
@@ -99,6 +84,12 @@ public class ChatcatProfileFragment extends ChatSDKAbstractProfileFragment {
         BNetworkManager.sharedManager().getNetworkAdapter().logout();
         chatSDKUiHelper.startLoginActivity(true);
     }
+
+    @Override
+    public void addCourse() {
+
+    }
+
 
     /** Fetching the user details from the user's metadata.*/
     private void setDetails(int loginType){

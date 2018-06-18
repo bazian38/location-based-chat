@@ -26,4 +26,8 @@
         android:title="@string/action_add_chat"
         android:icon="@android:drawable/ic_menu_add"
         android:orderInCategory="10" />
+
+    <item android:id="@+id/add_course"
+        android:title="Add Course"
+        android:orderInCategory="15" />
 </menu>

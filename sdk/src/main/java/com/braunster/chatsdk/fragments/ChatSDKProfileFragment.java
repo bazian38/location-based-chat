@@ -1,8 +1,11 @@
 
 package com.braunster.chatsdk.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.braunster.chatsdk.R;
@@ -20,6 +24,11 @@ import com.braunster.chatsdk.network.BDefines;
 import com.braunster.chatsdk.network.BNetworkManager;
 import com.braunster.chatsdk.object.SaveIndexDetailsTextWatcher;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+
+
 public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
 
     private static final String S_I_D_NAME = "saved_name_data";
@@ -27,9 +36,14 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
     private static final String S_I_D_EMAIL = "saved_email_data";
     private static final String S_I_D_STATUS = "saved_status_data";
     private static final String S_I_D_DEPARTMENT = "saved_department_data";
+    private static final String S_I_D_COURSES = "saved_courses_data";
 
-    private EditText etName, etMail, etPhone, etStatus, etDepartment;
+    private EditText etName, etMail, etPhone, etStatus, etDepartment, etCourses;
     private Spinner spinner;
+
+    private ListView courses;
+    private ArrayList<String> arrayCourses;
+    private ArrayAdapter<String> arrayAdapter;
 
     public static ChatSDKProfileFragment newInstance() {
         ChatSDKProfileFragment f = new ChatSDKProfileFragment();
@@ -90,6 +104,12 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.departments_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        etCourses = mainView.findViewById(R.id.chat_sdk_hidden_course);
+        courses = mainView.findViewById(R.id.lv_courses);
+        arrayCourses = new ArrayList<>();
+        arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, arrayCourses);
+        courses.setAdapter(arrayAdapter);
     }
 
     @Override
@@ -128,6 +148,44 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
             }
         });
 
+        TextWatcher coursesTextWatcher = new SaveIndexDetailsTextWatcher(BDefines.Keys.BCourses);
+        etCourses.addTextChangedListener(coursesTextWatcher);
+
+        courses.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(final AdapterView<?> adapterView, View view, final int i, long l) {
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Remove Course?");
+                alert.setPositiveButton("YES", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Object item = adapterView.getItemAtPosition(i);
+                        if (item != null) {
+                            arrayAdapter.remove(item.toString());
+                            if (!arrayCourses.isEmpty()) {
+                                Iterator<String> iterator = arrayCourses.iterator();
+                                StringBuilder s = new StringBuilder("");
+                                while (iterator.hasNext()) {
+                                    s.append(iterator.next());
+                                    s.append(";");
+                                }
+                                etCourses.setText(s.toString());
+                            } else {
+                                etCourses.setText(";");
+                            }
+                        }
+                    }
+                });
+                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dismissProgDialog();
+                    }
+                });
+                alert.show();
+            }
+        });
+
         loadData();
     }
 
@@ -148,6 +206,8 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
             etPhone.getText().clear();
             etStatus.getText().clear();
             etDepartment.getText().clear();
+            etCourses.getText().clear();
+            arrayAdapter.clear();
         }
     }
 
@@ -160,6 +220,7 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
         outState.putString(S_I_D_PHONE, etPhone.getText().toString());
         outState.putString(S_I_D_STATUS, etStatus.getText().toString());
         outState.putString(S_I_D_DEPARTMENT, etDepartment.getText().toString());
+        outState.putString(S_I_D_COURSES, etCourses.getText().toString());
     }
 
     @Override
@@ -168,6 +229,25 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
 
         BNetworkManager.sharedManager().getNetworkAdapter().logout();
         chatSDKUiHelper.startLoginActivity(true);
+    }
+
+    @Override
+    public void addCourse() {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        final EditText input = new EditText(getActivity());
+        input.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        alert.setView(input);
+        alert.setTitle("Write Course Number");
+        alert.setMessage("should contain only numbers");
+        alert.setPositiveButton("ADD", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                final String s = input.getText().toString().trim();
+                arrayAdapter.add(s);
+                etCourses.setText(s + ";" + etCourses.getText());
+            }
+        });
+        alert.show();
     }
 
     /*############################################*/
@@ -190,6 +270,14 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
         etDepartment.setText(department);
 
         chatSDKProfileHelper.loadProfilePic(loginType);
+
+        String courses = user.getMetaCourses();
+        if (courses != null) {
+            etCourses.setText(courses);
+            String[] arrCourses = courses.split(";");
+            arrayCourses.clear();
+            Collections.addAll(arrayCourses, arrCourses);
+        }
     }
 
     private int getIndex(Spinner spinner, String myString) {
@@ -215,7 +303,12 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
         etDepartment.setText(department);
 
         chatSDKProfileHelper.loadProfilePic(loginType);
+
+        String courses = bundle.getString(S_I_D_COURSES, "");
+        etCourses.setText(courses);
+        String[] arrCourses = courses.split(";");
+        arrayCourses.clear();
+        Collections.addAll(arrayCourses, arrCourses);
     }
 
-    /*############################################*/
 }

@@ -19,8 +19,7 @@
             android:layout_height="match_parent"
             android:id="@+id/chat_sdk_logout_button"
             android:text="@string/logout"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
@@ -200,9 +199,22 @@
                 android:layout_marginTop="5dp"
                 android:id="@+id/chat_sdk_hidden_department"
                 android:imeOptions="actionDone"
-                android:visibility="invisible"/>
+                android:visibility="gone"/>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lv_courses"
+                android:isScrollContainer="false"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chat_sdk_hidden_course"
+                android:visibility="gone"/>
 
         </LinearLayout>
+
 
     </LinearLayout>
 
