@@ -7,9 +7,6 @@ import de.greenrobot.daogenerator.Schema;
 import de.greenrobot.daogenerator.ToMany;
 import de.greenrobot.daogenerator.ToOne;
 
-/**
- * Created by itzik on 6/8/2014.
- */
 public class Generator {
 
     // TODO set not null attribute to the properties that needs it.

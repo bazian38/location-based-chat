@@ -357,31 +357,6 @@ public abstract class BFirebaseNetworkAdapter extends AbstractNetworkAdapter {
 
         switch (error.getCode())
         {
-            /*case DatabaseError.EMAIL_TAKEN:
-                code = BError.Code.EMAIL_TAKEN;
-                errorMessage = "Email is taken.";
-                break;
-
-            case DatabaseError.INVALID_EMAIL:
-                code = BError.Code.INVALID_EMAIL;
-                errorMessage = "Invalid Email.";
-                break;
-
-            case DatabaseError.INVALID_PASSWORD:
-                code = BError.Code.INVALID_PASSWORD;
-                errorMessage = "Invalid Password";
-                break;
-
-            case DatabaseError.USER_DOES_NOT_EXIST:
-                code = BError.Code.USER_DOES_NOT_EXIST;
-                errorMessage = "Account not found.";
-                break;
-
-            case DatabaseError.INVALID_CREDENTIALS:
-                code = BError.Code.INVALID_CREDENTIALS;
-                errorMessage = "Invalid credentials.";
-                break;*/
-
             case DatabaseError.NETWORK_ERROR:
                 code = BError.Code.NETWORK_ERROR;
                 errorMessage = "Network Error.";

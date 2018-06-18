@@ -240,7 +240,6 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
     private void openChat(int position) {
         final Intent intent = new Intent();
 
-
         showProgDialog("Opening thread.");
 
         getNetworkAdapter().createThreadWithUsers("", contactsFragment.getAdapter().getItem(position).asBUser(), getNetworkAdapter().currentUserModel())
@@ -285,7 +284,8 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
                 });
     }
 
-    protected void initActionBar(){
+    protected void initActionBar()
+    {
         ActionBar ab = getActionBar();
         if (ab!=null)
         {
@@ -295,14 +295,16 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         super.onPause();
 
         getNetworkAdapter().getEventManager().removeEventByTag(this.getClass().getSimpleName());
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         setResult(Activity.RESULT_OK);
         finish();
 
@@ -311,7 +313,8 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (DEBUG) Timber.v("onActivityResult");
@@ -385,7 +388,8 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
         }
     }
 
-    public void onClick(View view) {
+    public void onClick(View view)
+    {
         if (thread.getType() != 0) {
             if (StringUtils.isNotBlank(thread.getCreatorEntityId()) && thread.getCreatorEntityId().equals(getNetworkAdapter().currentUserModel().getEntityID())) {
                 if (view.getId() == R.id.chat_sdk_thread_desc) {

@@ -10,12 +10,6 @@ package com.braunster.chatsdk.network;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by itzik on 6/8/2014.
- *
- * This is the only trace in the core SDK for firebase, Needed for some stuff that cannot be removed from the core.
- *
- */
 public class BFirebaseDefines {
 
     public static Map<String, String> getServerTimestamp(){

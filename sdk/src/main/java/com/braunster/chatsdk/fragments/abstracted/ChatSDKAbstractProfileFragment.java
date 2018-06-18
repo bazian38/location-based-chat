@@ -12,9 +12,7 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import com.braunster.chatsdk.R;
-import com.braunster.chatsdk.Utils.Debug;
 import com.braunster.chatsdk.Utils.helper.ChatSDKProfileHelper;
-import com.braunster.chatsdk.dao.BUser;
 import com.braunster.chatsdk.fragments.ChatSDKBaseFragment;
 import com.braunster.chatsdk.network.BDefines;
 import com.braunster.chatsdk.network.BNetworkManager;

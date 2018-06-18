@@ -1,5 +1,3 @@
-
-
 package com.braunster.chatsdk.thread;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -7,9 +5,6 @@ import java.util.concurrent.TimeUnit;
 
 import timber.log.Timber;
 
-/**
- * Created by braunster on 18/08/14.
- */
 public class ChatSDKImageMessagesThreadPool {
     // Sets the amount of time an idle thread waits before terminating
     private static final int KEEP_ALIVE_TIME = 3;

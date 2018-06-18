@@ -26,9 +26,6 @@ import java.util.Collection;
 
 import timber.log.Timber;
 
-/**
- * Created by Erk on 27.07.2016.
- */
 public class BBackendlessHandler implements BPushHandler, BUploadHandler {
 
     private static final String TAG = BBackendlessHandler.class.getSimpleName();

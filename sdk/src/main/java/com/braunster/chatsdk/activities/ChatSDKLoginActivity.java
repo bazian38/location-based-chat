@@ -19,7 +19,8 @@ import com.braunster.chatsdk.network.BDefines;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implements View.OnClickListener{
+public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implements View.OnClickListener
+{
 
     private static final String TAG = ChatSDKLoginActivity.class.getSimpleName();
     private static boolean DEBUG = Debug.LoginActivity;
@@ -28,8 +29,8 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
     private ImageView appIconImage;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-//        enableFacebookIntegration(getNetworkAdapter().facebookEnabled());
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_sdk_activty_login);
 
@@ -45,20 +46,10 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
     }
 
     @Override
-    protected void initViews(){
-       // super.initViews();
-//        facebookLogin.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
-//        facebookLogin.setBackgroundResource(R.drawable.ic_facebook);
-//
-//        if (integratedWithFacebook)
-//        {
-//
-//            facebookLogin.setReadPermissions(Arrays.asList("email", "user_friends"));
-//        }
+    protected void initViews()
+    {
 
         btnLogin = (Button) findViewById(R.id.chat_sdk_btn_login);
-//        btnAnon = (Button) findViewById(R.id.chat_sdk_btn_anon_login);
-//        btnTwitter = (Button) findViewById(R.id.chat_sdk_btn_twitter_login);
         btnReg = (Button) findViewById(R.id.chat_sdk_btn_register);
         etEmail = (EditText) findViewById(R.id.chat_sdk_et_mail);
         etPass = (EditText) findViewById(R.id.chat_sdk_et_password);
@@ -73,12 +64,11 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         });
     }
 
-    private void initListeners(){
+    private void initListeners()
+    {
         /* Registering listeners.*/
         btnLogin.setOnClickListener(this);
         btnReg.setOnClickListener(this);
-//        btnAnon.setOnClickListener(this);
-//        btnTwitter.setOnClickListener(this);
 
         etPass.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -91,7 +81,8 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         });
     }
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
 
         initListeners();
@@ -99,7 +90,8 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
 
     /* Dismiss dialog and open main activity.*/
     @Override
-    protected void afterLogin(){
+    protected void afterLogin()
+    {
         super.afterLogin();
 
         // Updating the version name.
@@ -122,7 +114,8 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         int i = v.getId();
 
         if (i == R.id.chat_sdk_btn_login) {
@@ -131,14 +124,6 @@ public class ChatSDKLoginActivity extends ChatSDKAbstractLoginActivity implement
         else if (i == R.id.chat_sdk_btn_register) {
             register();
         }
-        /*
-        else if (i == R.id.chat_sdk_btn_anon_login) {
-            anonymosLogin();
-        }
-        else if (i == R.id.chat_sdk_btn_twitter_login){
-            twitterLogin();
-        }
-        */
     }
 
 }

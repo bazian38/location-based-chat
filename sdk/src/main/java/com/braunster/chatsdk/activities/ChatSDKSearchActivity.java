@@ -31,7 +31,6 @@ import org.jdeferred.FailCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ChatSDKSearchActivity extends ChatSDKBaseActivity {
 
     private static final String TAG = ChatSDKSearchActivity.class.getSimpleName();

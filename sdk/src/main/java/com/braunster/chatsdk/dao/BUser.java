@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import de.greenrobot.dao.Property;
 import timber.log.Timber;
 
+
 /**
  * Entity mapped to table BUSER.
  */

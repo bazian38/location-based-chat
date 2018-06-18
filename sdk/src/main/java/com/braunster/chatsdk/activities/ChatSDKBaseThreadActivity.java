@@ -16,9 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import timber.log.Timber;
 
-/**
- * Created by braunster on 24/11/14.
- */
 public class ChatSDKBaseThreadActivity extends ChatSDKBaseActivity {
 
     private static final String TAG = ChatSDKBaseThreadActivity.class.getSimpleName();
@@ -127,5 +124,4 @@ public class ChatSDKBaseThreadActivity extends ChatSDKBaseActivity {
         }
         return true;
     }
-
 }

@@ -1,10 +1,3 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:24 PM
- */
-
 package com.braunster.chatsdk.object;
 
 import android.content.Context;
@@ -15,9 +8,6 @@ import android.provider.MediaStore;
 import com.soundcloud.android.crop.Crop;
 import com.soundcloud.android.crop.CropImageActivity;
 
-/**
- * Created by braunster on 04/09/14.
- */
 public class Cropper extends Crop {
     private Uri source;
 

@@ -56,21 +56,4 @@ public class BNetworkManager {
         return networkAdapter;
     }
 
-    //TODO
-/*    *//* Always safe to call*//*
-    public static SharedPreferences getUserPrefs(String entityId){
-        return context.getSharedPreferences(entityId, Context.MODE_PRIVATE);
-    }
-    *//* Safe to call after login.*//*
-    public static SharedPreferences getCurrentUserPrefs(){
-        return context.getSharedPreferences(sharedManager().getNetworkAdapter().currentUserModel().getEntityID(), Context.MODE_PRIVATE);
-    }
-
-    public void setGeoDelegate(GeoInterface delegate) {
-        geoDelegate = delegate;
-    }
-
-    public GeoInterface getGeoDelegate() {
-        return geoDelegate;
-    }*/
 }
