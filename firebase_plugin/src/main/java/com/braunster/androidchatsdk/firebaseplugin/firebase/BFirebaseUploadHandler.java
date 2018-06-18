@@ -20,9 +20,6 @@ import org.jdeferred.impl.DeferredObject;
 
 import timber.log.Timber;
 
-/**
- * Created by Erk on 26.07.2016.
- */
 public class BFirebaseUploadHandler implements BUploadHandler {
 
     private static final String TAG = BFirebaseUploadHandler.class.getSimpleName();

@@ -1,10 +1,3 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:27 PM
- */
-
 package com.braunster.chatsdk.activities;
 
 import android.Manifest;
@@ -37,9 +30,6 @@ import java.io.File;
 
 import timber.log.Timber;
 
-/**
- * Created by braunster on 19/06/14.
- */
 public class ChatSDKLocationActivity extends FragmentActivity implements OnMapReadyCallback {
 
     public static final String TAG = ChatSDKLocationActivity.class.getSimpleName();
@@ -184,11 +174,13 @@ public class ChatSDKLocationActivity extends FragmentActivity implements OnMapRe
         finish();
     }
 
-    private void setLocation(Location location){
+    private void setLocation(Location location)
+    {
         setLocation(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
-    private void setLocation(LatLng location){
+    private void setLocation(LatLng location)
+    {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(location)      // Sets the center of the map to Mountain View
                 .zoom(13)                   // Sets the zoom

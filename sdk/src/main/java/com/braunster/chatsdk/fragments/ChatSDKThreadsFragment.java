@@ -1,7 +1,6 @@
 package com.braunster.chatsdk.fragments;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 
 import com.braunster.chatsdk.R;
 import com.braunster.chatsdk.Utils.Debug;
-import com.braunster.chatsdk.Utils.DialogUtils;
 import com.braunster.chatsdk.adapter.ChatSDKThreadsListAdapter;
 import com.braunster.chatsdk.dao.BThread;
 import com.braunster.chatsdk.dao.BUser;
@@ -37,7 +35,6 @@ import com.firebase.geofire.util.GeoUtils;
 import org.jdeferred.DoneCallback;
 import org.jdeferred.FailCallback;
 
-import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -428,7 +425,9 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
     {
         Map<BThread, Double> threadsDistanceMap = getThreadsDistanceMap();
 
-        threadsDistanceMap = sortByComparator(threadsDistanceMap, true);
+        BUser currentUser = BNetworkManager.sharedManager().getNetworkAdapter().currentUserModel();
+
+        threadsDistanceMap = sortByComparator(threadsDistanceMap, true, currentUser);
 
         return threadsDistanceMap;
     }
@@ -451,7 +450,7 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
         return threadsDistanceMap;
     }
 
-    private static Map<BThread, Double> sortByComparator(Map<BThread, Double> unsortMap, final boolean order)
+    public static Map<BThread, Double> sortByComparator(Map<BThread, Double> unsortMap, final boolean order,final BUser currentUser)
     {
         List<Map.Entry<BThread, Double>> list = new LinkedList<>(unsortMap.entrySet());
 
@@ -464,13 +463,13 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
                 Map.Entry<BThread, Double> firstOb = order ? o1 : o2;
                 Map.Entry<BThread, Double> secondOb = order ? o2 : o1;
 
-                    if (suggestedMark(firstOb).compareTo(suggestedMark(secondOb)) == 0)
+                    if (suggestedMark(firstOb, currentUser).compareTo(suggestedMark(secondOb, currentUser)) == 0)
                     {
                         return firstOb.getValue().compareTo(secondOb.getValue());
                     }
                     else
                     {
-                        return suggestedMark(firstOb).compareTo(suggestedMark(secondOb));
+                        return suggestedMark(firstOb, currentUser).compareTo(suggestedMark(secondOb, currentUser));
                     }
 
             }
@@ -486,10 +485,9 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
         return sortedMap;
     }
 
-    private static Integer suggestedMark(Map.Entry<BThread, Double> entry)
+    private static Integer suggestedMark(Map.Entry<BThread, Double> entry, BUser currentUser)
     {
         int result = 0;
-        BUser currentUser = BNetworkManager.sharedManager().getNetworkAdapter().currentUserModel();
 
         if (entry.getKey().getDepartment() != null && currentUser.getMetaDepartment() != null && entry.getKey().getDepartment().equals(currentUser.getMetaDepartment()))
         {

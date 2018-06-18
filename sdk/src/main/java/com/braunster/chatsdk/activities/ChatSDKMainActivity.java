@@ -1,17 +1,9 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:27 PM
- */
-
 package com.braunster.chatsdk.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -40,14 +32,11 @@ import com.braunster.chatsdk.network.events.AppEventListener;
 import com.braunster.chatsdk.object.ChatSDKThreadPool;
 import com.braunster.chatsdk.object.UIUpdater;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Map;
-
 import timber.log.Timber;
 
 
-public class ChatSDKMainActivity extends ChatSDKBaseActivity {
+public class ChatSDKMainActivity extends ChatSDKBaseActivity
+{
 
     private static boolean DEBUG = Debug.MainActivity;
     private ExitHelper exitHelper;
@@ -101,7 +90,8 @@ public class ChatSDKMainActivity extends ChatSDKBaseActivity {
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
 
         ChatSDKThreadPool.getInstance().execute(new Runnable() {
@@ -117,7 +107,6 @@ public class ChatSDKMainActivity extends ChatSDKBaseActivity {
 
                     @Override
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                if (DEBUG) Log.v(TAG, "onPageScrolled");
                     }
 
                     @Override
@@ -132,7 +121,6 @@ public class ChatSDKMainActivity extends ChatSDKBaseActivity {
 
                     @Override
                     public void onPageScrollStateChanged(int state) {
-//                if (DEBUG) Log.v(TAG, "onPageScrollStateChanged");
                     }
                 });
 
@@ -250,28 +238,8 @@ public class ChatSDKMainActivity extends ChatSDKBaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        /*
-        if (item.getItemId() == R.id.android_settings) {
-
-            // FIXME Clearing the cache, Just for debug.
-
-
-            VolleyUtils.getBitmapCache().resize(1);
-            VolleyUtils.getBitmapCache().resize(maxMemory / 8);
-            return true;
-        }
-        else   if (item.getItemId() == R.id.contact_developer) {
-            if(StringUtils.isNotEmpty(BDefines.ContactDeveloper_Email))
-            {
-                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                        "mailto", BDefines.ContactDeveloper_Email, null));
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, BDefines.ContactDeveloper_Subject);
-                startActivity(Intent.createChooser(emailIntent, BDefines.ContactDeveloper_DialogTitle));
-            }
-            return true;
-        }
-        */
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         return super.onOptionsItemSelected(item);
     }
 

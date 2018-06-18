@@ -34,9 +34,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import timber.log.Timber;
 
-/**
- * Created by Erk on 30.03.2016.
- */
 public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements GeoInterface {
 
     private static boolean DEBUG = Debug.NearbyUsersFragment;
@@ -54,7 +51,6 @@ public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements G
     private ProgressBar progressBar;
     private UIUpdater uiUpdater;
     private TextView noUsersTextView;
-    //private ArrayList<Double> distanceBands;
 
     private GeoLocation currentUserGeoLocation = new GeoLocation(0.0, 0.0);
     private Map<BUser, GeoLocation> usersLocationsMap;
@@ -68,16 +64,6 @@ public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements G
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(false);
-
-/*
-        // Populate the distance bands
-        distanceBands = new ArrayList<Double>();
-        distanceBands.add(0.0);
-        distanceBands.add(1000.0);
-        distanceBands.add(5000.0);
-        distanceBands.add(10000.0);
-        distanceBands.add(50000.0);
-*/
 
         usersLocationsMap = new HashMap<>();
         usersEntityID = new HashMap<>();
@@ -191,31 +177,6 @@ public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements G
 
                             // Update the current distance
                             currentDistance = userDistanceMap.get(user);
-/*
-                            if (showBands)
-                            {
-                                // Loop through all distance bands to see if we have to skip some of them
-                                for (int i = currentBandIndex; i < distanceBands.size(); i++)
-                                {
-                                    // Check if we will still be in the bounds of the distanceBands array when incrementing and
-                                    // check if the current distance is bigger than the lower border of the current band
-                                    if ((currentBandIndex + 1) < distanceBands.size() && currentDistance >= distanceBands.get(currentBandIndex))
-                                    {
-                                        // If the current user distance exceeds the upper border of the current band go to the next band
-                                        if (currentDistance > distanceBands.get(currentBandIndex + 1))
-                                        {
-                                            currentBandIndex++;
-                                        }
-                                        else
-                                        {
-                                            // If there is at least one user in a band add this band and increment the band index
-                                            adapter.addBand(distanceBands.get(currentBandIndex), distanceBands.get(currentBandIndex + 1));
-                                            currentBandIndex++;
-                                        }
-                                    }
-                                }
-                            }
-*/
 
                             if(!user.getEntityID().equals(currentUserID))
                             {
@@ -342,7 +303,7 @@ public class ChatSDKNearbyUsersFragment extends ChatSDKBaseFragment implements G
         return usersDistanceMap;
     }
 
-    private static Map<BUser, Double> sortByComparator(Map<BUser, Double> unsortMap, final boolean order)
+    public static Map<BUser, Double> sortByComparator(Map<BUser, Double> unsortMap, final boolean order)
     {
         List<Map.Entry<BUser, Double>> list = new LinkedList<Map.Entry<BUser, Double>>(unsortMap.entrySet());
 

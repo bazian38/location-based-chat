@@ -21,9 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by kykrueger on 2016-09-04.
- */
 public class ThreadRecovery {
     public static Promise<BThread, BError, Void> checkForAndRecoverThreadWithUsers(List<BUser> users){
 

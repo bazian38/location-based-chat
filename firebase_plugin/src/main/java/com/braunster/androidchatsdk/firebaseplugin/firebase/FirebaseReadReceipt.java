@@ -1,15 +1,11 @@
 package com.braunster.androidchatsdk.firebaseplugin.firebase;
 
-/**
- * Created by kykrueger on 2016-06-21.
- */
 public class FirebaseReadReceipt {
 
     private String userId;
     private Long date;
     private Integer status;
     public FirebaseReadReceipt(){
-        // empty default constructor for Firebase deserialization
     }
 
     public FirebaseReadReceipt(String userId, Long date, Integer status){

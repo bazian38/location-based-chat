@@ -25,9 +25,6 @@ import java.util.Calendar;
 
 import timber.log.Timber;
 
-/**
- * Created by braunster on 02/04/15.
- */
 public class ChatSDKEditProfileActivity extends ChatSDKBaseActivity implements OnClickListener {
 
     public static final String Male = "male", Female ="female";
@@ -169,16 +166,14 @@ public class ChatSDKEditProfileActivity extends ChatSDKBaseActivity implements O
         findViewById(R.id.chat_sdk_pick_birth_date_button).setOnClickListener(this);
     }
 
-    public void logout() {
-        // Logout and return to the login activity.
-        //BFacebookManager.logout(this);
-
+    public void logout()
+    {
         BNetworkManager.sharedManager().getNetworkAdapter().logout();
         chatSDKUiHelper.startLoginActivity(true);
     }
     
-    private void setSelected(TextView textView, boolean selected){
-        
+    private void setSelected(TextView textView, boolean selected)
+    {
         textView.setSelected(selected);
         
         if (selected)
@@ -189,8 +184,8 @@ public class ChatSDKEditProfileActivity extends ChatSDKBaseActivity implements O
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         if (item.getItemId() == android.R.id.home)
         {
             onBackPressed();
@@ -201,7 +196,8 @@ public class ChatSDKEditProfileActivity extends ChatSDKBaseActivity implements O
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         super.onBackPressed();
         
         if (!loggingOut)
@@ -210,19 +206,20 @@ public class ChatSDKEditProfileActivity extends ChatSDKBaseActivity implements O
             getNetworkAdapter().pushUser();
         }
 
-
         overridePendingTransition(R.anim.dummy, R.anim.slide_top_bottom_out);
     }
 
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         int i = v.getId();
         if (i == R.id.chat_sdk_logout_button) {
             loggingOut = true;
             logout();
         }
-        else if (i == R.id.chat_sdk_app_info_button) {
+        else if (i == R.id.chat_sdk_app_info_button)
+        {
             try {
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -238,7 +235,8 @@ public class ChatSDKEditProfileActivity extends ChatSDKBaseActivity implements O
             }
 
         }
-        else if (i == R.id.chat_sdk_pick_birth_date_button) {
+        else if (i == R.id.chat_sdk_pick_birth_date_button)
+        {
             final Calendar calendar = Calendar.getInstance();
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(ChatSDKEditProfileActivity.this, new DatePickerDialog.OnDateSetListener() {

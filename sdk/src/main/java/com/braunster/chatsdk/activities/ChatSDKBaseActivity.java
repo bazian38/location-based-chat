@@ -470,18 +470,6 @@ public class ChatSDKBaseActivity extends Activity implements ChatSDKBaseActivity
     public void setChatSDKUiHelper(ChatSDKUiHelper chatSDKUiHelper) {
         this.chatSDKUiHelper = chatSDKUiHelper;
     }
-
-/*    public void setToast(SuperToast toast) {
-        chatSDKUiHelper.setToast(toast);
-    }
-
-    public SuperToast getToast() {
-        return chatSDKUiHelper.getToast();
-    }
-
-    public SuperToast getAlertToast() {
-        return chatSDKUiHelper.getAlertToast();
-    }*/
 }
 
 interface ChatSDKBaseActivityInterface extends ChatSDKUiHelper.ChatSDKUiHelperInterface {

@@ -1,10 +1,3 @@
-/*
- * Created by Itzik Braun on 12/3/2015.
- * Copyright (c) 2015 deluge. All rights reserved.
- *
- * Last Modification at: 3/12/15 4:27 PM
- */
-
 package com.braunster.chatsdk.view;
 
 import android.content.Context;
@@ -25,8 +18,6 @@ import com.braunster.chatsdk.R;
 import com.braunster.chatsdk.Utils.Debug;
 import com.braunster.chatsdk.Utils.DialogUtils;
 import com.braunster.chatsdk.Utils.Utils;
-import com.braunster.chatsdk.network.BNetworkManager;
-import com.github.johnpersano.supertoasts.SuperToast;
 
 import java.util.Timer;
 import java.util.TimerTask;
