@@ -41,7 +41,7 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
         public final static Property Description = new Property(13, String.class, "description", false, "DESC");
         public final static Property Department = new Property(14, String.class, "department", false, "DEPARTMENT");
         public final static Property Course = new Property(15, String.class, "course", false, "COURSE");
-    };
+    }
 
     private DaoSession daoSession;
 

@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -95,8 +98,28 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
 
                 }
             });
+
+            txtThreadCourse.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    thread.setCourse(editable.toString());
+                    DaoCore.updateEntity(thread);
+                    getNetworkAdapter().pushThread(thread);
+                }
+            });
+
             findViewById(R.id.thread_spinner).setVisibility(View.VISIBLE);
-            findViewById(R.id.thread_course).setVisibility(View.GONE);
+            findViewById(R.id.thread_course).setVisibility(View.VISIBLE);
         }
     }
 

@@ -489,6 +489,8 @@ public class BThreadWrapper extends EntityWrapper<BThread> {
 
         nestedMap.put(BDefines.Keys.BDepartment, this.model.getDepartment());
 
+        nestedMap.put(BDefines.Keys.BCourse, this.model.getCourse());
+
         value.put(BFirebaseDefines.Path.BDetailsPath, nestedMap);
                 
         return value;

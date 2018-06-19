@@ -73,7 +73,7 @@ public class BThreadExampleInstrumentedTest {
         daoSession = DaoCore.daoSession;
 
 
-        daoMaster.createAllTables(daoSession.getDatabase(), true);
+        daoMaster.createAllTables(daoSession.getDatabase(), false);
 
         appContext = InstrumentationRegistry.getTargetContext();
 
