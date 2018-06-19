@@ -58,4 +58,6 @@ public abstract class BUserEntity extends Entity {
 
     public abstract String getMetaCourses();
 
+    public abstract void setMetaCourses(String courses);
+
 }

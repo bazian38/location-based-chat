@@ -40,6 +40,7 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
         public final static Property Creator_ID = new Property(12, Long.class, "creator_ID", false, "CREATOR__ID");
         public final static Property Description = new Property(13, String.class, "description", false, "DESC");
         public final static Property Department = new Property(14, String.class, "department", false, "DEPARTMENT");
+        public final static Property Course = new Property(15, String.class, "course", false, "COURSE");
     };
 
     private DaoSession daoSession;
@@ -72,7 +73,8 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
                 "'api_key' TEXT," + // 11: apiKey
                 "'CREATOR__ID' INTEGER," + // 12: creator_ID
                 "'DESC' TEXT," + // 13: description
-                "'DEPARTMENT' TEXT);"); // 14: Department
+                "'DEPARTMENT' TEXT," + // 14: Department
+                "'COURSE' TEXT);"); // 15: Course
     }
 
     /** Drops the underlying database table. */
@@ -160,6 +162,11 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
         if (department != null) {
             stmt.bindString(15, department);
         }
+
+        String course = entity.getCourse();
+        if (course != null) {
+            stmt.bindString(16, course);
+        }
     }
 
     @Override
@@ -192,7 +199,8 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // rootKey
             cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // apiKey
             cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12), // creator_ID
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // department
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // department
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15) // course
         );
         return entity;
     }
@@ -215,6 +223,7 @@ public class BThreadDao extends AbstractDao<BThread, Long> {
         entity.setApiKey(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
         entity.setCreator_ID(cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12));
         entity.setDepartment(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setCourse(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
      }
     
     /** @inheritdoc */

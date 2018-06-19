@@ -48,7 +48,7 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
     private static final int THREAD_PIC = 1991;
 
     private CircleImageView imageThread, imageAdmin;
-    private TextView txtAdminName, txtThreadName, txtThreadDesc;
+    private TextView txtAdminName, txtThreadName, txtThreadDesc, txtThreadCourse;
     private Spinner spinner;
     private ChatSDKContactsFragment contactsFragment;
     private String adminId;
@@ -73,6 +73,7 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
         imageThread = findViewById(R.id.chat_sdk_thread_image_view);
 
         if (thread.getType() != 0) {
+            txtThreadCourse = findViewById(R.id.et_thread_course);
             spinner = findViewById(R.id.departments_spinner);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.departments_array, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -95,6 +96,7 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
                 }
             });
             findViewById(R.id.thread_spinner).setVisibility(View.VISIBLE);
+            findViewById(R.id.thread_course).setVisibility(View.GONE);
         }
     }
 
@@ -179,10 +181,13 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
         if (thread.getType() != 0) {
             String department = thread.getDepartment();
             spinner.setSelection(getIndex(spinner, department));
+            txtThreadCourse.setText(thread.getCourse());
 
             if (StringUtils.isNotBlank(adminId) && !adminId.equals(getNetworkAdapter().currentUserModel().getEntityID())) {
                 spinner.setEnabled(false);
                 spinner.setClickable(false);
+                txtThreadCourse.setEnabled(false);
+                txtThreadCourse.setClickable(false);
             }
         }
         // Thread users data

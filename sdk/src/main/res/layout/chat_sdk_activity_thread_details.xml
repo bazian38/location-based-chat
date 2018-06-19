@@ -51,9 +51,7 @@
         android:gravity="center"
         android:padding="5dp"
         android:id="@+id/chat_sdk_thread_desc"
-        android:text="Group Description"
-        android:clickable="true"
-        android:focusable="true"
+        android:text="@string/group_description"
         android:onClick="onClick"/>
 
     <RelativeLayout
@@ -82,6 +80,27 @@
             android:layout_toRightOf="@+id/chat_sdk_ic_depart"/>
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/thread_course"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/course_number" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_thread_course"
+            android:text="@string/undefined"
+            android:inputType="numberDecimal"/>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

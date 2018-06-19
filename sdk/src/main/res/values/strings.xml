@@ -177,5 +177,8 @@
     <string name="app_info">App Info</string>
     <string name="unable_to_open_app_in_settings">Unable to open app in settings</string>
     <string name="no_nearby_threads">No nearby threads</string>
+    <string name="course_number">Course Number:</string>
+    <string name="undefined">undefined</string>
+    <string name="group_description">Group Description</string>
 
 </resources>

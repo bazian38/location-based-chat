@@ -181,7 +181,7 @@ public class BUserWrapper extends EntityWrapper<BUser> {
         {
             model.setMetaName(BDefines.getDefaultUserName());
         }
-        
+
         // Save the data
         DaoCore.updateEntity(model);
     }
@@ -195,7 +195,7 @@ public class BUserWrapper extends EntityWrapper<BUser> {
         DatabaseReference ref = ref();
 
         if (DEBUG) Timber.v("once, EntityID: %s, Ref Path: %s", entityId, ref.toString());
-        
+
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {

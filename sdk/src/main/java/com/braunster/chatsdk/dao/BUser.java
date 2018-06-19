@@ -437,6 +437,10 @@ public class BUser extends BUserEntity  {
         return metaStringForKey(BDefines.Keys.BCourses);
     }
 
+    public void setMetaCourses(String courses) {
+        setMetadataString(BDefines.Keys.BCourses, courses);
+    }
+
     public String metaStringForKey(String key){
         return (String) metaMap().get(key);
     }
