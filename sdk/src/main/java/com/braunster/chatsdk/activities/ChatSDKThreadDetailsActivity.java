@@ -51,6 +51,7 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
     private TextView txtAdminName, txtThreadName, txtThreadDesc;
     private Spinner spinner;
     private ChatSDKContactsFragment contactsFragment;
+    private String adminId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,6 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
 
     private void initViews() {
         txtAdminName = findViewById(R.id.chat_sdk_txt_admin_name);
-
         txtThreadName = findViewById(R.id.chat_sdk_txt_thread_name);
         txtThreadDesc = findViewById(R.id.chat_sdk_thread_desc);
         imageAdmin = findViewById(R.id.chat_sdk_admin_image_view);
@@ -98,14 +98,16 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
         }
     }
 
-    private void loadData(){
-        if (thread.getCreator() == null)
-            Log.d("admin", "creator is null");
+    private void loadData() {
+        adminId = thread.getCreatorEntityId();
+        if (adminId == null && thread.getCreator() != null) {
+            adminId = thread.getCreator().getEntityID();
+        }
+
         // Admin data
-        if (StringUtils.isNotBlank(thread.getCreatorEntityId()))
+        if (adminId != null)
         {
-            Log.d("admin", thread.getCreatorEntityId());
-            BUser admin = DaoCore.fetchEntityWithEntityID(BUser.class, thread.getCreatorEntityId());
+            BUser admin = DaoCore.fetchEntityWithEntityID(BUser.class, adminId);
 
             if (admin != null)
             {
@@ -177,6 +179,11 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
         if (thread.getType() != 0) {
             String department = thread.getDepartment();
             spinner.setSelection(getIndex(spinner, department));
+
+            if (StringUtils.isNotBlank(adminId) && !adminId.equals(getNetworkAdapter().currentUserModel().getEntityID())) {
+                spinner.setEnabled(false);
+                spinner.setClickable(false);
+            }
         }
         // Thread users data
         contactsFragment = new ChatSDKContactsFragment();
@@ -391,7 +398,7 @@ public class ChatSDKThreadDetailsActivity extends ChatSDKBaseThreadActivity {
     public void onClick(View view)
     {
         if (thread.getType() != 0) {
-            if (StringUtils.isNotBlank(thread.getCreatorEntityId()) && thread.getCreatorEntityId().equals(getNetworkAdapter().currentUserModel().getEntityID())) {
+            if (StringUtils.isNotBlank(adminId) && adminId.equals(getNetworkAdapter().currentUserModel().getEntityID())) {
                 if (view.getId() == R.id.chat_sdk_thread_desc) {
                     DialogUtils.ChatSDKEditTextDialog textDialog = DialogUtils.ChatSDKEditTextDialog.getInstace();
                     textDialog.setTitleAndListen("Set description", new DialogUtils.ChatSDKEditTextDialog.EditTextDialogInterface() {
