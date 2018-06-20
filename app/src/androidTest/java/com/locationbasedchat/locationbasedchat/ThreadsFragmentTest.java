@@ -128,4 +128,45 @@ public class ThreadsFragmentTest {
         assertEquals(result.keySet().toArray()[0], thread1);
         assertEquals(result.keySet().toArray()[1], thread2);
     }
+
+    @Test
+    public void sortByComparatorCourse() throws Exception {
+        assertEquals("com.locationbasedchat.locationbasedchat", appContext.getPackageName());
+
+        Map<BThread, Double> threadsDistanceMap = new HashMap<>();
+
+        bUser1.setMetaDepartment("CS");
+        bUser1.setMetaCourses("123,456");
+
+        thread1.setCourse("123");
+
+        threadsDistanceMap.put(thread1, 5.0);
+        threadsDistanceMap.put(thread2, 5.0);
+
+        Map<BThread, Double> result = ChatSDKThreadsFragment.sortByComparator(threadsDistanceMap, true,bUser1);
+
+        assertEquals(result.keySet().toArray()[0], thread1);
+        assertEquals(result.keySet().toArray()[1], thread2);
+    }
+
+    @Test
+    public void sortByComparatorCourseAndDepartment() throws Exception {
+        assertEquals("com.locationbasedchat.locationbasedchat", appContext.getPackageName());
+
+        Map<BThread, Double> threadsDistanceMap = new HashMap<>();
+
+        bUser1.setMetaDepartment("CS");
+        bUser1.setMetaCourses("123,456");
+
+        thread1.setCourse("123");
+        thread2.setDepartment("CS");
+
+        threadsDistanceMap.put(thread1, 5.0);
+        threadsDistanceMap.put(thread2, 5.0);
+
+        Map<BThread, Double> result = ChatSDKThreadsFragment.sortByComparator(threadsDistanceMap, true,bUser1);
+
+        assertEquals(result.keySet().toArray()[0], thread1);
+        assertEquals(result.keySet().toArray()[1], thread2);
+    }
 }
