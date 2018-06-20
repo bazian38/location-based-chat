@@ -154,24 +154,6 @@ public class ChatMessageBoxView extends LinearLayout implements View.OnClickList
             if (messageBoxOptionsListener != null)
                 messageBoxOptionsListener.onPickImagePressed();
         }
-        else  if (id == R.id.chat_sdk_btn_take_picture) {
-            if (!Utils.SystemChecks.checkCameraHardware(getContext()))
-            {
-                Toast.makeText(getContext(), "This device does not have a camera.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            dismissOptionPopup();
-
-            if (messageBoxOptionsListener != null)
-                messageBoxOptionsListener.onTakePhotoPressed();
-        }
-        else  if (id == R.id.chat_sdk_btn_location) {
-            dismissOptionPopup();
-
-            if (messageBoxOptionsListener != null)
-                messageBoxOptionsListener.onLocationPressed();
-        }
     }
 
     /** Send a text message when the done button is pressed on the keyboard.*/

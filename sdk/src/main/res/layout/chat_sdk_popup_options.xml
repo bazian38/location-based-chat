@@ -12,20 +12,8 @@
 
     <Button
         style="@style/MessageOptionButtonStyle"
-        android:text="Take Picture"
-        android:drawableLeft="@android:drawable/ic_menu_camera"
-        android:id="@+id/chat_sdk_btn_take_picture"/>
-
-    <Button
-        style="@style/MessageOptionButtonStyle"
         android:text="Choose Picture"
         android:drawableLeft="@android:drawable/ic_menu_gallery"
         android:id="@+id/chat_sdk_btn_choose_picture"/>
-
-    <Button
-        style="@style/MessageOptionButtonStyle"
-        android:text="Location"
-        android:drawableLeft="@android:drawable/ic_menu_mylocation"
-        android:id="@+id/chat_sdk_btn_location"/>
 
 </LinearLayout>

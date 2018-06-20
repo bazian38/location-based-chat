@@ -277,12 +277,6 @@ public class DialogUtils {
         View popupView = inflater.inflate(R.layout.chat_sdk_popup_options, null);
         PopupWindow optionPopup = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popupView.findViewById(R.id.chat_sdk_btn_choose_picture).setOnClickListener(listener);
-        popupView.findViewById(R.id.chat_sdk_btn_take_picture).setOnClickListener(listener);
-        popupView.findViewById(R.id.chat_sdk_btn_location).setOnClickListener(listener);
-
-        if (!BDefines.Options.LocationEnabled || context.getString(R.string.google_maps_api_key).isEmpty()){
-            popupView.findViewById(R.id.chat_sdk_btn_location).setVisibility(View.GONE);
-        }
         
         popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 

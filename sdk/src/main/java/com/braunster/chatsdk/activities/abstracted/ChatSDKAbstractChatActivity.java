@@ -687,7 +687,7 @@ public abstract class ChatSDKAbstractChatActivity extends ChatSDKBaseActivity im
             return super.onCreateOptionsMenu(menu);
 
         // Adding the add user option only if group chat is enabled.
-        if (BDefines.Options.GroupEnabled)
+        if (BDefines.Options.GroupEnabled && thread.getType() == 0)
         {
             MenuItem item =
                     menu.add(Menu.NONE, R.id.action_chat_sdk_add, 10, getString(R.string.chat_activity_show_users_item_text));
