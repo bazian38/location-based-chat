@@ -494,6 +494,11 @@ public class ChatSDKThreadsFragment extends ChatSDKBaseFragment implements GeoTh
             result -= 1;
         }
 
+        if (entry.getKey().getCourse() != null && currentUser.getMetaCourses() != null && currentUser.getMetaCourses().contains(entry.getKey().getCourse()))
+        {
+            result -= 2;
+        }
+
         return result;
     }
 
