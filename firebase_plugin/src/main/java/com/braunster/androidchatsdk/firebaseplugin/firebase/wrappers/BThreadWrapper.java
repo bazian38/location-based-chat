@@ -481,7 +481,8 @@ public class BThreadWrapper extends EntityWrapper<BThread> {
         if (this.model.getLastMessageAdded() != null)
             nestedMap.put(BDefines.Keys.BLastMessageAdded, this.model.getLastMessageAdded().getTime());
 
-        nestedMap.put(BDefines.Keys.BCreatorEntityId, this.model.getCreatorEntityId());
+        if (this.model.getCreatorEntityId() != null || this.model.getCreatorEntityId() != "")
+            nestedMap.put(BDefines.Keys.BCreatorEntityId, this.model.getCreatorEntityId());
 
         nestedMap.put(BDefines.Keys.BImageUrl, this.model.getImageUrl());
 
@@ -536,6 +537,18 @@ public class BThreadWrapper extends EntityWrapper<BThread> {
         if (value.containsKey(BDefines.Keys.BName) && !value.get(BDefines.Keys.BName).equals(""))
             this.model.setName((String) value.get(BDefines.Keys.BName));
 
+        if (value.containsKey(BDefines.Keys.BCourse) && !value.get(BDefines.Keys.BCourse).equals(""))
+            this.model.setCourse((String) value.get(BDefines.Keys.BCourse));
+
+        if (value.containsKey(BDefines.Keys.BDescription) && !value.get(BDefines.Keys.BDescription).equals(""))
+            this.model.setDescription((String) value.get(BDefines.Keys.BDescription));
+
+        if (value.containsKey(BDefines.Keys.BDepartment) && !value.get(BDefines.Keys.BDepartment).equals(""))
+            this.model.setDepartment((String) value.get(BDefines.Keys.BDepartment));
+
+        if (value.containsKey(BDefines.Keys.BCreatorEntityId) && !value.get(BDefines.Keys.BCreatorEntityId).equals(""))
+            this.model.setCreatorEntityId((String) value.get(BDefines.Keys.BCreatorEntityId));
+
         Long lastMessageAdded = 0L;
         Object o = value.get(BDefines.Keys.BLastMessageAdded);
 
@@ -553,8 +566,7 @@ public class BThreadWrapper extends EntityWrapper<BThread> {
         }
 
         this.model.setImageUrl((String) value.get(BDefines.Keys.BImageUrl));
-        this.model.setCreatorEntityId((String) value.get(BDefines.Keys.BCreatorEntityId));
-        
+
         DaoCore.updateEntity(this.model);
     }
 
@@ -566,8 +578,11 @@ public class BThreadWrapper extends EntityWrapper<BThread> {
         if (DEBUG) Timber.v("push");
         
         final DeferredObject<BThread, BError, Void> deferred = new DeferredObject<>();
-        
+
         DatabaseReference ref = null;
+
+        ref = FirebasePaths.threadRef();
+
         if (StringUtils.isNotEmpty(model.getEntityID()))
         {
             ref = FirebasePaths.threadRef(model.getEntityID());
