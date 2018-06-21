@@ -235,7 +235,7 @@ public class ChatSDKProfileFragment extends ChatSDKAbstractProfileFragment {
     public void addCourse() {
         final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         final EditText input = new EditText(getActivity());
-        input.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        input.setRawInputType(InputType.TYPE_CLASS_NUMBER);
         alert.setView(input);
         alert.setTitle("Write Course Number");
         alert.setMessage("should contain only numbers");

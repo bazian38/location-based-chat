@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/et_thread_course"
             android:text="@string/undefined"
-            android:inputType="numberDecimal"/>
+            android:inputType="number"/>
     </LinearLayout>
 
     <RelativeLayout
